@@ -6,21 +6,21 @@ using namespace std;
 template<class D>
 class SegmentTreeTD {
 public:
-	SegmentTreeTD(int N_, D A[]): N(N_) {
-		int nlog = 0;
-		int n = N;
-		while (n > 0) {
-			n = (n >> 1);
-			nlog++;
-		}
-		int msize = 2 * (1 << (nlog+1)) + 1;
-		M = new D[msize];
-		initialize(1, 0, N-1, A);
-	}
+    SegmentTreeTD(int N_, D A[]): N(N_) {
+        int nlog = 0;
+        int n = N;
+        while (n > 0) {
+            n = (n >> 1);
+            nlog++;
+        }
+        int msize = 2 * (1 << (nlog+1)) + 1;
+        M = new D[msize];
+        initialize(1, 0, N-1, A);
+    }
 
-	~SegmentTreeTD() {
-		delete[] M;
-	}
+    ~SegmentTreeTD() {
+        delete[] M;
+    }
 
     void initialize(int node, int b, int e, D A[]) {
         if (b == e) {
@@ -37,14 +37,14 @@ public:
         return query(1, 0, N-1, i, j, typename D::Query());
     }
 
-	void update(int i, int j,
+    void update(int i, int j,
                 const typename D::UVType& d) {
-		update(1, 0, N-1, i, j, typename D::Updator(d));
-	}
+        update(1, 0, N-1, i, j, typename D::Updator(d));
+    }
 
 private:
-	int N;
-	D* M;
+    int N;
+    D* M;
 
     typename D::QVType query(int node, int b, int e, int i, int j,
                              typename D::Query q) const {
