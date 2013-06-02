@@ -3,8 +3,6 @@
 
 using namespace std;
 
-typedef int64_t ll;
-
 template<class D>
 class SegmentTreeTD {
 public:
@@ -24,67 +22,58 @@ public:
 		delete[] M;
 	}
 
-	void initialize(int node, int b, int e, D A[]) {
-		if (b == e) {
-			M[node] = A[b];
-		}
-		else {
-			initialize(2*node, b, (b+e)/2, A);
-			initialize(2*node+1, (b+e)/2+1, e, A);
-			//M[node].val = min(M[2*node].val, M[2*node+1].val);
+    void initialize(int node, int b, int e, D A[]) {
+        if (b == e) {
+            M[node] = A[b];
+        }
+        else {
+            initialize(2*node, b, (b+e)/2, A);
+            initialize(2*node+1, (b+e)/2+1, e, A);
             M[node].update(M[2*node], M[2*node+1]);
-		}
-	}
+        }
+    }
 
-    template<class Q>
-	ll query(int i, int j, Q q) const {
-		return query(1, 0, N-1, i, j, q);
-	}
+    typename D::QVType query(int i, int j) const {
+        return query(1, 0, N-1, i, j, typename D::Query());
+    }
 
-    template<class U>
-	void update(int i, int j, const U& u) {
-		update(1, 0, N-1, i, j, u);
+	void update(int i, int j,
+                const typename D::UVType& d) {
+		update(1, 0, N-1, i, j, typename D::Updator(d));
 	}
 
 private:
 	int N;
 	D* M;
 
-    template<class Q>
-	ll query(int node, int b, int e, int i, int j, Q q) const {
-		if (i > e || j < b) {
-			//return MAXINT;
-            return Q::nullValue();
-		}
+    typename D::QVType query(int node, int b, int e, int i, int j,
+                             typename D::Query q) const {
+        if (i > e || j < b) {
+            return D::Query::nullValue();
+        }
 
-		//acc += M[node].delta;
         q.update(M[node]);
-		if (b >= i && e <= j) {
-			//return M[node].val + acc;
+        if (b >= i && e <= j) {
             return q.getValue(M[node]);
-		}
+        }
 
-		ll p1 = query(2*node, b, (b+e)/2, i, j, q);
-		ll p2 = query(2*node+1, (b+e)/2+1, e, i, j, q);
+        typename D::QVType p1 = query(2*node, b, (b+e)/2, i, j, q);
+        typename D::QVType p2 = query(2*node+1, (b+e)/2+1, e, i, j, q);
 
-		//return min(p1, p2);
         return q.combineValues(p1, p2);
-	}
+    }
 
-    template<class U>
-	void update(int node, int b, int e, int i, int j, const U& u) {
-		if (i > e || j < b) {
-			return;
-		}
-		if (b >= i && e <= j) {
-			//M[node].delta += d;
+    void update(int node, int b, int e, int i, int j,
+                typename D::Updator const & u) {
+        if (i > e || j < b) {
+            return;
+        }
+        if (b >= i && e <= j) {
             u.updateNode(M[node]);
-			return;
-		}
-		update(2*node, b, (b+e)/2, i, j, u);
-		update(2*node+1, (b+e)/2+1, e, i, j, u);
-		//M[node].val = min(M[2*node].delta + M[2*node].val,
-		//				  M[2*node+1].delta + M[2*node+1].val);
+            return;
+        }
+        update(2*node, b, (b+e)/2, i, j, u);
+        update(2*node+1, (b+e)/2+1, e, i, j, u);
         M[node].update(M[2*node], M[2*node+1]);
-	}
+    }
 };
