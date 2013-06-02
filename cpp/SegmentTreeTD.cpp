@@ -33,8 +33,9 @@ public:
         }
     }
 
-    typename D::QVType query(int i, int j) const {
-        return query(1, 0, N-1, i, j, typename D::Query());
+    typename D::QVType query(int i, int j,
+                             typename D::QAType const &q) const {
+        return query(1, 0, N-1, i, j, typename D::Query(q));
     }
 
     void update(int i, int j,

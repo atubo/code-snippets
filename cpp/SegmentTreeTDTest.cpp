@@ -1,6 +1,8 @@
 #include "SegmentTreeTDTest.h"
 #include "SegmentTreeTD.cpp"
 
+#include <cassert>
+
 CPPUNIT_TEST_SUITE_REGISTRATION(SegmentTreeTDTest);
 
 typedef int64_t ll;
@@ -8,16 +10,17 @@ typedef int64_t ll;
 const ll MAXINT = numeric_limits<ll>::max();
 
 struct Node {
-    typedef ll QVType;
-    typedef ll UVType;
+    typedef ll QVType;  // query return value type
+    typedef ll QAType;  // query argument type
+    typedef ll UVType;  // update value type
 
-	Node(): delta(0), val(MAXINT) {}
+    Node(): delta(0), val(MAXINT) {}
     void update(const Node& left, const Node& right) {
         val   = min(left.delta  + left.val,
                     right.delta + right.val);
     }
-	ll delta;
-	ll val;
+    ll delta;
+    ll val;
 
     struct Updator {
         Updator(UVType delta_): delta(delta_) {}
@@ -28,7 +31,9 @@ struct Node {
     };
 
     struct Query {
-        Query(): delta(0) {}
+        Query(const QAType& q): delta(0) {
+            assert(q == 0);
+        }
 
         static QVType nullValue() {
             return MAXINT;
@@ -62,16 +67,16 @@ void SegmentTreeTDTest::test1()
     SegmentTreeTD<Node> tree(4, a);
     tree.update(3, 3, -1);
     tree.update(0, 0, -1);
-    int x = tree.query(0, 0);
+    int x = tree.query(0, 0, 0);
     CPPUNIT_ASSERT_EQUAL(0, x);
 
-    x = tree.query(3, 3);
+    x = tree.query(3, 3, 0);
     CPPUNIT_ASSERT_EQUAL(3, x);
 
-    x = tree.query(0, 1);
+    x = tree.query(0, 1, 0);
     CPPUNIT_ASSERT_EQUAL(0, x);
 
-    x = tree.query(2, 3);
+    x = tree.query(2, 3, 0);
     CPPUNIT_ASSERT_EQUAL(3, x);
 }
 
@@ -86,7 +91,7 @@ void SegmentTreeTDTest::test2()
     tree.update(0, 0, -1);
     tree.update(0, 0, 1);
     for (int i = 0; i < 3; i++) {
-        int x = tree.query(i, i);
+        int x = tree.query(i, i, 0);
         CPPUNIT_ASSERT_EQUAL(0, x);
     }
 }
@@ -101,6 +106,6 @@ void SegmentTreeTDTest::test3()
     SegmentTreeTD<Node> tree(3, a);
     tree.update(0, 2, 2);
     tree.update(2, 2, -1);
-    int x = tree.query(0, 2);
+    int x = tree.query(0, 2, 0);
     CPPUNIT_ASSERT_EQUAL(-1, x);
 }
