@@ -1,5 +1,6 @@
 #include <cppunit/ui/text/TestRunner.h>
 #include "SegmentTreeTDTest.h"
+#include "SegmentTreeMinTest.h"
 
 int main()
 {
