@@ -1,8 +1,18 @@
-#define LOGSZ 17
+#include <cinttypes>
+#include <cstring>
+#include <cstdlib>
+using namespace std;
+
 class BIT {
 public:
-    BIT() {
-        memset(tree, 0, ((1<<LOGSZ)+1)*sizeof(int64_t));
+    BIT(int size): N(size) {
+        tree = (int64_t*)malloc((size+1) * sizeof(int64_t));
+        memset(tree, 0, (size+1) * sizeof(int64_t));
+    }
+    
+    ~BIT() {
+        free(tree);
+        tree = NULL;
     }
     // add v to value at x
     void set(int x, int v) {
@@ -38,6 +48,6 @@ public:
     }
 
 private:
-    int64_t tree[(1<<LOGSZ)+1];
-    static const int N = (1<<LOGSZ);
+    int64_t* tree;
+    const int N;
 };
