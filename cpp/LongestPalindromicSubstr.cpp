@@ -15,16 +15,14 @@ public:
         if (seq.size() == 0) {
             return make_pair(0, 0);
         }
-        vector<int> l = getLengthArray();
+        vector<int> l = getLengthArray(seq);
         vector<int>::const_iterator it = max_element(l.begin(),
                                                      l.end());
         int pos = it - l.begin();
         return make_pair(pos/2-l[pos]/2, l[pos]);
     }
-private:
-    const string& seq;
 
-    vector<int> getLengthArray() const {
+    static vector<int> getLengthArray(const string& seq) {
         int seqLen = seq.length();
         vector<int> l;
         int i = 0;
@@ -62,4 +60,7 @@ START_OF_WHILE:
 
         return l;
     }
+
+private:
+    const string& seq;
 };
