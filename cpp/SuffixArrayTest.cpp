@@ -47,9 +47,35 @@ public:
         CPPUNIT_ASSERT_EQUAL(SuffixArray::lcp[2], 0);
     }
 
+    void testPMatrix() {
+        string s = "bobocel";
+
+        SuffixArray::S = s.c_str();
+        SuffixArray::buildSA();
+        SuffixArray::buildLCP();
+
+        int golden[5][7] = {
+            {0, 4, 0, 4, 1, 2, 3},
+            {0, 4, 0, 5, 1, 2, 3},
+            {0, 5, 1, 6, 2, 3, 4},
+            {0, 5, 1, 6, 2, 3, 4},
+            {0, 5, 1, 6, 2, 3, 4},
+        };
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                CPPUNIT_ASSERT_EQUAL(golden[i][j], SuffixArray::P[i][j]);
+            }
+        }
+        
+        CPPUNIT_ASSERT_EQUAL(2, SuffixArray::calcLCP(2, 0));
+        CPPUNIT_ASSERT_EQUAL(1, SuffixArray::calcLCP(1, 3));
+        CPPUNIT_ASSERT_EQUAL(0, SuffixArray::calcLCP(0, 6));
+    }
+
     CPPUNIT_TEST_SUITE(SuffixArrayTest);
     CPPUNIT_TEST(testOneCharString);
     CPPUNIT_TEST(testShortString);
+    CPPUNIT_TEST(testPMatrix);
     CPPUNIT_TEST_SUITE_END();
 };
 

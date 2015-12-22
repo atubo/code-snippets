@@ -2,6 +2,7 @@
 Suffix array O(n lg^2 n)
 LCP table O(n)
 */
+// see http://web.stanford.edu/class/cs97si/suffix-array.pdf
 #include <cstdio>
 #include <algorithm>
 #include <cstring>
@@ -14,9 +15,12 @@ using namespace std;
 namespace SuffixArray
 {
 	const int MAXN = 1 << 21;
+    const int MAXP = 22;
 	const char * S;
 	int N, gap;
 	int sa[MAXN], pos[MAXN], tmp[MAXN], lcp[MAXN];
+    int P[MAXP][MAXN];
+    int NP;
 
 	bool sufCmp(int i, int j)
 	{
@@ -31,12 +35,18 @@ namespace SuffixArray
 	{
 		N = strlen(S);
 		REP(i, N) sa[i] = i, pos[i] = S[i];
-		for (gap = 1;; gap *= 2)
+        gap = 0;
+        sort(sa, sa + N, sufCmp);
+        REP(i, N-1) tmp[i+1] = tmp[i] + sufCmp(sa[i], sa[i+1]);
+        REP(i, N) P[0][sa[i]] = tmp[i];
+		for (NP = 1, gap = 1; gap >> 1 < N; gap *= 2)
 		{
 			sort(sa, sa + N, sufCmp);
 			REP(i, N - 1) tmp[i + 1] = tmp[i] + sufCmp(sa[i], sa[i + 1]);
 			REP(i, N) pos[sa[i]] = tmp[i];
-			if (tmp[N - 1] == N - 1) break;
+            REP(i, N) P[NP][sa[i]] = tmp[i];
+            NP++;
+			//if (tmp[N - 1] == N - 1) break;
 		}
 	}
 
@@ -50,6 +60,20 @@ namespace SuffixArray
 			if (k)--k;
 		}
 	}
+
+    int calcLCP(int x, int y)
+    {
+        int k, ret = 0;
+        if (x == y) return N-x;
+        for (k = NP-1; k >= 0 && x < N && y < N; k--) {
+            if (P[k][x] == P[k][y]) {
+                x += 1 << k;
+                y += 1 << k;
+                ret += 1 << k;
+            }
+        }
+        return ret;
+    }
 } // end namespace SuffixArray
 
 /* usage example
