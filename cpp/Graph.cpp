@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+using namespace std;
+
 // Undirected graph
 // Note graph node is 0-indexed
 class Graph {

@@ -1,4 +1,4 @@
 ALL:
-	g++ -c SegmentTreeTDTest.cpp SegmentTreeMinTest.cpp SuffixArrayTest.cpp \
-        unittest.cpp
+	g++ -c -std=c++0x SegmentTreeTDTest.cpp SegmentTreeMinTest.cpp SuffixArrayTest.cpp \
+        DFSTest.cpp unittest.cpp
 	g++ -o unittest *.o -l cppunit
