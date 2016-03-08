@@ -1,5 +1,6 @@
 #include <cinttypes>
 
+// 1 ^ 2 ^ 3 ^ ... ^ n
 int64_t xorUpto(int64_t n)
 {
     // 2n xor (2n+1) has only the last digit 1
@@ -8,3 +9,27 @@ int64_t xorUpto(int64_t n)
     if (n % 2 == 0) x = n | x;
     return x;
 }
+
+
+int64_t countOnesRecur(int64_t n, int64_t factor)
+{
+    if (n <= 0) return 0;
+    // count 1's on the LSD
+    int64_t result = (n+1)/2;
+    // count 1's in n downto its nearest even neighbor
+    int64_t ntmp = (n >> 1);
+    while (ntmp > 0) {
+        result += (ntmp & 1) * ((n&1) + 1);
+        ntmp = (ntmp >> 1);
+    }
+
+    return result * factor + countOnesRecur((n>>1)-1, factor<<1);
+}
+
+// count number of 1's in the binary representations
+// of all numbers from 1 up to n
+int64_t countOnes(int64_t n)
+{
+    return countOnesRecur(n, 1);
+}
+

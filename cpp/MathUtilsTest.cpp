@@ -23,8 +23,23 @@ public:
         CPPUNIT_ASSERT_EQUAL(8LL, x);
     }
 
+    void testCountOnes() {
+        int64_t x = countOnes(0);
+        CPPUNIT_ASSERT_EQUAL(0LL, x);
+
+        x = countOnes(1);
+        CPPUNIT_ASSERT_EQUAL(1LL, x);
+
+        x = countOnes(4);
+        CPPUNIT_ASSERT_EQUAL(5LL, x);
+
+        x = countOnes(9);
+        CPPUNIT_ASSERT_EQUAL(15LL, x);
+    }
+
     CPPUNIT_TEST_SUITE(MathUtilsTest);
     CPPUNIT_TEST(testXorUpto);
+    CPPUNIT_TEST(testCountOnes);
     CPPUNIT_TEST_SUITE_END();
 };
 
