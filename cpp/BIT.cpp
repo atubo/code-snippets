@@ -5,6 +5,7 @@ using namespace std;
 
 class BIT {
 public:
+    // Note size needs to be power of 2
     BIT(int size): N(size) {
         tree = (int64_t*)malloc((size+1) * sizeof(int64_t));
         memset(tree, 0, (size+1) * sizeof(int64_t));
