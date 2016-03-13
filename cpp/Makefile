@@ -1,6 +1,12 @@
-ALL:
-	g++ -c -std=c++0x SegmentTreeTDTest.cpp SegmentTreeMinTest.cpp \
-        SuffixArrayTest.cpp CongruentIntTest.cpp AhoCorasickTest.cpp \
-        DFSTest.cpp TopologicalSortTest.cpp BitmaskTest.cpp \
-        MathUtilsTest.cpp BITTest.cpp unittest.cpp
-	g++ -o unittest *.o -l cppunit
+SRC:=$(wildcard *Test.cpp *test.cpp)
+OBJ:=$(SRC:.cpp=.o)
+
+unittest: $(OBJ)
+	g++ -o $@ $^ -l cppunit
+
+.cpp.o:
+	g++ -c -std=c++0x $^
+
+test: unittest
+	./unittest
+
