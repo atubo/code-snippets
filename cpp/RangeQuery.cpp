@@ -26,9 +26,9 @@ public:
     // if there is element in [a, b)
     bool hasElementIn(T a, T b) const {
         // first element >= a
-        const auto it1 = data.lower_bound(a);
-        const auto it2 = data.lower_bound(b);
-        return it1 != it2;
+        const auto it = data.lower_bound(a);
+        if (it == data.end() || *it >= b) {return false;}
+        return true;
     }
 
 private:
