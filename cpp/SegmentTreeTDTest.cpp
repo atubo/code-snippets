@@ -5,7 +5,7 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SegmentTreeTDTest);
 
-typedef int64_t ll;
+typedef int ll;
 
 const ll MAXINT = numeric_limits<ll>::max();
 
@@ -59,7 +59,8 @@ struct Node {
 
 void SegmentTreeTDTest::test1()
 {
-    // a[] = {1, 2, 3, 4}
+    int a[] = {1, 2, 3, 4};
+#if 0
     Node a[4];
     for (int i = 0; i < 4; i++) {
         a[i].val = i+1;
@@ -78,11 +79,31 @@ void SegmentTreeTDTest::test1()
 
     x = tree.query(2, 3, 0);
     CPPUNIT_ASSERT_EQUAL(3, x);
+#endif
+    auto combine = [](int x, int y) {return min(x, y);};
+    auto accu = [](int x, int y) {return x+y;};
+    auto apply = [](int x, int y) {return x+y;};
+
+    SegmentTreeTD<int> tree(4, a, MAXINT, combine, accu, apply);
+    tree.update(3, 3, -1);
+    tree.update(0, 0, -1);
+    int x = tree.query(0, 0);
+    CPPUNIT_ASSERT_EQUAL(0, x);
+
+    x = tree.query(3, 3);
+    CPPUNIT_ASSERT_EQUAL(3, x);
+
+    x = tree.query(0, 1);
+    CPPUNIT_ASSERT_EQUAL(0, x);
+
+    x = tree.query(2, 3);
+    CPPUNIT_ASSERT_EQUAL(3, x);
 }
 
 void SegmentTreeTDTest::test2()
 {
-    // a[3] = {0, 0, 0}
+    int a[3] = {0, 0, 0};
+#if 0
     Node a[3];
     for (int i = 0; i < 3; i++) {
         a[i].val = 0;
@@ -94,11 +115,24 @@ void SegmentTreeTDTest::test2()
         int x = tree.query(i, i, 0);
         CPPUNIT_ASSERT_EQUAL(0, x);
     }
+#endif
+    auto combine = [](int x, int y) {return min(x, y);};
+    auto accu = [](int x, int y) {return x+y;};
+    auto apply = [](int x, int y) {return x+y;};
+
+    SegmentTreeTD<int> tree(3, a, MAXINT, combine, accu, apply);
+    tree.update(0, 0, -1);
+    tree.update(0, 0, 1);
+    for (int i = 0; i < 3; i++) {
+        int x = tree.query(i, i);
+        CPPUNIT_ASSERT_EQUAL(0, x);
+    }
 }
 
 void SegmentTreeTDTest::test3()
 {
-    // a[3] = {-2, -2, -2}
+    int a[3] = {-2, -2, -2};
+#if 0
     Node a[3];
     for (int i = 0; i < 3; i++) {
         a[i].val = -2;
@@ -107,5 +141,15 @@ void SegmentTreeTDTest::test3()
     tree.update(0, 2, 2);
     tree.update(2, 2, -1);
     int x = tree.query(0, 2, 0);
+    CPPUNIT_ASSERT_EQUAL(-1, x);
+#endif
+    auto combine = [](int x, int y) {return min(x, y);};
+    auto accu = [](int x, int y) {return x+y;};
+    auto apply = [](int x, int y) {return x+y;};
+
+    SegmentTreeTD<int> tree(3, a, MAXINT, combine, accu, apply);
+    tree.update(0, 2, 2);
+    tree.update(2, 2, -1);
+    int x = tree.query(0, 2);
     CPPUNIT_ASSERT_EQUAL(-1, x);
 }
