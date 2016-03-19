@@ -62,7 +62,7 @@ void SegmentTreeTDTest::test3()
     CPPUNIT_ASSERT_EQUAL(-1, x);
 }
 
-void SegmentTreeTDTest::testRangeSum()
+void SegmentTreeTDTest::testRangeSum1()
 {
     int a[5] = {0, 1, 2, 3, 4};
     auto add = [](int x, int y) {return x+y;};
@@ -75,4 +75,18 @@ void SegmentTreeTDTest::testRangeSum()
     CPPUNIT_ASSERT_EQUAL(4, tree.query(0, 4));
     CPPUNIT_ASSERT_EQUAL(0, tree.query(1, 3));
     CPPUNIT_ASSERT_EQUAL(-1, tree.query(1, 2));
+}
+
+void SegmentTreeTDTest::testRangeSum2()
+{
+    int a[6] = {1, 1, 1, 1, 1, 0};
+    auto add = [](int x, int y) {return x+y;};
+    auto apply = [](int x, int d, int count) {return x + d*count;};
+
+    SegmentTreeTD<int> tree(6, a, 0, add, add, apply);
+
+    tree.update(0, 4, -1);
+    CPPUNIT_ASSERT_EQUAL(0, tree.query(1, 1));
+    tree.update(5, 5, 1);
+    CPPUNIT_ASSERT_EQUAL(1, tree.query(2, 5));
 }

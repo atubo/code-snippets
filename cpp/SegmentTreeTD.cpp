@@ -90,6 +90,10 @@ private:
         return apply(node.value, node.update, node.count);
     }
 
+    V eval(const Node& node, D d, int count) const {
+        return apply(node.value, d, count);
+    }
+
     V query(int node, int b, int e, int i, int j, D d) const {
         if (i > e || j < b) {
             return zero;
@@ -97,7 +101,7 @@ private:
 
         d = accu(d, M[node].update);
         if (b >= i && e <= j) {
-            return eval(M[node]);
+            return eval(M[node], d, e-b+1);
         }
 
         V p1 = query(2*node, b, (b+e)/2, i, j, d);

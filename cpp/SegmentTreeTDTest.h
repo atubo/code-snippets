@@ -8,7 +8,8 @@ class SegmentTreeTDTest:public CppUnit::TestFixture {
     CPPUNIT_TEST(test1);
     CPPUNIT_TEST(test2);
     CPPUNIT_TEST(test3);
-    CPPUNIT_TEST(testRangeSum);
+    CPPUNIT_TEST(testRangeSum1);
+    CPPUNIT_TEST(testRangeSum2);
     CPPUNIT_TEST_SUITE_END();
 public:
     void setUp() {}
@@ -16,7 +17,8 @@ public:
     void test1();
     void test2();
     void test3();
-    void testRangeSum();
+    void testRangeSum1();
+    void testRangeSum2();
 };
 
 #endif
