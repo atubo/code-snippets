@@ -13,11 +13,12 @@ using namespace std;
  1. range update can be characterized by a parameter d
  2. range update should be commutative and associative
  3. we can accumulate the updates, i.e. U(d1)U(d2)...=U(d1+d2+..)
+ 4. A(U(x1, x2, .. , d)) = U'(A(x1, x2, ..), d, |x1, x2,..|)
 
  Client should provide three lambdas:
  1. combine (get aggregate from elements)
  2. accumulate (accumulate update parameters)
- 3. apply (apply the update)
+ 3. apply (apply the update, may depend on set size)
 
  Template parameters (usually they are the same type):
  V - value type
@@ -26,16 +27,17 @@ using namespace std;
 template<typename V, typename D=V>
 class SegmentTreeTD {
     struct Node {
-        Node(): value(0), update(0) {}
+        Node(): value(0), update(0),count(0) {}
         V value;
         D update;
+        int count;
     };
 
 public:
     SegmentTreeTD(int N_, V A[], V zero_,
                   function<V(V, V)> combine_,
                   function<D(D, D)> accu_,
-                  function<V(V, D)> apply_):
+                  function<V(V, D, int)> apply_):
         N(N_), zero(zero_), combine(combine_), accu(accu_), apply(apply_) {
         int nlog = 0;
         int n = N;
@@ -55,16 +57,17 @@ public:
     void initialize(int node, int b, int e, V A[]) {
         if (b == e) {
             M[node].value = A[b];
+            M[node].count = 1;
         }
         else {
             initialize(2*node, b, (b+e)/2, A);
             initialize(2*node+1, (b+e)/2+1, e, A);
-            //M[node].update(M[2*node], M[2*node+1]);
             M[node].value = combine(eval(M[2*node]), eval(M[2*node+1]));
-
+            M[node].count = M[2*node].count + M[2*node+1].count;
         }
     }
 
+    // i, j inclusive
     V query(int i, int j) const {
         return query(1, 0, N-1, i, j, D(0));
     }
@@ -79,12 +82,12 @@ private:
 
     function<V(V, V)> combine;
     function<D(D, D)> accu;
-    function<V(V, D)> apply;
+    function<V(V, D, int)> apply;
 
     Node* M;
 
     V eval(const Node& node) const {
-        return apply(node.value, node.update);
+        return apply(node.value, node.update, node.count);
     }
 
     V query(int node, int b, int e, int i, int j, D d) const {
@@ -92,7 +95,6 @@ private:
             return zero;
         }
 
-        //q.update(M[node]);
         d = accu(d, M[node].update);
         if (b >= i && e <= j) {
             return eval(M[node]);
@@ -110,12 +112,10 @@ private:
         }
         if (b >= i && e <= j) {
             M[node].update = accu(M[node].update, d);
-            //u.updateNode(M[node]);
             return;
         }
         update(2*node, b, (b+e)/2, i, j, d);
         update(2*node+1, (b+e)/2+1, e, i, j, d);
-        //M[node].update(M[2*node], M[2*node+1]);
         M[node].value = combine(eval(M[2*node]), eval(M[2*node+1]));
     }
 };
