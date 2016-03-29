@@ -33,3 +33,20 @@ int64_t countOnes(int64_t n)
     return countOnesRecur(n, 1);
 }
 
+// generate binomial coefficients
+// binom[n][k] = n \choose k
+namespace Binom {
+    const int MAXN = 1005;
+    int binom[MAXN][MAXN];
+
+    int generate(int N) {
+        binom[0][0] = 1;
+        for (int i = 1; i <= N; i++) {
+            binom[i][0] = 1;
+            for (int j = 1; j <= i; j++) {
+                binom[i][j] = binom[i-1][j] + binom[i-1][j-1];
+            }
+        }
+    }
+}
+
