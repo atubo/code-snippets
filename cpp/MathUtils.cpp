@@ -39,7 +39,7 @@ namespace Binom {
     const int MAXN = 1005;
     int binom[MAXN][MAXN];
 
-    int generate(int N) {
+    void generate(int N) {
         binom[0][0] = 1;
         for (int i = 1; i <= N; i++) {
             binom[i][0] = 1;

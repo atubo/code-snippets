@@ -1,11 +1,13 @@
 SRC:=$(wildcard *Test.cpp *test.cpp)
 OBJ:=$(SRC:.cpp=.o)
+CXXFLAGS = -Wall -Wshadow -std=c++0x -gdwarf-2 -O0
+LDFLAGS = -O0
 
 unittest: $(OBJ)
-	g++ -o $@ $^ -l cppunit
+	g++ $(LDFLAGS) -o $@ $^ -l cppunit
 
 .cpp.o:
-	g++ -c -std=c++0x $^
+	g++ -c $(CXXFLAGS) $^
 
 test: unittest
 	./unittest
