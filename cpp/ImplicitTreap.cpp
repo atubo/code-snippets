@@ -1,6 +1,9 @@
 // https://threads-iiith.quora.com/Treaps-One-Tree-to-Rule-em-all-Part-2
 #include <stddef.h>
 #include <stdlib.h>
+#include <vector>
+
+using namespace std;
 
 namespace ImplicitTreap {
     struct Node {
@@ -113,6 +116,23 @@ namespace ImplicitTreap {
         t->lazy += val;
         merge(mid, L, t);
         merge(t, mid, R);
+    }
+
+    NodePtr build_treap(const vector<int>& a, int i, int j) {
+        // [i, j)
+        if (i == j-1) {
+            return ImplicitTreap::init(a[i]);
+        }
+        int mid = (i+j)/2;
+        Node* left = build_treap(a, i, mid);
+        Node* right = build_treap(a, mid, j);
+        Node* ret;
+        ImplicitTreap::merge(ret, left, right);
+        return ret;
+    }
+
+    NodePtr build_treap(const vector<int>& a) {
+        return build_treap(a, 0, a.size());
     }
 };
 
