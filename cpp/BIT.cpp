@@ -24,7 +24,7 @@ public:
     }
 
     // get cumulative sum up to and including x
-    int64_t get(int x) {
+    int64_t get(int x) const {
         int64_t res = 0;
         while(x) {
             res += tree[x];
