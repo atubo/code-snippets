@@ -20,8 +20,7 @@ public:
         }
     }
 
-    int findMin(int a, int b) {
-        //int res = numeric_limits<int>::max();
+    int findMin(int a, int b) const {
         a += nData + 1;
         b += nData + 1;
         int res = data[a];
