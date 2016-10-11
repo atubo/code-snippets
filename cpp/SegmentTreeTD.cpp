@@ -1,6 +1,7 @@
 #include <functional>
-#include <limits>
 #include <inttypes.h>
+#include <limits>
+#include <vector>
 
 using namespace std;
 
@@ -34,11 +35,12 @@ class SegmentTreeTD {
     };
 
 public:
-    SegmentTreeTD(int N_, V A[], V zero_,
+    SegmentTreeTD(const vector<V>& A, V zero_,
                   function<V(V, V)> combine_,
                   function<D(D, D)> accu_,
                   function<V(V, D, int)> apply_):
-        N(N_), zero(zero_), combine(combine_), accu(accu_), apply(apply_) {
+        N(A.size()), zero(zero_),
+        combine(combine_), accu(accu_), apply(apply_) {
         int nlog = 0;
         int n = N;
         while (n > 0) {
@@ -54,7 +56,7 @@ public:
         delete[] M;
     }
 
-    void initialize(int node, int b, int e, V A[]) {
+    void initialize(int node, int b, int e, const vector<V>& A) {
         if (b == e) {
             M[node].value = A[b];
             M[node].count = 1;

@@ -11,12 +11,12 @@ const int MAXINT = numeric_limits<int>::max();
 
 void SegmentTreeTDTest::test1()
 {
-    int a[] = {1, 2, 3, 4};
+    vector<int> a = {1, 2, 3, 4};
     auto combine = [](int x, int y) {return min(x, y);};
     auto accu = [](int x, int y) {return x+y;};
     auto apply = [](int x, int y, int) {return x+y;};
 
-    SegmentTreeTD<int> tree(4, a, MAXINT, combine, accu, apply);
+    SegmentTreeTD<int> tree(a, MAXINT, combine, accu, apply);
     tree.update(3, 3, -1);
     tree.update(0, 0, -1);
     int x = tree.query(0, 0);
@@ -34,12 +34,12 @@ void SegmentTreeTDTest::test1()
 
 void SegmentTreeTDTest::test2()
 {
-    int a[3] = {0, 0, 0};
+    vector<int> a = {0, 0, 0};
     auto combine = [](int x, int y) {return min(x, y);};
     auto accu = [](int x, int y) {return x+y;};
     auto apply = [](int x, int y, int) {return x+y;};
 
-    SegmentTreeTD<int> tree(3, a, MAXINT, combine, accu, apply);
+    SegmentTreeTD<int> tree(a, MAXINT, combine, accu, apply);
     tree.update(0, 0, -1);
     tree.update(0, 0, 1);
     for (int i = 0; i < 3; i++) {
@@ -50,12 +50,12 @@ void SegmentTreeTDTest::test2()
 
 void SegmentTreeTDTest::test3()
 {
-    int a[3] = {-2, -2, -2};
+    vector<int> a = {-2, -2, -2};
     auto combine = [](int x, int y) {return min(x, y);};
     auto accu = [](int x, int y) {return x+y;};
     auto apply = [](int x, int y, int) {return x+y;};
 
-    SegmentTreeTD<int> tree(3, a, MAXINT, combine, accu, apply);
+    SegmentTreeTD<int> tree(a, MAXINT, combine, accu, apply);
     tree.update(0, 2, 2);
     tree.update(2, 2, -1);
     int x = tree.query(0, 2);
@@ -64,11 +64,11 @@ void SegmentTreeTDTest::test3()
 
 void SegmentTreeTDTest::testRangeSum1()
 {
-    int a[5] = {0, 1, 2, 3, 4};
+    vector<int> a = {0, 1, 2, 3, 4};
     auto add = [](int x, int y) {return x+y;};
     auto apply = [](int x, int d, int count) {return x + d*count;};
 
-    SegmentTreeTD<int> tree(5, a, 0, add, add, apply);
+    SegmentTreeTD<int> tree(a, 0, add, add, apply);
     CPPUNIT_ASSERT_EQUAL(10, tree.query(0, 4));
 
     tree.update(1, 3, -2);
@@ -79,11 +79,11 @@ void SegmentTreeTDTest::testRangeSum1()
 
 void SegmentTreeTDTest::testRangeSum2()
 {
-    int a[6] = {1, 1, 1, 1, 1, 0};
+    vector<int> a = {1, 1, 1, 1, 1, 0};
     auto add = [](int x, int y) {return x+y;};
     auto apply = [](int x, int d, int count) {return x + d*count;};
 
-    SegmentTreeTD<int> tree(6, a, 0, add, add, apply);
+    SegmentTreeTD<int> tree(a, 0, add, add, apply);
 
     tree.update(0, 4, -1);
     CPPUNIT_ASSERT_EQUAL(0, tree.query(1, 1));
