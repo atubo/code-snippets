@@ -2,6 +2,7 @@
 #include "SegmentTreeTD.cpp"
 
 #include <cassert>
+#include <climits>
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SegmentTreeTDTest);
 
@@ -16,7 +17,7 @@ void SegmentTreeTDTest::test1()
     auto accu = [](int x, int y) {return x+y;};
     auto apply = [](int x, int y, int) {return x+y;};
 
-    SegmentTreeTD<int> tree(a, MAXINT, combine, accu, apply);
+    SegmentTreeTD<int> tree(a, MAXINT, 0, combine, accu, apply);
     tree.update(3, 3, -1);
     tree.update(0, 0, -1);
     int x = tree.query(0, 0);
@@ -39,7 +40,7 @@ void SegmentTreeTDTest::test2()
     auto accu = [](int x, int y) {return x+y;};
     auto apply = [](int x, int y, int) {return x+y;};
 
-    SegmentTreeTD<int> tree(a, MAXINT, combine, accu, apply);
+    SegmentTreeTD<int> tree(a, MAXINT, 0, combine, accu, apply);
     tree.update(0, 0, -1);
     tree.update(0, 0, 1);
     for (int i = 0; i < 3; i++) {
@@ -55,7 +56,7 @@ void SegmentTreeTDTest::test3()
     auto accu = [](int x, int y) {return x+y;};
     auto apply = [](int x, int y, int) {return x+y;};
 
-    SegmentTreeTD<int> tree(a, MAXINT, combine, accu, apply);
+    SegmentTreeTD<int> tree(a, MAXINT, 0, combine, accu, apply);
     tree.update(0, 2, 2);
     tree.update(2, 2, -1);
     int x = tree.query(0, 2);
@@ -68,7 +69,7 @@ void SegmentTreeTDTest::testRangeSum1()
     auto add = [](int x, int y) {return x+y;};
     auto apply = [](int x, int d, int count) {return x + d*count;};
 
-    SegmentTreeTD<int> tree(a, 0, add, add, apply);
+    SegmentTreeTD<int> tree(a, 0, 0, add, add, apply);
     CPPUNIT_ASSERT_EQUAL(10, tree.query(0, 4));
 
     tree.update(1, 3, -2);
@@ -83,10 +84,29 @@ void SegmentTreeTDTest::testRangeSum2()
     auto add = [](int x, int y) {return x+y;};
     auto apply = [](int x, int d, int count) {return x + d*count;};
 
-    SegmentTreeTD<int> tree(a, 0, add, add, apply);
+    SegmentTreeTD<int> tree(a, 0, 0, add, add, apply);
 
     tree.update(0, 4, -1);
     CPPUNIT_ASSERT_EQUAL(0, tree.query(1, 1));
     tree.update(5, 5, 1);
     CPPUNIT_ASSERT_EQUAL(1, tree.query(2, 5));
+}
+
+void SegmentTreeTDTest::testRangeSet()
+{
+    vector<int> a = {0, 0, 0, 0, 0};
+    auto add = [](int x, int y) {return x+y;};
+    auto accu = [](int x, int y) {return x;};
+    auto apply = [](int x, int d, int count) {
+        return d == INT_MIN ? x : d*count;
+    };
+
+    SegmentTreeTD<int> tree(a, 0, INT_MIN, add, accu, apply);
+
+    tree.update(3, 4, 1);
+    CPPUNIT_ASSERT_EQUAL(0, tree.query(0, 2));
+    CPPUNIT_ASSERT_EQUAL(2, tree.query(3, 4));
+    tree.update(3, 3, 1);
+    CPPUNIT_ASSERT_EQUAL(0, tree.query(0, 2));
+    CPPUNIT_ASSERT_EQUAL(2, tree.query(3, 4));
 }

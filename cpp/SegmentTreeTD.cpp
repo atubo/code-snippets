@@ -1,3 +1,4 @@
+#include <cassert>
 #include <functional>
 #include <inttypes.h>
 #include <limits>
@@ -12,7 +13,7 @@ using namespace std;
 
  Requirements:
  1. range update can be characterized by a parameter d
- 2. range update should be commutative and associative
+ 2. range update should be associative (not necessarily commutative)
  3. we can accumulate the updates, i.e. U(d1)U(d2)...=U(d1+d2+..)
  4. A(U(x1, x2, .. , d)) = U'(A(x1, x2, ..), d, |x1, x2,..|)
 
@@ -25,6 +26,8 @@ using namespace std;
  V - value type
  D - parameter type
 */
+// TODO: pass zero values into Node
+// may need to switch to vector
 template<typename V, typename D=V>
 class SegmentTreeTD {
     struct Node {
@@ -35,11 +38,11 @@ class SegmentTreeTD {
     };
 
 public:
-    SegmentTreeTD(const vector<V>& A, V zero_,
+    SegmentTreeTD(const vector<V>& A, V zero_, D zeroUpdate_,
                   function<V(V, V)> combine_,
                   function<D(D, D)> accu_,
                   function<V(V, D, int)> apply_):
-        N(A.size()), zero(zero_),
+        N(A.size()), zero(zero_), zeroUpdate(zeroUpdate_),
         combine(combine_), accu(accu_), apply(apply_) {
         int nlog = 0;
         int n = N;
@@ -49,6 +52,7 @@ public:
         }
         int msize = 2 * (1 << (nlog+1)) + 1;
         M = new Node[msize];
+        for (int i = 1; i < msize; i++) M[i].update = zeroUpdate;
         initialize(1, 0, N-1, A);
     }
 
@@ -71,7 +75,7 @@ public:
 
     // i, j inclusive
     V query(int i, int j) const {
-        return query(1, 0, N-1, i, j, D(0));
+        return query(1, 0, N-1, i, j);
     }
 
     void update(int i, int j, D d) {
@@ -81,6 +85,7 @@ public:
 private:
     const int N;
     const V zero;   // zero element for combine
+    const D zeroUpdate; // zero for update
 
     function<V(V, V)> combine;
     function<D(D, D)> accu;
@@ -96,18 +101,27 @@ private:
         return apply(node.value, d, count);
     }
 
-    V query(int node, int b, int e, int i, int j, D d) const {
+    V query(int node, int b, int e, int i, int j) const {
+        assert(b <= e);
         if (i > e || j < b) {
             return zero;
         }
 
-        d = accu(d, M[node].update);
-        if (b >= i && e <= j) {
-            return eval(M[node], d, e-b+1);
+        if (M[node].update != zeroUpdate) {
+            M[node].value = eval(M[node]);
+            if (b != e) {
+                M[2*node].update = accu(M[node].update, M[2*node].update);
+                M[2*node+1].update = accu(M[node].update, M[2*node+1].update);
+            }
+            M[node].update = zeroUpdate;
         }
 
-        V p1 = query(2*node, b, (b+e)/2, i, j, d);
-        V p2 = query(2*node+1, (b+e)/2+1, e, i, j, d);
+        if (b >= i && e <= j) {
+            return M[node].value;
+        }
+
+        V p1 = query(2*node, b, (b+e)/2, i, j);
+        V p2 = query(2*node+1, (b+e)/2+1, e, i, j);
 
         return combine(p1, p2);
     }
@@ -117,11 +131,17 @@ private:
             return;
         }
         if (b >= i && e <= j) {
-            M[node].update = accu(M[node].update, d);
+            M[node].update = accu(d, M[node].update);
             return;
         }
+        if (M[node].update != zeroUpdate) {
+            M[2*node].update = accu(M[node].update, M[2*node].update);
+            M[2*node+1].update = accu(M[node].update, M[2*node+1].update);
+        }
+
         update(2*node, b, (b+e)/2, i, j, d);
         update(2*node+1, (b+e)/2+1, e, i, j, d);
         M[node].value = combine(eval(M[2*node]), eval(M[2*node+1]));
+        M[node].update = zeroUpdate;
     }
 };
