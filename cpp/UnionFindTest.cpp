@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "UnionFind.cpp"
+#include "UnionFind.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
