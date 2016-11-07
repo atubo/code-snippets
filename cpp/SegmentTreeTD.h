@@ -1,11 +1,3 @@
-#include <cassert>
-#include <functional>
-#include <inttypes.h>
-#include <limits>
-#include <vector>
-
-using namespace std;
-
 /*
  This data structure supports
  1. Range query

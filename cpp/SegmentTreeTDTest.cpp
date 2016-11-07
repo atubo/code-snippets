@@ -1,8 +1,10 @@
 #include "SegmentTreeTDTest.h"
-#include "SegmentTreeTD.cpp"
 
-#include <cassert>
-#include <climits>
+#include <bits/stdc++.h>
+using namespace std;
+
+#include "SegmentTreeTD.h"
+
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SegmentTreeTDTest);
 
