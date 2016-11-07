@@ -1,8 +1,3 @@
-#include <cinttypes>
-#include <cstring>
-#include <cstdlib>
-using namespace std;
-
 class BIT {
 public:
     // Note size needs to be power of 2

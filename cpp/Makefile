@@ -12,7 +12,7 @@ unittest: $(OBJ)
 	g++ -c $(CXXFLAGS) $<
 
 %.d: %.cpp
-	g++ $(CFLAGS) -MM $^ > $@
+	g++ $(CXXFLAGS) -MM $^ > $@
 
 test: unittest
 	./unittest

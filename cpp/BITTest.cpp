@@ -1,8 +1,10 @@
-#include "BIT.cpp"
+#include <bits/stdc++.h>
+using namespace std;
+
+#include "BIT.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
-using namespace std;
 
 class BITTest:public CppUnit::TestFixture {
 public:
