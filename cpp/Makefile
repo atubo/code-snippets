@@ -17,4 +17,7 @@ unittest: $(OBJ)
 test: unittest
 	./unittest
 
+clean:
+	rm *.o *.d unittest
+
 -include $(DEPFILES)

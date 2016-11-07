@@ -31,7 +31,7 @@ public:
             // verify sizes of out
             vector<int> expectedSizes = list_of(0)(0)(1)(0)(0)(2)(0)(1)(0)(1);
             for (int i = 0; i < 10; i++) {
-                CPPUNIT_ASSERT(ac.out[i].size() == expectedSizes[i]);
+                CPPUNIT_ASSERT((int)ac.out[i].size() == expectedSizes[i]);
             }
         }
 

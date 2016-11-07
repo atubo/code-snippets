@@ -14,9 +14,9 @@ public:
 
 		result = hungarian.maxMatch(
 			[](int u, int v){
-					if (u == 0 && (v == 0 || v == 2) ||
-						u == 1 && v == 1 ||
-						u == 2 && (v == 0 || v ==2 || v == 3)) {
+					if ((u == 0 && (v == 0 || v == 2)) ||
+						(u == 1 && v == 1) ||
+						(u == 2 && (v == 0 || v ==2 || v == 3))) {
 						return true;
 					}
 					return false;
