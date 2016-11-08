@@ -89,10 +89,6 @@ private:
         return apply(node.value, node.update, node.count);
     }
 
-    V eval(const Node& node, D d, int count) const {
-        return apply(node.value, d, count);
-    }
-
     V query(int node, int b, int e, int i, int j) const {
         assert(b <= e);
         if (i > e || j < b) {
