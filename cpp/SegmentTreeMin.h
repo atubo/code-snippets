@@ -1,10 +1,3 @@
-#include <iostream>
-#include <algorithm>
-#include <functional>
-#include <vector>
-#include <limits>
-using namespace std;
-
 class SegmentTreeMin {
 public:
     SegmentTreeMin(int n, int init, function<int(int, int)> combine_)
@@ -43,4 +36,3 @@ private:
     int nData;
     function<int(int, int)> combine;
 };
-
