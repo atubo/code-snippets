@@ -1,7 +1,3 @@
-#include <cinttypes>
-#include <bits/stdc++.h>
-using namespace std;
-
 // 1 ^ 2 ^ 3 ^ ... ^ n
 int64_t xorUpto(int64_t n)
 {
@@ -67,7 +63,8 @@ int64_t mod_solve(int64_t a, int64_t b, int n) {
     int64_t d, xp, yp;
     tie(d, xp, yp) = ext_gcd(a, n);
     if (b % d == 0) {
-        return xp * (b / d) % n;
+        int64_t x0 = (xp * (b / d) % n + n) % n;
+        return x0;
     } else {
         abort();
     }

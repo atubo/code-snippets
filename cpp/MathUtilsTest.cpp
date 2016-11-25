@@ -1,4 +1,7 @@
-#include "MathUtils.cpp"
+#include <bits/stdc++.h>
+using namespace std;
+
+#include "MathUtils.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
@@ -48,10 +51,17 @@ public:
         CPPUNIT_ASSERT_EQUAL(1140, Binom::binom[20][3]);
     }
 
+    void testModSolve() {
+        CPPUNIT_ASSERT_EQUAL(2LL, mod_solve(4, 1, 7));
+        CPPUNIT_ASSERT_EQUAL(3LL, mod_solve(5, 1, 7));
+        CPPUNIT_ASSERT_EQUAL(7LL, mod_solve(6, 2, 8));
+    }
+
     CPPUNIT_TEST_SUITE(MathUtilsTest);
     CPPUNIT_TEST(testXorUpto);
     CPPUNIT_TEST(testCountOnes);
     CPPUNIT_TEST(testBinom);
+    CPPUNIT_TEST(testModSolve);
     CPPUNIT_TEST_SUITE_END();
 };
 
