@@ -39,10 +39,9 @@ public:
     }
 
     int find(int k) {
-        if (parent[k] != k) {
-            parent[k] = find(parent[k]);
-        }
-        return parent[k];
+        if (parent[k] == k) return k;
+        int root = find(parent[k]);
+        return parent[k] = root;
     }
 
     void join(int u, int v) {
