@@ -1,6 +1,6 @@
 #include <queue>
 #include <vector>
-#include <cinttypes>
+#include <inttypes.h>
 using namespace std;
 
 class FastDijkstra {
