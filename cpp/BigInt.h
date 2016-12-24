@@ -22,55 +22,48 @@ public:
     }
 
     static string add(const string& A, const string& B) {
-        string a(A), b(B);
-        reverse(a.begin(), a.end());
-        reverse(b.begin(), b.end());
+        const int N = A.length();
+        const int M = B.length();
 
-        if (a.length() > b.length()) swap(a, b);
-
-        string ret;
+        const int L = max(N, M);
+        string ret(L, char());
         int carry = 0;
-        for (int i = 0; i < (int)b.length(); i++) {
-            int d = (i < (int)a.length() ? a[i] - '0' : 0) + b[i] - '0' + carry;
-            ret.push_back('0' + (d%10));
+        for (int i = 0; i < L; i++) {
+            int d = (i < N ? A[N-1-i] - '0' : 0) + (i < M ? B[M-1-i] - '0' : 0) + carry;
+            ret[L-1-i] = '0' + (d%10);
             carry = d/10;
         }
 
         if (carry) {
-            ret.push_back('1');
+            ret.insert(0, 1, '1');
         }
 
-        reverse(ret.begin(), ret.end());
         return ret;
     }
 
     static string sub(const string& A, const string& B) {
         assert(less(B, A) || A == B);
-        string a = A;
-        string b = B;
-        reverse(a.begin(), a.end());
-        reverse(b.begin(), b.end());
+        const int N = A.length();
+        const int M = B.length();
 
-        string ret;
+        string ret(N, char());
         int borrow = 0;
-        for (int i = 0; i < (int)a.length(); i++) {
-            int d = a[i] - '0' - (i < (int)b.length() ? b[i] - '0' : 0) - borrow;
+        for (int i = 0; i < N; i++) {
+            int d = A[N-1-i] - '0' - (i < M ? B[M-1-i] - '0' : 0) - borrow;
             if (d < 0) {
                 d += 10;
                 borrow = 1;
             } else {
                 borrow = 0;
             }
-            ret.push_back(d + '0');
+            ret[N-1-i] = d + '0';
         }
         assert(borrow == 0);
-        // remove trailing zeros before reversing
-        for (int i = (int)ret.size()-1; i > 0; i--) {
-            if (ret[i] != '0') break;
-            ret.erase(i);
-        }
 
-        reverse(ret.begin(), ret.end());
+        // remove leading zeros
+        int p = 0;
+        while (p < N-1 && ret[p] == '0') p++;
+        if (p != 0) ret = ret.substr(p);
         return ret;
     }
 };
