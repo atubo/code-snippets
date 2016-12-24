@@ -53,6 +53,12 @@ public:
         CPPUNIT_ASSERT(BigInt("999999999") + BigInt("1") == BigInt("1000000000"));
     }
 
+    void testMul() {
+        CPPUNIT_ASSERT(BigInt("3") * BigInt("4") == BigInt("12"));
+        CPPUNIT_ASSERT(BigInt("12345678987654321") * BigInt("98765432123456789")
+                       == BigInt("1219326320073159566072245112635269"));
+    }
+
     void testMod() {
         CPPUNIT_ASSERT(BigInt("12") % BigInt("13") == BigInt("12"));
         CPPUNIT_ASSERT(BigInt("13") % BigInt("12") == BigInt("1"));
@@ -70,11 +76,20 @@ public:
                        "1234567000000000123456789");
     }
 
+    void testSwap() {
+        BigInt a("123"), b("456");
+        a.swap(b);
+        CPPUNIT_ASSERT(a == BigInt("456"));
+        CPPUNIT_ASSERT(b == BigInt("123"));
+    }
+
     CPPUNIT_TEST_SUITE(BigIntTest);
     CPPUNIT_TEST(testSub);
     CPPUNIT_TEST(testAdd);
+    CPPUNIT_TEST(testMul);
     CPPUNIT_TEST(testMod);
     CPPUNIT_TEST(testToString);
+    CPPUNIT_TEST(testSwap);
     CPPUNIT_TEST_SUITE_END();
 };
 

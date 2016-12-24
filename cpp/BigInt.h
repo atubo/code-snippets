@@ -76,6 +76,26 @@ class BigInt {
 private:
     vector<int> splits;
 
+    static BigInt mul(const BigInt& a, const BigInt& b) {
+        // should be called with b <= a (for efficiency)
+        vector<BigInt> dblOfOne, dblOfA;
+        dblOfOne.push_back(BigInt("1"));
+        dblOfA.push_back(a);
+        while (dblOfOne.back() < b) {
+            dblOfOne.push_back(dblOfOne.back() + dblOfOne.back());
+            dblOfA.push_back(dblOfA.back() + dblOfA.back());
+        }
+
+        BigInt ret;
+        BigInt remain = b;
+        for (int i = (int)dblOfOne.size()-1; i >= 0; i--) {
+            if (remain < dblOfOne[i]) continue;
+            remain = remain - dblOfOne[i];
+            ret = ret + dblOfA[i];
+        }
+        return ret;
+    }
+
 public:
     BigInt() {
         splits.resize(1, 0);
@@ -95,6 +115,10 @@ public:
         }
     }
 
+    void swap(BigInt& other) {
+        splits.swap(other.splits);
+    }
+
     string toString() const {
         stringstream ss;
         ss << splits.back();
@@ -106,6 +130,12 @@ public:
         string ret = ss.str();
         return ret;
     }
+
+    friend BigInt operator * (const BigInt& a, const BigInt& b) {
+        if (a < b) return BigInt::mul(b, a);
+        else return BigInt::mul(a, b);
+    }
+
 
     friend BigInt operator % (const BigInt& a, const BigInt& b) {
         vector<BigInt> dbls;
@@ -130,7 +160,7 @@ public:
 
         BigInt ret;
         ret.splits.resize(L);
-        
+
         int carry = 0;
         for (int i = 0; i < L; i++) {
             int d = (i < N ? a.splits[i] : 0) + (i < M ? b.splits[i] : 0) + carry;
