@@ -88,7 +88,10 @@ public:
         for (int i = 0; i < imax; i++) {
             int start = max(0, n - (i+1)*SPLIT_LEN);
             int end   = n - i*SPLIT_LEN;
-            splits[i] = stoi(s.substr(start, end-start));
+            splits[i] = 0;
+            for (int j = start; j < end; j++) {
+                splits[i] = splits[i] * 10 + s[j] - '0';
+            }
         }
     }
 
