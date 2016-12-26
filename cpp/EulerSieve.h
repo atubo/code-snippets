@@ -23,7 +23,7 @@ public:
             }
 
             for (int j = 0; j < (int)primes.size(); j++) {
-                int t = i * primes[j];
+                int64_t t = (int64_t)i * primes[j];
                 if ( t > N) break;
                 isPrime[t] = false;
                 if (i % primes[j] == 0) {
