@@ -10,6 +10,11 @@ public:
     void setUp() {}
     void tearDown() {}
 
+    void testToBinary() {
+        CPPUNIT_ASSERT(BigIntStringRepr::toBinary("19") == "10011");
+        CPPUNIT_ASSERT(BigIntStringRepr::toBinary("1024") == "10000000000");
+    }
+
     void testSub() {
         CPPUNIT_ASSERT(BigIntStringRepr::sub("123", "45") == "78");
         CPPUNIT_ASSERT(BigIntStringRepr::sub("123", "123") == "0");
@@ -28,6 +33,7 @@ public:
     }
 
     CPPUNIT_TEST_SUITE(BigIntStringReprTest);
+    CPPUNIT_TEST(testToBinary);
     CPPUNIT_TEST(testSub);
     CPPUNIT_TEST(testAdd);
     CPPUNIT_TEST(testMod);

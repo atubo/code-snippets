@@ -1,6 +1,30 @@
 
 class BigIntStringRepr {
 public:
+    static string toBinary(const string& A) {
+        // convert a decimal number to binary
+        vector<string> dbls;
+        dbls.push_back("1");
+        while (less(dbls.back(), A)) {
+            dbls.push_back(add(dbls.back(), dbls.back()));
+        }
+        string ret;
+        string a = A;
+        for (int i = (int)dbls.size()-1; i >= 0; i--) {
+            if (!less(a, dbls[i])) {
+                ret.push_back('1');
+                a = sub(a, dbls[i]);
+            } else {
+                ret.push_back('0');
+            }
+        }
+        // remove leading zeros
+        int p = 0;
+        while (p < (int)ret.size()-1 && ret[p] == '0') p++;
+        if (p != 0) ret = ret.substr(p);
+        return ret;
+    }
+
     static string mod(const string& A, const string& B) {
         vector<string> dbls;
         dbls.push_back(B);
