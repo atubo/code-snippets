@@ -1,13 +1,26 @@
 
 class BigIntStringRepr {
+    static vector<string> generateDoubles(const string& init, const string& a) {
+        // generate init, init*2, init*4, till the first that >= a
+        vector<string> dbls;
+        dbls.push_back(init);
+        while (less(dbls.back(), a)) {
+            dbls.push_back(add(dbls.back(), dbls.back()));
+        }
+        return dbls;
+    }
+
+    static void trimLeadingZeros(string& s) {
+        int p = 0;
+        while (p < (int)s.size()-1 && s[p] == '0') p++;
+        if (p != 0) s = s.substr(p);
+    }
+
 public:
     static string toBinary(const string& A) {
         // convert a decimal number to binary
-        vector<string> dbls;
-        dbls.push_back("1");
-        while (less(dbls.back(), A)) {
-            dbls.push_back(add(dbls.back(), dbls.back()));
-        }
+        vector<string> dbls = generateDoubles("1", A);
+
         string ret;
         string a = A;
         for (int i = (int)dbls.size()-1; i >= 0; i--) {
@@ -18,19 +31,14 @@ public:
                 ret.push_back('0');
             }
         }
-        // remove leading zeros
-        int p = 0;
-        while (p < (int)ret.size()-1 && ret[p] == '0') p++;
-        if (p != 0) ret = ret.substr(p);
+
+        trimLeadingZeros(ret);
         return ret;
     }
 
     static string mod(const string& A, const string& B) {
-        vector<string> dbls;
-        dbls.push_back(B);
-        while (less(dbls.back(), A)) {
-            dbls.push_back(add(dbls.back(), dbls.back()));
-        }
+        vector<string> dbls = generateDoubles(B, A);
+
         string a = A;
         for (int i = (int)dbls.size()-1; i >= 0; i--) {
             if (less(a, dbls[i])) continue;
@@ -84,10 +92,7 @@ public:
         }
         assert(borrow == 0);
 
-        // remove leading zeros
-        int p = 0;
-        while (p < N-1 && ret[p] == '0') p++;
-        if (p != 0) ret = ret.substr(p);
+        trimLeadingZeros(ret);
         return ret;
     }
 };
