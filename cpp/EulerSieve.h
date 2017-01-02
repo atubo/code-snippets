@@ -3,22 +3,22 @@ class EulerSieve {
 private:
 public:
     vector<bool> isPrime;
-    vector<int> primes, miu, phi;
+    vector<int> primes, mu, phi;
 
     EulerSieve(int N) {
         assert(N > 1);
 
         isPrime.resize(N+1, true);
-        miu.resize(N+1);
+        mu.resize(N+1);
         phi.resize(N+1);
 
         isPrime[0] = isPrime[1] = false;
-        miu[1] = 1;
+        mu[1] = 1;
         phi[1] = 1;
         for (int i = 2; i <= N; i++) {
             if (isPrime[i]) {
                 primes.push_back(i);
-                miu[i] = -1;
+                mu[i] = -1;
                 phi[i] = i - 1;
             }
 
@@ -27,11 +27,11 @@ public:
                 if ( t > N) break;
                 isPrime[t] = false;
                 if (i % primes[j] == 0) {
-                    miu[t] = 0;
+                    mu[t] = 0;
                     phi[t] = phi[i] * primes[j];
                     break;
                 } else {
-                    miu[t] = -miu[i];
+                    mu[t] = -mu[i];
                     phi[t] = phi[i] * (primes[j] - 1);
                 }
             }
