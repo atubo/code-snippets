@@ -73,6 +73,8 @@ public:
         for (int i = 1; i <= 20; i++) {
             CPPUNIT_ASSERT_EQUAL(expected[i], phi(i));
         }
+
+        CPPUNIT_ASSERT_EQUAL(2147483646LL, phi(4294967294));
     }
 
 

@@ -77,7 +77,7 @@ int64_t gcd(int64_t a, int64_t b) {
 
 int64_t phi(int64_t a) {
     int64_t ans = 1;
-    for (int p = 2; p * p <= a; p++) {
+    for (int64_t p = 2; p * p <= a; p++) {
         if (a % p == 0) {
             ans *= (p-1);
             a /= p;
