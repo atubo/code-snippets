@@ -5,6 +5,9 @@ using namespace std;
 
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <boost/assign/list_of.hpp>
+using namespace boost::assign;
+
 using namespace std;
 
 class MathUtilsTest:public CppUnit::TestFixture {
@@ -57,11 +60,21 @@ public:
         CPPUNIT_ASSERT_EQUAL(7LL, mod_solve(6, 2, 8));
     }
 
+    void testPhi() {
+        vector<int64_t> expected = list_of(0)( 1)(1)( 2)(2)(4)(2)( 6)(4)(6)
+            (4)(10)(4)(12)(6)(8)(8)(16)(6)(18)(8);
+        for (int i = 1; i <= 20; i++) {
+            CPPUNIT_ASSERT_EQUAL(expected[i], phi(i));
+        }
+    }
+
+
     CPPUNIT_TEST_SUITE(MathUtilsTest);
     CPPUNIT_TEST(testXorUpto);
     CPPUNIT_TEST(testCountOnes);
     CPPUNIT_TEST(testBinom);
     CPPUNIT_TEST(testModSolve);
+    CPPUNIT_TEST(testPhi);
     CPPUNIT_TEST_SUITE_END();
 };
 

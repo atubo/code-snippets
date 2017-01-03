@@ -70,3 +70,19 @@ int64_t mod_solve(int64_t a, int64_t b, int n) {
     }
 }
 
+int64_t phi(int64_t a) {
+    int64_t ans = 1;
+    for (int p = 2; p * p <= a; p++) {
+        if (a % p == 0) {
+            ans *= (p-1);
+            a /= p;
+            while (a % p == 0) {
+                a /= p;
+                ans *= p;
+            }
+        }
+    }
+    if (a > 1) ans *= (a-1);
+    return ans;
+}
+
