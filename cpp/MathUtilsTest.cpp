@@ -29,6 +29,13 @@ public:
         CPPUNIT_ASSERT_EQUAL(8LL, x);
     }
 
+    void testGcd() {
+        CPPUNIT_ASSERT_EQUAL(1LL, gcd(4, 5));
+        CPPUNIT_ASSERT_EQUAL(2LL, gcd(2, 4));
+        CPPUNIT_ASSERT_EQUAL(7LL, gcd(28, 21));
+        CPPUNIT_ASSERT_EQUAL(1LL, gcd(1, 5));
+    }
+
     void testCountOnes() {
         int64_t x = countOnes(0);
         CPPUNIT_ASSERT_EQUAL(0LL, x);
@@ -71,6 +78,7 @@ public:
 
     CPPUNIT_TEST_SUITE(MathUtilsTest);
     CPPUNIT_TEST(testXorUpto);
+    CPPUNIT_TEST(testGcd);
     CPPUNIT_TEST(testCountOnes);
     CPPUNIT_TEST(testBinom);
     CPPUNIT_TEST(testModSolve);

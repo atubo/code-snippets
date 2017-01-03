@@ -70,6 +70,11 @@ int64_t mod_solve(int64_t a, int64_t b, int n) {
     }
 }
 
+int64_t gcd(int64_t a, int64_t b) {
+    if (b == 0) return a;
+    return gcd(b, a%b);
+}
+
 int64_t phi(int64_t a) {
     int64_t ans = 1;
     for (int p = 2; p * p <= a; p++) {
