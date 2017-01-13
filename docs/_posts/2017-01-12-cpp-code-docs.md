@@ -16,6 +16,6 @@ Let $s(x)$ be the suffix starting at position $x$ and $S_{i, j}$ be the substrin
 ```
 
 * `calcLCP(x, y)` returns the length of the longest common prefix of $s(x)$ and $s(y)$.
-* `sa[x]`: the index of $s(x)$ in the suffix array.
-* `pos[i]`: the starting position of `i`th suffix in the suffix array.
+* `sa[i]`: the starting position of the `i`th suffix in the suffix array.
+* `pos[x]`: the rank of $s(x)$ in the suffix array.
 * `P[k][i]`: the rank of $S_{i,i+2^k}$
