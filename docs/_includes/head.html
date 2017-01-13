@@ -6,6 +6,22 @@
   <!-- Enable responsiveness on mobile devices-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax:{
+        inlineMath:[['$','$'],["\\(","\\)"]],
+        displayMath: [ ['$$', '$$'] ],
+        processEscapes:true,
+      }});
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax:{skipTags:['script','noscript','style','textarea','pre','code']},menuSettings:{zoom:"Hover"}});
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function(){var all=MathJax.Hub.getAllJax(),i;for(i=0;i<all.length;i+=1){all[i].SourceElement().parentNode.className+='has-jax';}});
+  </script>
+  <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML&locale=zh-hans"></script>
+
   <title>
     {% if page.title == "Home" %}
       {{ site.title }} &middot; {{ site.tagline }}
