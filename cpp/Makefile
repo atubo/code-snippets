@@ -12,7 +12,9 @@ unittest: $(OBJ)
 	g++ -c $(CXXFLAGS) $<
 
 %.d: %.cpp
-	g++ $(CXXFLAGS) -MM $^ > $@
+	g++ $(CXXFLAGS) -MM $^ > $@.$$$$; \
+	sed 's,\($*\)\.o[ :],\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
 
 test: unittest
 	./unittest

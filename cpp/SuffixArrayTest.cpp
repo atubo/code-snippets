@@ -1,4 +1,4 @@
-#include "SuffixArray.cpp"
+#include "SuffixArray.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
