@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 #include "SuffixArray.h"
 
 #include <cppunit/extensions/HelperMacros.h>

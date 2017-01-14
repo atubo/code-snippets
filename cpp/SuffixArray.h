@@ -3,11 +3,6 @@ Suffix array O(n lg^2 n)
 LCP table O(n)
 */
 // see http://web.stanford.edu/class/cs97si/suffix-array.pdf
-#include <cstdio>
-#include <algorithm>
-#include <cstring>
-
-using namespace std;
 
 #define REP(i, n) for (int i = 0; i < (int)(n); ++i)
 
