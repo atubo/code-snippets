@@ -9,7 +9,7 @@ Let $s(x)$ be the suffix starting at position $x$ and $S_{i, j}$ be the substrin
 
 * To build the suffix array
 
-```c++
+```cpp
     SuffixArray::S = s;
     SuffixArray::buildSA();
     SuffixArray::buildLCP();
