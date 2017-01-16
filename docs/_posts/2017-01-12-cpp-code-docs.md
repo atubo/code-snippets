@@ -4,7 +4,11 @@ title: C++ code documentation
 ---
 
 ## Suffix Array
-Usage:
+
+### Code
+[SuffixArray.h](https://github.com/atubo/code-snippets/blob/master/cpp/SuffixArray.h)
+
+### Usage:
 Let $s(x)$ be the suffix starting at position $x$ and $S_{i, j}$ be the substring of $S$ from $i$ to $j$.
 
 * To build the suffix array
