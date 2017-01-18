@@ -23,3 +23,17 @@ Let $s(x)$ be the suffix starting at position $x$ and $S_{i, j}$ be the substrin
 * `sa[i]`: the starting position of the `i`th suffix in the suffix array.
 * `pos[x]`: the rank of $s(x)$ in the suffix array.
 * `P[k][i]`: the rank of $S_{i,i+2^k}$
+
+## 倍增LCA
+
+### Code
+[BinaryLiftLCA.h](https://github.com/atubo/code-snippets/blob/master/cpp/BinaryLiftLCA.h)
+
+### Usage
+```cpp
+  BinaryLiftLCA lca;  // initialize N, root and adj here
+  lca.preCompute();   // remember to do this!
+
+  // online computation of lca(u, v)
+  int x = lca.findLCA(u, v);
+```
