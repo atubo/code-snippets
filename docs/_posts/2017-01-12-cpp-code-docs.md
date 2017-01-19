@@ -14,9 +14,9 @@ Let $s(x)$ be the suffix starting at position $x$ and $S_{i, j}$ be the substrin
 * To build the suffix array
 
 ```cpp
-    SuffixArray::S = s;
-    SuffixArray::buildSA();
-    SuffixArray::buildLCP();
+SuffixArray::S = s;
+SuffixArray::buildSA();
+SuffixArray::buildLCP();
 ```
 
 * `calcLCP(x, y)` returns the length of the longest common prefix of $s(x)$ and $s(y)$.
@@ -31,9 +31,23 @@ Let $s(x)$ be the suffix starting at position $x$ and $S_{i, j}$ be the substrin
 
 ### Usage
 ```cpp
-  BinaryLiftLCA lca;  // initialize N, root and adj here
-  lca.preCompute();   // remember to do this!
+BinaryLiftLCA lca;  // initialize N, root and adj here
+lca.preCompute();   // remember to do this!
 
-  // online computation of lca(u, v)
-  int x = lca.findLCA(u, v);
+// online computation of lca(u, v)
+int x = lca.findLCA(u, v);
+```
+
+## Sparse table RMQ
+
+### Code
+[SparseTableRMQ.h](https://github.com/atubo/code-snippets/blob/master/cpp/SparseTableRMQ.h)
+
+### Usage
+```cpp
+SparseTableRMQ rmq;   // initialize N and A
+rmq.preCompute();     // remember to do this!
+
+// online computation of RMQ
+int x = rmq.rmq(x, y);
 ```
