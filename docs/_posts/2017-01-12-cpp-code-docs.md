@@ -51,3 +51,14 @@ rmq.preCompute();     // remember to do this!
 // online computation of RMQ
 int x = rmq.rmq(x, y);
 ```
+
+## Topological sort
+### Code
+[TopologicalSort.h](https://github.com/atubo/code-snippets/blob/master/cpp/TopologicalSort.h)
+
+### Usage
+```cpp
+TopologicalSort t;  // initialize N and adj
+t.sort(); // now t.topo has the sorted nodes
+```
+Let $\textrm{pos}(u)$ denote the position of node $u$ in ```t.topo``` array, for any edge $u \rightarrow v$, we have $\textrm{pos}(u)<\textrm{pos}(v)$.
