@@ -49,8 +49,9 @@ SparseTableRMQ rmq;   // initialize N and A
 rmq.preCompute();     // remember to do this!
 
 // online computation of RMQ
-int x = rmq.rmq(x, y);
+int x = rmq.rmq(a, b);
 ```
+It calculates the minimum number in range $[a, b]$.
 
 ## Topological sort
 
