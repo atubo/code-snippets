@@ -1,5 +1,5 @@
-#include "DirectedGraph.cpp"
-#include "TopologicalSort.cpp"
+#include "DirectedGraph.h"
+#include "TopologicalSort.h"
 
 #include <iostream>
 
