@@ -53,6 +53,7 @@ int x = rmq.rmq(x, y);
 ```
 
 ## Topological sort
+
 ### Code
 [TopologicalSort.h](https://github.com/atubo/code-snippets/blob/master/cpp/TopologicalSort.h)
 
