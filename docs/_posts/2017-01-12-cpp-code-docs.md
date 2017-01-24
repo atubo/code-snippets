@@ -77,3 +77,5 @@ Let $\textrm{pos}(u)$ denote the position of node $u$ in ```t.topo``` array, for
 * Note that in $\textrm{numer}(k, j)$ and $\textrm{denom}(k, j)$, we need to have $k < j$.
 The order matters because we need to keep $\textrm{denom}$ positive so that we can multiply the denominators when we
 compare the fractions.
+* In $\textrm{getDp}(i, j)$, $i$ is the current position,
+$j$ is the optimal previous position.
