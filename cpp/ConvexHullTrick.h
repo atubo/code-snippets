@@ -2,7 +2,7 @@
 namespace ConvextHullTrick {
 
     const int MAXN = 50010;
-    int64_t C[MAXN];
+    int64_t C[MAXN];    // save input array here
     int64_t S[MAXN];
     int64_t dp[MAXN];
     int N;
