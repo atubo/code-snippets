@@ -64,3 +64,16 @@ TopologicalSort t;  // initialize N and adj
 t.sort(); // now t.topo has the sorted nodes
 ```
 Let $\textrm{pos}(u)$ denote the position of node $u$ in ```t.topo``` array, for any edge $u \rightarrow v$, we have $\textrm{pos}(u)<\textrm{pos}(v)$.
+
+## DP斜率优化模板
+
+### Code
+[ConvexHullTrick.h](https://github.com/atubo/code-snippets/blob/master/cpp/ConvexHullTrick.h)
+
+### Usage
+* $dp$ is 1-based, $dp[0]$ is the initial empty state.
+* User needs to implement $Y()$, $X()$ and $\textrm{getDp}()$ functions.
+* User needs to initialize N and S arrays
+* Note that in $\textrm{numer}(k, j)$ and $\textrm{denom}(k, j)$, we need to have $k < j$.
+The order matters because we need to keep $\textrm{denom}$ positive so that we can multiply the denominators when we
+compare the fractions.
