@@ -26,7 +26,7 @@ namespace ConvextHullTrick {
     }
 
     bool isConvex(int a, int b, int c) {
-        return numer(a, b) * denom(b, c) <= numer(b, c) * denom(a, b);
+        return numer(a, b) * denom(b, c) < numer(b, c) * denom(a, b);
     }
 
     int64_t getDp(int i, int j) {
