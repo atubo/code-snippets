@@ -6,7 +6,7 @@ title: C++ code documentation
 ## Suffix Array
 
 ### Code
-[SuffixArray.h](https://github.com/atubo/code-snippets/blob/master/cpp/SuffixArray.h)
+[SuffixArray.h]({{ site.github.source_url }}/SuffixArray.h)
 
 ### Usage:
 Let $s(x)$ be the suffix starting at position $x$ and $S_{i, j}$ be the substring of $S$ from $i$ to $j$.
@@ -27,7 +27,7 @@ SuffixArray::buildLCP();
 ## 倍增LCA
 
 ### Code
-[BinaryLiftLCA.h](https://github.com/atubo/code-snippets/blob/master/cpp/BinaryLiftLCA.h)
+[BinaryLiftLCA.h]({{ site.github.source_url }}/BinaryLiftLCA.h)
 
 ### Usage
 ```cpp
@@ -41,7 +41,7 @@ int x = lca.findLCA(u, v);
 ## Sparse table RMQ
 
 ### Code
-[SparseTableRMQ.h](https://github.com/atubo/code-snippets/blob/master/cpp/SparseTableRMQ.h)
+[SparseTableRMQ.h]({{ site.github.source_url }}/SparseTableRMQ.h)
 
 ### Usage
 ```cpp
@@ -56,7 +56,7 @@ It calculates the minimum number in range $[a, b]$.
 ## Topological sort
 
 ### Code
-[TopologicalSort.h](https://github.com/atubo/code-snippets/blob/master/cpp/TopologicalSort.h)
+[TopologicalSort.h]({{ site.github.source_url }}/TopologicalSort.h)
 
 ### Usage
 ```cpp
@@ -68,7 +68,7 @@ Let $\textrm{pos}(u)$ denote the position of node $u$ in ```t.topo``` array, for
 ## DP斜率优化模板
 
 ### Code
-[ConvexHullTrick.h](https://github.com/atubo/code-snippets/blob/master/cpp/ConvexHullTrick.h)
+[ConvexHullTrick.h]({{ site.github.source_url }}/ConvexHullTrick.h)
 
 ### Usage
 * $dp$ is 1-based, $dp[0]$ is the initial empty state.
