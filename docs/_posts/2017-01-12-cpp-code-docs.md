@@ -79,3 +79,7 @@ The order matters because we need to keep $\textrm{denom}$ positive so that we c
 compare the fractions.
 * In $\textrm{getDp}(i, j)$, $i$ is the current position,
 $j$ is the optimal previous position.
+* Sometimes 0-elements can use 0 denominators which is
+annoying to deal with.  It may make sense to skip those
+elements. If that's the case, un-comment the code in
+the for loop.

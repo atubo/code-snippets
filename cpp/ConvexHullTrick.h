@@ -41,6 +41,14 @@ namespace ConvextHullTrick {
         deque<int> q;
         q.push_back(0);
         for (int i = 1; i <= N; i++) {
+            // it may make sense to skip 0 elements
+            // if that's the case, un-comment the following
+            /*
+            if (S[i] == S[i-1]) {
+                dp[i] = dp[i-1];
+                continue;
+            }
+            */
             while (q.size() > 1 && numer(q[0], q[1]) <= denom(q[0], q[1]) * S[i]) {
                 q.pop_front();
             }
