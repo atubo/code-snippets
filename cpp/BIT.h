@@ -3,13 +3,18 @@ public:
     // Note size needs to be power of 2
     BIT(int size): N(size) {
         tree = (int64_t*)malloc((size+1) * sizeof(int64_t));
-        memset(tree, 0, (size+1) * sizeof(int64_t));
+        clear();
     }
     
     ~BIT() {
         free(tree);
         tree = NULL;
     }
+
+    void clear() {
+        memset(tree, 0, (N+1) * sizeof(int64_t));
+    }
+
     // add v to value at x
     void set(int x, int v) {
         while(x <= N) {
