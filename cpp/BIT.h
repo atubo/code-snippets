@@ -33,6 +33,11 @@ public:
         return res;
     }
 
+    // get result for [x, y]
+    int64_t get(int x, int y) const {
+        return get(y) - (x > 1 ? get(x-1) : 0);
+    }
+
     // get largest value with cumulative sum less than or equal to x;
     // for smallest, pass x-1 and add 1 to result
     int getind(int x) {
