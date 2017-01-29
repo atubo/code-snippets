@@ -21,7 +21,7 @@ paginate:            5
 
 github:
     repo:         https://github.com/atubo/code-snippets
-    source_url:   https://github.com/atubo/code-snippets/blob/master/cpp
+    source_url:   https://github.com/atubo/code-snippets/blob/master/cpp/src
 
 # About/contact
 author:
