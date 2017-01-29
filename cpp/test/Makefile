@@ -1,6 +1,6 @@
 SRC:=$(wildcard *Test.cpp *test.cpp)
 OBJ:=$(SRC:.cpp=.o)
-CXXFLAGS = -Wall -Wshadow -std=c++0x -gdwarf-2 -O0
+CXXFLAGS = -Wall -Wshadow -std=c++0x -gdwarf-2 -O0 -I../src
 LDFLAGS = -O0
 DEPFILES:=$(patsubst %.cpp,%.d,$(SRC))
 
