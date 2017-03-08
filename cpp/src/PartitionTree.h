@@ -93,7 +93,7 @@ public:
     }
 
 
-    // k-the element in [qleft, qright], counting from 0
+    // k-the element in [qleft, qright], counting from 1
     int find_by_order(int qleft, int qright, int k) {
         return query(0, 0, N-1, qleft, qright, k);
     }
