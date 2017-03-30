@@ -1,6 +1,7 @@
 
 namespace MincostMaxflowNS {
     // need to set up these values
+    // note it is required S < other nodes < T (see code in SPFA)
     const int INF = 1000000;
     const int MAXM = 1000, MAXN = 1000;
     int S, T, EC = -1;
