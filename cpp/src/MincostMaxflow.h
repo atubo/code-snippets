@@ -1,7 +1,10 @@
 
 namespace MincostMaxflowNS {
-    // need to set up these values
-    // note it is required S < other nodes < T (see code in SPFA)
+    // NOTE
+    // 1. set up the following values
+    // 2. it is required S < other nodes < T (see code in SPFA)
+    // 3. MAXM must be twice the number of edges you added
+    // 4. call init() before you use it again
     const int INF = 1000000;
     const int MAXM = 1000, MAXN = 1000;
     int S, T, EC = -1;
@@ -10,6 +13,11 @@ namespace MincostMaxflowNS {
         Edge *next, *op;
         int t, c, v;    // node, residual, cost
     } ES[MAXM], *V[MAXN];
+
+    void init() {
+        EC = -1;
+        memset(V, 0, sizeof(V));
+    }
 
     struct Queue {
         int Q[MAXN], QH, QL, Size;
