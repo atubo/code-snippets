@@ -1,28 +1,28 @@
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
-// Undirected graph
 // Note graph node is 0-indexed
 class Graph {
-private:
-    const int N;
-    vector<vector<int> > adj;
 public:
+    struct Edge {
+        int next, to;
+    } E[MAXM];
+
+    vector<Edge> E;
+    vector<int> head;
+    int eidx;
+    int N;
+
     Graph(int N_):N(N_) {
-        adj.resize(N);
+        head.resize(N);
+        eidx = 0;
+
+        for (int i = 0; i < N; i++) {
+            head[i] = -1;
+        }
     }
 
     // assume 0-indexed and no duplication
-    void addEdge(int i, int j) {
-        adj[i].push_back(j);
-        adj[j].push_back(i);
-    }
-
-    int size() const {return N;}
-
-    const vector<int>& getAdj(int i) const {
-        return adj[i];
+    void addEdge(int u, int v) {
+        E[eidx].to = v;
+        E[eidx].next = head[u];
+        head[u] = edix++;
     }
 };
