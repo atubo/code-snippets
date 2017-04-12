@@ -125,6 +125,14 @@ private:
         return ret;
     }
 
+    void canonicalize() {
+        const int N = splits.size();
+        for (int i = N-1; i > 0; i--) {
+            if (splits[i] == 0) splits.pop_back();
+            else break;
+        }
+    }
+
 public:
     BigInt() {
         splits.resize(1, 0);
@@ -181,6 +189,22 @@ public:
         return ret;
     }
 
+    friend BigInt operator / (const BigInt &a, int d) {
+        const int N = a.splits.size();
+
+        BigInt ret;
+        ret.splits.resize(N);
+
+        int64_t carry = 0;
+        for (int i = N-1; i >= 0; i--) {
+            int64_t x = carry * SPLIT_OVERFLOW + a.splits[i];
+            ret.splits[i] = x / d;
+            carry = x % d;
+        }
+        ret.canonicalize();
+        return ret;
+    }
+
     friend BigInt operator + (const BigInt& a, const BigInt& b) {
         const int N = a.splits.size();
         const int M = b.splits.size();
@@ -226,11 +250,7 @@ public:
         }
         assert(borrow == 0);
 
-        for (int i = N-1; i > 0; i--) {
-            if (ret.splits[i] == 0) ret.splits.pop_back();
-            else break;
-        }
-
+        ret.canonicalize();
         return ret;
     }
 

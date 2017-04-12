@@ -65,6 +65,11 @@ public:
                        == BigInt("1219326320073159566072245112635269"));
     }
 
+    void testDiv() {
+        CPPUNIT_ASSERT(BigInt("122157167408911087668698763497987")/8932668 ==
+            BigInt("13675328290373165964379148"));
+    }
+
     void testMod() {
         CPPUNIT_ASSERT(BigInt("12") % BigInt("13") == BigInt("12"));
         CPPUNIT_ASSERT(BigInt("13") % BigInt("12") == BigInt("1"));
@@ -93,6 +98,7 @@ public:
     CPPUNIT_TEST(testSub);
     CPPUNIT_TEST(testAdd);
     CPPUNIT_TEST(testMul);
+    CPPUNIT_TEST(testDiv);
     CPPUNIT_TEST(testMod);
     CPPUNIT_TEST(testToString);
     CPPUNIT_TEST(testSwap);
