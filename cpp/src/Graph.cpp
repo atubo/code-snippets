@@ -5,7 +5,6 @@ public:
         int next, to;
     } E[MAXM];
 
-    vector<Edge> E;
     vector<int> head;
     int eidx;
     int N;
@@ -23,6 +22,6 @@ public:
     void addEdge(int u, int v) {
         E[eidx].to = v;
         E[eidx].next = head[u];
-        head[u] = edix++;
+        head[u] = eidx++;
     }
 };
