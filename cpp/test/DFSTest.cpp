@@ -1,13 +1,13 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 #include "Graph.cpp"
 #include "DFS.cpp"
-
-#include <iostream>
 
 #include <boost/assign/list_of.hpp>
 
 #include <cppunit/extensions/HelperMacros.h>
 
-using namespace std;
 using namespace boost::assign;
 
 class DFSTest:public CppUnit::TestFixture {
@@ -33,8 +33,8 @@ public:
 
     void testThreeNodeTree() {
         Graph graph(3);
-        graph.addEdge(0,1);
         graph.addEdge(0,2);
+        graph.addEdge(0,1);
 
         vector<int> preorder;
         vector<int> postorder;
@@ -49,9 +49,9 @@ public:
 
     void testThreeNodeTriangle() {
         Graph graph(3);
+        graph.addEdge(0,2);
         graph.addEdge(0,1);
         graph.addEdge(1,2);
-        graph.addEdge(0,2);
 
         vector<int> preorder;
         vector<int> postorder;

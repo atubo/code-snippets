@@ -1,5 +1,6 @@
 // Note graph node is 0-indexed
 class Graph {
+    static const int MAXM = 1000;
 public:
     struct Edge {
         int next, to;

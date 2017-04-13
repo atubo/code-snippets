@@ -18,41 +18,26 @@ public:
                     int v,
                     function<void(int)> pre,
                     function<void(int)> post) {
-        const int N = graph.size();
-        vector<bool> marked(N, false);
-        vector<int> visited(N, 0);
-        stack<int> st;
-        push(v, st, marked, pre);
-        while (!st.empty()) {
-            int u = st.top();
-            const vector<int>& neighbors = graph.getAdj(u);
-            if (visited[u] < (int)neighbors.size()) {
-                int w = neighbors[visited[u]];
-                visited[u]++;
-                if (!marked[w]) {
-                    push(w, st, marked, pre);
-                }
-            } else {
-                pop(u, st, post);
-            }
-        }
+        const int N = graph.N;
+        vector<bool> visited(N);
+        dfs(graph, v, visited, pre, post);
     }
 
 private:
-    static void push(int v,
-                     stack<int>& st,
-                     vector<bool>& marked,
-                     function<void(int)> pre) {
-        marked[v] = true;
-        pre(v);
-        st.push(v);
-    }
-
-    static void pop(int v,
-                    stack<int>& st,
+    static void dfs(const Graph &g,
+                    int u,
+                    vector<bool> &visited,
+                    function<void(int)> pre,
                     function<void(int)> post) {
-        post(v);
-        st.pop();
+        visited[u] = true;
+        pre(u);
+        for (int eidx = g.head[u]; eidx != -1; eidx = g.E[eidx].next) {
+            int v = g.E[eidx].to;
+            if (!visited[v]) {
+                dfs(g, v, visited, pre, post);
+            }
+        }
+        post(u);
     }
 };
 
