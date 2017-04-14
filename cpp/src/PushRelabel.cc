@@ -27,9 +27,10 @@ using namespace std;
 typedef long long LL;
 
 struct Edge {
-	int from, to, cap, flow, index;
-	Edge(int from_, int to_, int cap_, int flow_, int index_) :
-		from(from_), to(to_), cap(cap_), flow(flow_), index(index_) {}
+	int from, to, index;
+    LL cap, flow;
+	Edge(int from_, int to_, int index_, LL cap_, LL flow_) :
+		from(from_), to(to_), index(index_), cap(cap_), flow(flow_) {}
 };
 
 struct PushRelabel {
@@ -41,10 +42,10 @@ struct PushRelabel {
 
 	PushRelabel(int N_) : N(N_), G(N_), excess(N_), dist(N_), active(N_), count(2*N_) {}
 
-	void AddEdge(int from, int to, int cap) {
-		G[from].push_back(Edge(from, to, cap, 0, G[to].size()));
+	void AddEdge(int from, int to, LL cap) {
+		G[from].push_back(Edge(from, to, G[to].size(), cap, 0));
 		if (from == to) G[from].back().index++;
-		G[to].push_back(Edge(to, from, 0, 0, G[from].size() - 1));
+		G[to].push_back(Edge(to, from, G[from].size()-1, 0, 0));
 	}
 
 	void Enqueue(int v) { 
@@ -52,8 +53,8 @@ struct PushRelabel {
 	}
 
 	void Push(Edge &e) {
-		int amt = int(min(excess[e.from], LL(e.cap - e.flow)));
-		if (dist[e.from] <= dist[e.to] || amt == 0) return;
+		LL amt = min(excess[e.from], e.cap - e.flow);
+		if (dist[e.from] <= dist[e.to] || amt <= 0) return;
 		e.flow += amt;
 		G[e.to][e.index].flow -= amt;
 		excess[e.to] += amt;    
