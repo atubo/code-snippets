@@ -1,8 +1,10 @@
 
 namespace Dinic {
 const int inf = 0x3f3f3f3f;
-const int maxn = 1000000;
-int e, be[maxn], ne[maxn], to[maxn], c[maxn];
+const int MAXN = 1000;
+const int MAXM = 5 * MAXN * MAXN;
+int be[MAXN];
+int e, ne[MAXM], to[MAXM], c[MAXM];
 
 void init() {
     memset(be, -1, sizeof(be));
@@ -15,14 +17,14 @@ void addEdge(int x, int y, int z) {
     c[e] = 0, e++;
 }
 
-int d[maxn], end;
+int d[MAXN];
 
 
-bool bfs() {
+bool bfs(int s, int t) {
     queue<int> q;
     memset(d, -1, sizeof(d));
-    q.push(end);
-    d[end] = 0;
+    q.push(t);
+    d[t] = 0;
     while (!q.empty()) {
         int u = q.front();
         q.pop();
@@ -34,16 +36,16 @@ bool bfs() {
             }
         }
     }
-    return d[0] != -1;
+    return d[s] != -1;
 }
 
-int dfs(int x, int low) {
-    if (x == end || !low) return low;
+int dfs(int x, int low, int t) {
+    if (x == t || !low) return low;
     int ret = 0;
     for (int i = be[x]; i != -1; i = ne[i]) {
         int v = to[i];
         if (d[v] == d[x] - 1) {
-            int k = dfs(v, min(low-ret, c[i]));
+            int k = dfs(v, min(low-ret, c[i]), t);
             if (k > 0) {
                 c[i] -= k;
                 c[i^1] += k;
@@ -54,10 +56,10 @@ int dfs(int x, int low) {
     return ret;
 }
 
-int dinic() {
+int dinic(int s, int t) {
     int ans = 0;
-    while (bfs()) {
-        int k = dfs(0, inf);
+    while (bfs(s, t)) {
+        int k = dfs(s, inf, t);
         if (k > 0) ans += k;
     }
     return ans;

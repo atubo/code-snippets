@@ -13,7 +13,6 @@ public:
 
     void testFlowCalc() {
         Dinic::init();
-        Dinic::end = 5;
 
         Dinic::addEdge(0, 1, 8);
         Dinic::addEdge(0, 2, 4);
@@ -26,7 +25,7 @@ public:
         Dinic::addEdge(3, 5, 9);
         Dinic::addEdge(4, 5, 7);
 
-        CPPUNIT_ASSERT_EQUAL(8, Dinic::dinic());
+        CPPUNIT_ASSERT_EQUAL(8, Dinic::dinic(0, 5));
     }
 
     CPPUNIT_TEST_SUITE(DinicTest);
