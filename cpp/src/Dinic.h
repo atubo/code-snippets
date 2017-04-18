@@ -3,18 +3,21 @@ namespace Dinic {
 const int inf = 0x3f3f3f3f;
 const int MAXN = 1000;
 const int MAXM = 5 * MAXN * MAXN;
-int be[MAXN];
-int e, ne[MAXM], to[MAXM], c[MAXM];
+int head[MAXN];
+struct Edge {
+    int to, next, cap;
+} E[MAXM];
+int e;
 
 void init() {
-    memset(be, -1, sizeof(be));
+    memset(head, -1, sizeof(head));
 }
 
 void addEdge(int x, int y, int z) {
-    to[e] = y, ne[e] = be[x], be[x] = e;
-    c[e] = z, e++;
-    to[e] = x, ne[e] = be[y], be[y] = e;
-    c[e] = 0, e++;
+    E[e] = {y, head[x], z};
+    head[x] = e++;
+    E[e] = {x, head[y], 0};
+    head[y] = e++;
 }
 
 int d[MAXN];
@@ -28,9 +31,9 @@ bool bfs(int s, int t) {
     while (!q.empty()) {
         int u = q.front();
         q.pop();
-        for (int i = be[u]; i != -1; i = ne[i]) {
-            int v = to[i];
-            if (d[v] == -1 && c[i^1]) {
+        for (int i = head[u]; i != -1; i = E[i].next) {
+            int v = E[i].to;
+            if (d[v] == -1 && E[i^1].cap) {
                 d[v] = d[u] + 1;
                 q.push(v);
             }
@@ -42,13 +45,13 @@ bool bfs(int s, int t) {
 int dfs(int x, int low, int t) {
     if (x == t || !low) return low;
     int ret = 0;
-    for (int i = be[x]; i != -1; i = ne[i]) {
-        int v = to[i];
+    for (int i = head[x]; i != -1; i = E[i].next) {
+        int v = E[i].to;
         if (d[v] == d[x] - 1) {
-            int k = dfs(v, min(low-ret, c[i]), t);
+            int k = dfs(v, min(low-ret, E[i].cap), t);
             if (k > 0) {
-                c[i] -= k;
-                c[i^1] += k;
+                E[i].cap -= k;
+                E[i^1].cap += k;
                 ret += k;
             }
         }
