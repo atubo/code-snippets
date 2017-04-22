@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "MaximalMatch.cpp"
+#include "Hungarian.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
