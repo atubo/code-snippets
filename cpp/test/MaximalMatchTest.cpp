@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 #include "MaximalMatch.cpp"
 
 #include <cppunit/extensions/HelperMacros.h>
@@ -8,20 +11,20 @@ public:
 	void tearDown() {}
 
 	void testMaxMatch() {
-		Hungarian hungarian(3, 4);
-		int result = hungarian.maxMatch([](int u, int v){return false;});
+		Hungarian hungarian;
+        hungarian.reset(3, 4);
+		int result = hungarian.maxMatch();
 		CPPUNIT_ASSERT(result == 0);
 
-		result = hungarian.maxMatch(
-			[](int u, int v){
-					if ((u == 0 && (v == 0 || v == 2)) ||
-						(u == 1 && v == 1) ||
-						(u == 2 && (v == 0 || v ==2 || v == 3))) {
-						return true;
-					}
-					return false;
-				}
-			);
+        hungarian.reset(3, 4);
+        hungarian.addEdge(0, 0);
+        hungarian.addEdge(0, 2);
+        hungarian.addEdge(1, 1);
+        hungarian.addEdge(2, 0);
+        hungarian.addEdge(2, 2);
+        hungarian.addEdge(2, 3);
+
+		result = hungarian.maxMatch();
 		CPPUNIT_ASSERT(result == 3);
 
 	}
