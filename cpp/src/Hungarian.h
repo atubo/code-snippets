@@ -1,8 +1,3 @@
-#include <functional>
-#include <vector>
-
-using namespace std;
-
 // Hungarian method to find maximal match in bipartite graph
 // using DFS, time complexity O(N^3)
 class Hungarian {
