@@ -1,7 +1,8 @@
 
 class Dinic {
-private:
+public:
     static const int inf = 0x3f3f3f3f;
+private:
     static const int MAXN = 1000;
     static const int MAXM = 5 * MAXN * MAXN;
     int head[MAXN], curr[MAXN];
