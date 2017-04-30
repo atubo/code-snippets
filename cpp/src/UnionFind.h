@@ -33,6 +33,10 @@ public:
         parent.resize(N);
         size.resize(N);
 
+        reset();
+    }
+
+    void reset() {
         for (int i = 0; i < N; i++) {
             makeSet(i);
         }
