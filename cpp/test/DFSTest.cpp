@@ -16,52 +16,50 @@ public:
     void tearDown() {}
 
     void testThreeNodeChain() {
-        Graph graph(3);
-        graph.addEdge(2,1);
-        graph.addEdge(1,0);
+        DFS dfs(3);
+        dfs.addEdge(2, 1);
+        dfs.addEdge(1, 2);
+        dfs.addEdge(1, 0);
+        dfs.addEdge(0, 1);
 
-        vector<int> preorder;
-        vector<int> postorder;
-        auto pre = [&preorder](int v) {preorder.push_back(v);};
-        auto post = [&postorder](int v) {postorder.push_back(v);};
-
-        DFS::dfs(graph, 2, pre, post);
-
-        CPPUNIT_ASSERT(preorder == list_of(2)(1)(0));
-        CPPUNIT_ASSERT(postorder == list_of(0)(1)(2));
+        dfs.dfs(2, -1);
+        vector<int> dfn(dfs.dfn, dfs.dfn+3);
+        vector<int> low(dfs.low, dfs.low+3);
+        CPPUNIT_ASSERT(dfn == list_of(2)(1)(0));
+        CPPUNIT_ASSERT(low == list_of(2)(1)(0));
     }
 
     void testThreeNodeTree() {
-        Graph graph(3);
-        graph.addEdge(0,2);
-        graph.addEdge(0,1);
+        DFS dfs(3);
 
-        vector<int> preorder;
-        vector<int> postorder;
-        auto pre = [&preorder](int v) {preorder.push_back(v);};
-        auto post = [&postorder](int v) {postorder.push_back(v);};
+        dfs.addEdge(0,2);
+        dfs.addEdge(2,0);
+        dfs.addEdge(0,1);
+        dfs.addEdge(1,0);
 
-        DFS::dfs(graph, 0, pre, post);
+        dfs.dfs(0, -1);
 
-        CPPUNIT_ASSERT(preorder == list_of(0)(1)(2));
-        CPPUNIT_ASSERT(postorder == list_of(1)(2)(0));
+        vector<int> dfn(dfs.dfn, dfs.dfn+3);
+        vector<int> low(dfs.low, dfs.low+3);
+        CPPUNIT_ASSERT(dfn == list_of(0)(1)(2));
+        CPPUNIT_ASSERT(low == list_of(0)(1)(2));
     }
 
     void testThreeNodeTriangle() {
-        Graph graph(3);
-        graph.addEdge(0,2);
-        graph.addEdge(0,1);
-        graph.addEdge(1,2);
+        DFS dfs(3);
+        dfs.addEdge(0,2);
+        dfs.addEdge(2,0);
+        dfs.addEdge(0,1);
+        dfs.addEdge(1,0);
+        dfs.addEdge(1,2);
+        dfs.addEdge(2,1);
 
-        vector<int> preorder;
-        vector<int> postorder;
-        auto pre = [&preorder](int v) {preorder.push_back(v);};
-        auto post = [&postorder](int v) {postorder.push_back(v);};
+        dfs.dfs(0, -1);
 
-        DFS::dfs(graph, 0, pre, post);
-
-        CPPUNIT_ASSERT(preorder == list_of(0)(1)(2));
-        CPPUNIT_ASSERT(postorder == list_of(2)(1)(0));
+        vector<int> dfn(dfs.dfn, dfs.dfn+3);
+        vector<int> low(dfs.low, dfs.low+3);
+        CPPUNIT_ASSERT(dfn == list_of(0)(1)(2));
+        CPPUNIT_ASSERT(low == list_of(0)(0)(0));
     }
 
     CPPUNIT_TEST_SUITE(DFSTest);

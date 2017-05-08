@@ -4,40 +4,53 @@
 
 using namespace std;
 
-// Do DFS on the given graph
-//
-// pre and post are lambdas that are called
-// when a node is pushed onto the stack and
-// popped out of the stack respectively
-// 
-// note that a node is only popped out when all its decendants
-// have been visited
+// Note graph node is 0-indexed
 class DFS {
 public:
-    static void dfs(const Graph& graph,
-                    int v,
-                    function<void(int)> pre,
-                    function<void(int)> post) {
-        const int N = graph.N;
-        vector<bool> visited(N);
-        dfs(graph, v, visited, pre, post);
+    static const int MAXN = 200;
+    static const int MAXM = 10010;
+
+    struct Edge {
+        int next, to;
+    } E[MAXM];
+
+    int head[MAXN], dfn[MAXN], low[MAXN];
+    bool vis[MAXN];
+    int eidx;
+    int tmpdfn;
+    int N;
+
+    DFS(int N_):N(N_) {
+        eidx = 0;
+
+        for (int i = 0; i < N; i++) {
+            head[i] = -1;
+        }
+        memset(vis, 0, sizeof(vis));
+        tmpdfn = 0;
     }
 
-private:
-    static void dfs(const Graph &g,
-                    int u,
-                    vector<bool> &visited,
-                    function<void(int)> pre,
-                    function<void(int)> post) {
-        visited[u] = true;
-        pre(u);
-        for (int eidx = g.head[u]; eidx != -1; eidx = g.E[eidx].next) {
-            int v = g.E[eidx].to;
-            if (!visited[v]) {
-                dfs(g, v, visited, pre, post);
+    // assume 0-indexed and no duplication
+    void addEdge(int u, int v) {
+        E[eidx].to = v;
+        E[eidx].next = head[u];
+        head[u] = eidx++;
+    }
+
+    void dfs(int u, int father) {
+        vis[u] = true;
+        dfn[u] = low[u] = tmpdfn++;
+        for (int i = head[u]; i != -1; i = E[i].next) {
+            int v = E[i].to;
+            if (v != father && vis[v]) {
+                low[u] = min(low[u], dfn[v]);
+            }
+            if (!vis[v]) {
+                dfs(v, u);
+                low[u] = min(low[u], low[v]);
+                // if low[v] > dfn[u], (u, v) is a bridge
+                // if low[v] >= dfn[u], u is a cut vertex
             }
         }
-        post(u);
     }
 };
-
