@@ -3,8 +3,8 @@ class Dinic {
 public:
     static const int inf = 0x3f3f3f3f;
 private:
-    static const int MAXN = 1000;
-    static const int MAXM = 5 * MAXN * MAXN;
+    static const int MAXN = 100;
+    static const int MAXM = 1000;
     int head[MAXN], curr[MAXN];
     struct Edge {
         int to, next, cap;
