@@ -2,19 +2,17 @@
 // Note: be sure it's DAG
 class TopologicalSort {
 public:
-    int N;
-    vector<vector<int> > adj;
     vector<int> topo;  // topologically sorted result
 
 private:
-    void topologicalSortUtil(int v, bool visited[],
+    void topologicalSortUtil(const Graph &g, int v, bool visited[],
                              stack<int> &order) {
         visited[v] = true;
 
-        for (int i = 0; i < (int)adj[v].size(); i++) {
-            int m = adj[v][i];
+        for (int i = g.head[v]; i != -1; i = g.E[i].next) {
+            int m = g.E[i].to;
             if (!visited[m]) {
-                topologicalSortUtil(m, visited, order);
+                topologicalSortUtil(g, m, visited, order);
             }
         }
 
@@ -22,11 +20,10 @@ private:
     }
 
 public:
-    TopologicalSort() {
-        // initialize N and adj
-    }
+    TopologicalSort() {}
 
-    void sort() {
+    void sort(const Graph &g) {
+        const int N = g.N;
         topo.resize(N);
 
         stack<int> order;
@@ -37,7 +34,7 @@ public:
 
         for (int i = 0; i < N; i++) {
             if (!visited[i]) {
-                topologicalSortUtil(i, visited, order);
+                topologicalSortUtil(g, i, visited, order);
             }
         }
 
