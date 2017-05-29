@@ -111,6 +111,23 @@ public:
         return x;
     }
 
+    // both deletion and insertion must happen on the left child of
+    // root's right child
+    void del(int x) {
+        t[f[x]][0] = 0;
+        update(f[x]);
+        update(f[f[x]]);
+        f[x] = 0;
+    }
+
+    void ins(int x) {
+        int y = t[root][1];
+        t[y][0] = x;
+        f[x] = y;
+        update(y);
+        update(root);
+    }
+
     void print() {
         printf("f: ");
         for (int i = 0; i <= N; i++) {

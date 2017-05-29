@@ -57,6 +57,23 @@ public:
         }
     }
 
+    void testDeletionInsertion() {
+        SplayTree st(5);
+        st.splay(1, 0);
+        CPPUNIT_ASSERT(st.t[st.t[st.root][1]][0] == 2);
+        st.del(2);
+        st.splay(3, 0);
+        CPPUNIT_ASSERT(st.t[st.t[st.root][1]][0] == 0);
+        st.ins(2);
+
+        CPPUNIT_ASSERT(check(st,
+                             {0, 3, 4, 0, 3, 4},
+                             {{0, 0}, {0, 0}, {0, 0}, {1, 4}, {2, 5}, {0, 0}},
+                             {0, 1, 1, 5, 3, 1},
+                             {0, 0, 0, 0, 0, 0},
+                             3));
+    }
+
 private:
     bool check(const SplayTree &st,
                const vector<int> &f,
@@ -73,6 +90,7 @@ private:
     CPPUNIT_TEST(testSplay);
     CPPUNIT_TEST(testReverseAndSplay);
     CPPUNIT_TEST(testFindByOrder);
+    CPPUNIT_TEST(testDeletionInsertion);
     CPPUNIT_TEST_SUITE_END();
 };
 
