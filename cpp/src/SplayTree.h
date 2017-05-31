@@ -3,28 +3,30 @@
 class SplayTree {
 public:
 
-    SplayTree(int size) {
+    SplayTree(int size, int cap = 0) {
         // 1-indexed
         N = size;
-        f.resize(N + 1);
-        t.resize(N + 1);
-        sz.resize(N + 1);
-        tag.resize(N + 1);
-        for (int i = 0; i <= N; i++) {
-            t[i][0] = t[i][1] = 0;
-        }
+        if (cap == 0) cap = N + 1;
+        assert(cap >= N + 1);
+
+        f.resize(cap);
+        t.resize(cap);
+        sz.resize(cap);
+        tag.resize(cap);
+
         root = build(1, N, 0);
     }
 
     // build range [i, j]
     int build(int p, int q, int fa) {
+        if (p > q) return 0;
         assert(q - p >= 0);
 
         int mid = (p + q) / 2;
         f[mid] = fa;
 
-        if (mid - p >= 1) t[mid][0] = build(p, mid-1, mid);
-        if (q - mid >= 1) t[mid][1] = build(mid+1, q, mid);
+        t[mid][0] = build(p, mid-1, mid);
+        t[mid][1] = build(mid+1, q, mid);
 
         update(mid);
 
@@ -109,6 +111,11 @@ public:
         }
         assert(false);
         return x;
+    }
+
+    // starting from 1
+    int order_of_root() {
+        return 1 + sz[t[root][0]];
     }
 
     // both deletion and insertion must happen on the left child of
