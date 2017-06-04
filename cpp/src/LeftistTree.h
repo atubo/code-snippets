@@ -72,6 +72,11 @@ public:
         return x;
     }
 
+    int find(int x) const {
+        while (f[x] != 0) x = f[x];
+        return x;
+    }
+
     void print() {
         printf("f: ");
         for (int i = 0; i <= N; i++) {
