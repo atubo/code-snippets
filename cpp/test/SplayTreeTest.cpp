@@ -34,7 +34,7 @@ public:
 
     void testReverseAndSplay() {
         SplayTree st(5);
-        st.reverse(1);
+        st.updateRev(1);
         st.splay(1, 0);
 
         CPPUNIT_ASSERT(check(st,
@@ -50,7 +50,7 @@ public:
         for (int i = 1; i <= 5; i++) {
             CPPUNIT_ASSERT_EQUAL(i, st.find_by_order(i));
         }
-        st.reverse(3);
+        st.updateRev(3);
         vector<int> expected = {0, 5, 4, 3, 2, 1};
         for (int i = 1; i <= 5; i++) {
             CPPUNIT_ASSERT_EQUAL(expected[i], st.find_by_order(i));

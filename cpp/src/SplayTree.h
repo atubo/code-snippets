@@ -2,6 +2,11 @@
 // index starts from 1 (0 is for NULL)
 class SplayTree {
 public:
+    static const int MAXINT = 0x3f3f3f3f;
+
+    static int min3(int a, int b, int c) {
+        return min(min(a, b), c);
+    }
 
     SplayTree(int size, int cap = 0) {
         // 1-indexed
@@ -13,43 +18,66 @@ public:
         t.resize(cap);
         sz.resize(cap);
         tag.resize(cap);
+        val.resize(cap);
+        d.resize(cap);
+        minVal.resize(cap);
+
+        minVal[0] = MAXINT;
 
         root = build(1, N, 0);
     }
 
     // build range [i, j]
-    int build(int p, int q, int fa) {
+    int build(int p, int q, int fa, int value = 0) {
         if (p > q) return 0;
         assert(q - p >= 0);
 
         int mid = (p + q) / 2;
         f[mid] = fa;
+        val[mid] = minVal[mid] = value;
 
         t[mid][0] = build(p, mid-1, mid);
         t[mid][1] = build(mid+1, q, mid);
 
-        update(mid);
+        pushUp(mid);
 
         return mid;
     }
 
-    void reverse(int x) {
-        tag[x] ^= 1;
+    void pushUp(int x) {
+        assert(x);
+
+        sz[x] = sz[t[x][0]] + sz[t[x][1]] + 1;
+        minVal[x] = min3(minVal[t[x][0]], val[x], minVal[t[x][1]]);
+    }
+
+    void updateRev(int x) {
+        if (!x) return;
+
         swap(t[x][0], t[x][1]);
+        tag[x] ^= 1;
+    }
+
+    void updateAdd(int x, int D) {
+        if (!x) return;
+
+        val[x] += D;
+        minVal[x] += D;
+        d[x] += D;
     }
 
     void pushDown(int x) {
         if (tag[x]) {
-            if (t[x][0]) reverse(t[x][0]);
-            if (t[x][1]) reverse(t[x][1]);
+            updateRev(t[x][0]);
+            updateRev(t[x][1]);
             tag[x] = 0;
         }
-    }
 
-    void update(int x) {
-        assert(x);
-    
-        sz[x] = sz[t[x][0]] + sz[t[x][1]] + 1;
+        if (d[x]) {
+            updateAdd(t[x][0], d[x]);
+            updateAdd(t[x][1], d[x]);
+            d[x] = 0;
+        }
     }
 
     bool son(int x) const {
@@ -59,6 +87,9 @@ public:
     void rotate(int x) {
         int y = f[x], z = son(x);
 
+        pushDown(y);
+        pushDown(x);
+
         t[y][z] = t[x][1-z];
         if (t[x][1-z]) f[t[x][1-z]] = y;
 
@@ -66,25 +97,11 @@ public:
         if (f[x]) t[f[x]][son(y)] = x;
 
         f[y] = x; t[x][1-z] = y;
-        update(y); update(x);
-    }
-
-    void propagate(int x, int y) {
-        if (x == y) return;
-        stack<int> d;
-        do {
-            d.push(x);
-            x = f[x];
-        } while (x != y);
-        while (!d.empty()) {
-            x = d.top();
-            d.pop();
-            pushDown(x);
-        }
+        pushUp(y);
     }
 
     void splay(int x, int y) {
-        propagate(x, y);
+        pushDown(x);
         while (f[x] != y) {
             if (f[f[x]] != y) {
                 if (son(f[x]) == son(x)) rotate(f[x]);
@@ -92,6 +109,7 @@ public:
             }
             rotate(x);
         }
+        pushUp(x);
         if (!y) root = x;
     }
 
@@ -113,6 +131,12 @@ public:
         return x;
     }
 
+    void inorder(int x) {
+        if (t[x][0]) inorder(t[x][0]);
+        printf("%d ", val[x]);
+        if (t[x][1]) inorder(t[x][1]);
+    }
+
     // starting from 1
     int order_of_root() {
         return 1 + sz[t[root][0]];
@@ -122,8 +146,8 @@ public:
     // root's right child
     void del(int x) {
         t[f[x]][0] = 0;
-        update(f[x]);
-        update(f[f[x]]);
+        pushUp(f[x]);
+        pushUp(f[f[x]]);
         f[x] = 0;
     }
 
@@ -131,8 +155,8 @@ public:
         int y = t[root][1];
         t[y][0] = x;
         f[x] = y;
-        update(y);
-        update(root);
+        pushUp(y);
+        pushUp(root);
     }
 
     void print() {
@@ -148,9 +172,17 @@ public:
         for (int i = 0; i <= N; i++) {
             printf("%d ", sz[i]);
         }
-        printf("tag: ");
+        printf("val: ");
         for (int i = 0; i <= N; i++) {
-            printf("%d ", tag[i]);
+            printf("%d ", val[i]);
+        }
+        printf("d: ");
+        for (int i = 0; i <= N; i++) {
+            printf("%d ", d[i]);
+        }
+        printf("min: ");
+        for (int i = 0; i <= N; i++) {
+            printf("%d ", minVal[i]);
         }
         printf("root: %d", root);
                
@@ -163,5 +195,7 @@ public:
     vector<array<int, 2>> t;
     vector<int> sz;
     vector<int> tag;
+    vector<int> val;
+    vector<int> d;
+    vector<int> minVal;
 };
-
