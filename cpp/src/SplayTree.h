@@ -8,7 +8,7 @@ public:
         return min(min(a, b), c);
     }
 
-    SplayTree(int size, int cap = 0) {
+    SplayTree(int size, int *a = NULL, int cap = 0) {
         // 1-indexed
         N = size;
         if (cap == 0) cap = N + 1;
@@ -24,24 +24,29 @@ public:
 
         minVal[0] = MAXINT;
 
-        root = build(1, N, 0);
+        root = build(1, N, 0, a);
     }
 
     // build range [i, j]
-    int build(int p, int q, int fa, int value = 0) {
+    int build(int p, int q, int fa, int *a) {
         if (p > q) return 0;
         assert(q - p >= 0);
 
         int mid = (p + q) / 2;
-        f[mid] = fa;
-        val[mid] = minVal[mid] = value;
+        initNode(mid, fa, (a ? a[mid] : 0));
 
-        t[mid][0] = build(p, mid-1, mid);
-        t[mid][1] = build(mid+1, q, mid);
+        t[mid][0] = build(p, mid-1, mid, a);
+        t[mid][1] = build(mid+1, q, mid, a);
 
         pushUp(mid);
 
         return mid;
+    }
+
+    int buildSingleNode(int p, int fa, int v) {
+        initNode(p, fa, v);
+        pushUp(p);
+        return p;
     }
 
     void pushUp(int x) {
@@ -144,11 +149,14 @@ public:
 
     // both deletion and insertion must happen on the left child of
     // root's right child
-    void del(int x) {
-        t[f[x]][0] = 0;
-        pushUp(f[x]);
-        pushUp(f[f[x]]);
+    int del() {
+        int y = t[root][1];
+        int x = t[y][0];
+        t[y][0] = 0;
+        pushUp(y);
+        pushUp(root);
         f[x] = 0;
+        return x;
     }
 
     void ins(int x) {
@@ -198,4 +206,11 @@ public:
     vector<int> val;
     vector<int> d;
     vector<int> minVal;
+
+private:
+    void initNode(int p, int fa, int v) {
+        f[p] = fa;
+        val[p] = minVal[p] = v;
+        t[p][0] = t[p][1] = 0;
+    }
 };

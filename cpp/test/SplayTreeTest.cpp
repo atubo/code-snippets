@@ -61,7 +61,7 @@ public:
         SplayTree st(5);
         st.splay(1, 0);
         CPPUNIT_ASSERT(st.t[st.t[st.root][1]][0] == 2);
-        st.del(2);
+        CPPUNIT_ASSERT_EQUAL(2, st.del());
         st.splay(3, 0);
         CPPUNIT_ASSERT(st.t[st.t[st.root][1]][0] == 0);
         st.ins(2);
