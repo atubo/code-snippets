@@ -10,21 +10,10 @@ public:
 
     SplayTree(int size, int *a = NULL, int cap = 0) {
         // 1-indexed
-        N = size;
-        if (cap == 0) cap = N + 1;
-        assert(cap >= N + 1);
-
-        f.resize(cap);
-        t.resize(cap);
-        sz.resize(cap);
-        tag.resize(cap);
-        val.resize(cap);
-        d.resize(cap);
-        minVal.resize(cap);
-
-        minVal[0] = MAXINT;
-
-        root = build(1, N, 0, a);
+        if (cap == 0) cap = size + 1;
+        assert(cap >= size + 1);
+        alloc(cap);
+        init(size, a);
     }
 
     // build range [i, j]
@@ -208,6 +197,23 @@ public:
     vector<int> minVal;
 
 private:
+    void alloc(int cap) {
+        f.resize(cap);
+        t.resize(cap);
+        sz.resize(cap);
+        tag.resize(cap);
+        val.resize(cap);
+        d.resize(cap);
+        minVal.resize(cap);
+    }
+
+    void init(int size, int *a) {
+        N = size;
+
+        minVal[0] = MAXINT;
+        root = build(1, N, 0, a);
+    }
+
     void initNode(int p, int fa, int v) {
         f[p] = fa;
         val[p] = minVal[p] = v;
