@@ -16,6 +16,13 @@ public:
         init(size, a);
     }
 
+    void init(int size, int *a) {
+        N = size;
+
+        minVal[0] = MAXINT;
+        root = build(1, N, 0, a);
+    }
+
     // build range [i, j]
     int build(int p, int q, int fa, int *a) {
         if (p > q) return 0;
@@ -205,13 +212,6 @@ private:
         val.resize(cap);
         d.resize(cap);
         minVal.resize(cap);
-    }
-
-    void init(int size, int *a) {
-        N = size;
-
-        minVal[0] = MAXINT;
-        root = build(1, N, 0, a);
     }
 
     void initNode(int p, int fa, int v) {
