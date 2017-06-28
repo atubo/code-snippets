@@ -23,6 +23,11 @@ public:
         //                                  0                5
         CPPUNIT_ASSERT(sieve.mu == list_of(0)(1)(-1)(-1)(0)(-1)(1)(-1)(0)(0)
                                            (1)(-1)(0)(-1)(1)(1)(0)(-1)(0)(-1)(0));
+
+        //                                    0              5
+        CPPUNIT_ASSERT(sieve.sigma == list_of(0)(1)(3)(4)(7)(6)(12)(8)(15)(13)
+                                             (18)(12)(28)(14)(24)
+                                             (24)(31)(18)(39)(20)(42));
     }
 
     CPPUNIT_TEST_SUITE(EulerSieveTest);
