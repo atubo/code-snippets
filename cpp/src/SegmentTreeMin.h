@@ -13,7 +13,7 @@ public:
         }
     }
 
-    int findMin(int a, int b) const {
+    int query(int a, int b) const {
         a += nData + 1;
         b += nData + 1;
         int res = data[a];
@@ -28,7 +28,7 @@ public:
         return res;
     }
 
-    int findMin() const {
+    int query() const {
         return data[1];
     }
 private:

@@ -27,9 +27,9 @@ void SegmentTreeMinTest::test1()
     tree.update(2, 3);
     tree.update(3, 1);
 
-    CPPUNIT_ASSERT_EQUAL(1, tree.findMin(0, 3));
-    CPPUNIT_ASSERT_EQUAL(2, tree.findMin(0, 2));
-    CPPUNIT_ASSERT_EQUAL(1, tree.findMin(1, 3));
+    CPPUNIT_ASSERT_EQUAL(1, tree.query(0, 3));
+    CPPUNIT_ASSERT_EQUAL(2, tree.query(0, 2));
+    CPPUNIT_ASSERT_EQUAL(1, tree.query(1, 3));
 }
 
 void SegmentTreeMinTest::test2()
@@ -39,5 +39,5 @@ void SegmentTreeMinTest::test2()
         tree.update(i, i+1);
     }
 
-    CPPUNIT_ASSERT_EQUAL(15, tree.findMin(5, 9));
+    CPPUNIT_ASSERT_EQUAL(15, tree.query(5, 9));
 }
