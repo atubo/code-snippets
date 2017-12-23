@@ -60,11 +60,14 @@ public:
     void testDeletionInsertion() {
         SplayTree st(5);
         st.splay(1, 0);
+        CPPUNIT_ASSERT_EQUAL(5, st.N);
         CPPUNIT_ASSERT(st.t[st.t[st.root][1]][0] == 2);
         CPPUNIT_ASSERT_EQUAL(2, st.del());
+        CPPUNIT_ASSERT_EQUAL(4, st.N);
         st.splay(3, 0);
         CPPUNIT_ASSERT(st.t[st.t[st.root][1]][0] == 0);
         st.ins(2);
+        CPPUNIT_ASSERT_EQUAL(5, st.N);
 
         CPPUNIT_ASSERT(check(st,
                              {0, 3, 4, 0, 3, 4},

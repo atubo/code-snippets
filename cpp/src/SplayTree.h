@@ -152,6 +152,7 @@ public:
         pushUp(y);
         pushUp(root);
         f[x] = 0;
+        N -= sz[x];
         return x;
     }
 
@@ -161,6 +162,7 @@ public:
         f[x] = y;
         pushUp(y);
         pushUp(root);
+        N += sz[x];
     }
 
     void print() {
