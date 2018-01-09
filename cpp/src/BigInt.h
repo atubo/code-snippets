@@ -1,102 +1,3 @@
-
-class BigIntStringRepr {
-    static vector<string> generateDoubles(const string& init, const string& a) {
-        // generate init, init*2, init*4, till the first that >= a
-        vector<string> dbls;
-        dbls.push_back(init);
-        while (less(dbls.back(), a)) {
-            dbls.push_back(add(dbls.back(), dbls.back()));
-        }
-        return dbls;
-    }
-
-    static void trimLeadingZeros(string& s) {
-        int p = 0;
-        while (p < (int)s.size()-1 && s[p] == '0') p++;
-        if (p != 0) s = s.substr(p);
-    }
-
-public:
-    static string toBinary(const string& A) {
-        // convert a decimal number to binary
-        vector<string> dbls = generateDoubles("1", A);
-
-        string ret;
-        string a = A;
-        for (int i = (int)dbls.size()-1; i >= 0; i--) {
-            if (!less(a, dbls[i])) {
-                ret.push_back('1');
-                a = sub(a, dbls[i]);
-            } else {
-                ret.push_back('0');
-            }
-        }
-
-        trimLeadingZeros(ret);
-        return ret;
-    }
-
-    static string mod(const string& A, const string& B) {
-        vector<string> dbls = generateDoubles(B, A);
-
-        string a = A;
-        for (int i = (int)dbls.size()-1; i >= 0; i--) {
-            if (less(a, dbls[i])) continue;
-            a = sub(a, dbls[i]);
-        }
-        return a;
-    }
-
-    static bool less(const string& a, const string& b) {
-        // check if a < b
-        return (a.length() < b.length() ||
-                (a.length() == b.length() && a < b));
-    }
-
-    static string add(const string& A, const string& B) {
-        const int N = A.length();
-        const int M = B.length();
-
-        const int L = max(N, M);
-        string ret(L, char());
-        int carry = 0;
-        for (int i = 0; i < L; i++) {
-            int d = (i < N ? A[N-1-i] - '0' : 0) + (i < M ? B[M-1-i] - '0' : 0) + carry;
-            ret[L-1-i] = '0' + (d%10);
-            carry = d/10;
-        }
-
-        if (carry) {
-            ret.insert(0, 1, '1');
-        }
-
-        return ret;
-    }
-
-    static string sub(const string& A, const string& B) {
-        assert(less(B, A) || A == B);
-        const int N = A.length();
-        const int M = B.length();
-
-        string ret(N, char());
-        int borrow = 0;
-        for (int i = 0; i < N; i++) {
-            int d = A[N-1-i] - '0' - (i < M ? B[M-1-i] - '0' : 0) - borrow;
-            if (d < 0) {
-                d += 10;
-                borrow = 1;
-            } else {
-                borrow = 0;
-            }
-            ret[N-1-i] = d + '0';
-        }
-        assert(borrow == 0);
-
-        trimLeadingZeros(ret);
-        return ret;
-    }
-};
-
 class BigInt {
     // split every 9 digits
     // LSD in the first split, and so on
@@ -136,6 +37,11 @@ private:
 public:
     BigInt() {
         splits.resize(1, 0);
+    }
+
+    // x should be less than SPLIT_OVERFLOW
+    BigInt(int x) {
+        splits.push_back(x);
     }
 
     BigInt(const string& s) {
@@ -205,26 +111,31 @@ public:
         return ret;
     }
 
-    friend BigInt operator + (const BigInt& a, const BigInt& b) {
-        const int N = a.splits.size();
+    BigInt& operator += (const BigInt &b) {
+        const int N = splits.size();
         const int M = b.splits.size();
 
         const int L = max(N, M);
 
-        BigInt ret;
-        ret.splits.resize(L);
+        splits.resize(L);
 
         int carry = 0;
         for (int i = 0; i < L; i++) {
-            int d = (i < N ? a.splits[i] : 0) + (i < M ? b.splits[i] : 0) + carry;
-            ret.splits[i] = d % SPLIT_OVERFLOW;
+            int d = (i < N ? splits[i] : 0) + (i < M ? b.splits[i] : 0) + carry;
+            splits[i] = d % SPLIT_OVERFLOW;
             carry = (d >= SPLIT_OVERFLOW);
         }
 
         if (carry) {
-            ret.splits.push_back(1);
+            splits.push_back(1);
         }
 
+        return *this;
+    }
+
+    friend BigInt operator + (const BigInt& a, const BigInt& b) {
+        BigInt ret = a;
+        ret += b;
         return ret;
     }
 

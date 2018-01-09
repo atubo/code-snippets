@@ -5,41 +5,6 @@ using namespace std;
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class BigIntStringReprTest:public CppUnit::TestFixture {
-public:
-    void setUp() {}
-    void tearDown() {}
-
-    void testToBinary() {
-        CPPUNIT_ASSERT(BigIntStringRepr::toBinary("19") == "10011");
-        CPPUNIT_ASSERT(BigIntStringRepr::toBinary("1024") == "10000000000");
-    }
-
-    void testSub() {
-        CPPUNIT_ASSERT(BigIntStringRepr::sub("123", "45") == "78");
-        CPPUNIT_ASSERT(BigIntStringRepr::sub("123", "123") == "0");
-    }
-
-    void testAdd() {
-        CPPUNIT_ASSERT(BigIntStringRepr::add("123", "987") == "1110");
-        CPPUNIT_ASSERT(BigIntStringRepr::add("999", "1") == "1000");
-    }
-
-    void testMod() {
-        CPPUNIT_ASSERT(BigIntStringRepr::mod("12", "13") == "12");
-        CPPUNIT_ASSERT(BigIntStringRepr::mod("13", "12") == "1");
-        CPPUNIT_ASSERT(BigIntStringRepr::mod("24", "12") == "0");
-        CPPUNIT_ASSERT(BigIntStringRepr::mod("100", "12") == "4");
-    }
-
-    CPPUNIT_TEST_SUITE(BigIntStringReprTest);
-    CPPUNIT_TEST(testToBinary);
-    CPPUNIT_TEST(testSub);
-    CPPUNIT_TEST(testAdd);
-    CPPUNIT_TEST(testMod);
-    CPPUNIT_TEST_SUITE_END();
-};
-
 class BigIntTest:public CppUnit::TestFixture {
 public:
     void setUp() {}
@@ -106,5 +71,4 @@ public:
 };
 
 
-CPPUNIT_TEST_SUITE_REGISTRATION(BigIntStringReprTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(BigIntTest);
