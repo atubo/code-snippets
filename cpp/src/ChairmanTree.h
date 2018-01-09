@@ -34,7 +34,8 @@ struct ChairmanTree {
     }
 
     // for user's convenience
-    void insert(int &now, int x, int t) {
+    void insert(int &now, int from, int x, int t) {
+        now = from;
         insert(now, x, t, 1, M);
     }
 };
