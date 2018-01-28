@@ -1,19 +1,13 @@
-#include <queue>
-#include <vector>
-#include <inttypes.h>
-using namespace std;
-
 class FastDijkstra {
 public:
     static const int64_t INF;
 
     typedef pair<int64_t,int> PII;  // pair = (dist, vertex)
 
-    FastDijkstra(const vector<vector<PII> >& edges_, int s_, int t_):
-        edges(edges_), s(s_), t(t_), N(edges.size()),
-        dist(N, INF), dad(N, -1)
-    {
-        solve();
+    FastDijkstra(int N_): N(N_), edges(N), dist(N, INF), dad(N, -1) {}
+
+    void addEdge(int u, int v, int64_t wt) {
+        edges[u].push_back(make_pair(wt, v));
     }
 
     const vector<int64_t>& getDist() const {
@@ -24,8 +18,7 @@ public:
         return dad;
     }
 
-private:
-    void solve() {
+    int64_t solve(int s, int t) {
         // use priority queue in which top element has the "smallest" priority
         priority_queue<PII, vector<PII>, greater<PII> > Q;
         Q.push (make_pair (0, s));
@@ -45,15 +38,14 @@ private:
                 }
             }
         }
+        return dist[t];
     }
 
-    const vector<vector<PII> >& edges;
-    const int s;
-    const int t;
+private:
     const int N;
+    vector<vector<PII>> edges;
     vector<int64_t> dist;
     vector<int> dad;
 };
 
 const int64_t FastDijkstra::INF = 0x7FFFFFFFFFFFFFFF;
-
