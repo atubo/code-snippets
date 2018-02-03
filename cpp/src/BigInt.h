@@ -56,6 +56,7 @@ public:
                 splits[i] = splits[i] * 10 + s[j] - '0';
             }
         }
+        canonicalize();
     }
 
     void swap(BigInt& other) {

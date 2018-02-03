@@ -59,6 +59,13 @@ public:
         CPPUNIT_ASSERT(b == BigInt("123"));
     }
 
+    void testFromStringWithLeadingZeros() {
+        BigInt a("0105752977");
+        BigInt b("769539048420");
+        BigInt c = a * b;
+        CPPUNIT_ASSERT(c == BigInt("81381045288162146340"));
+    }
+
     CPPUNIT_TEST_SUITE(BigIntTest);
     CPPUNIT_TEST(testSub);
     CPPUNIT_TEST(testAdd);
@@ -67,6 +74,7 @@ public:
     CPPUNIT_TEST(testMod);
     CPPUNIT_TEST(testToString);
     CPPUNIT_TEST(testSwap);
+    CPPUNIT_TEST(testFromStringWithLeadingZeros);
     CPPUNIT_TEST_SUITE_END();
 };
 
