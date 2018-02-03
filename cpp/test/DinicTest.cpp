@@ -12,7 +12,7 @@ public:
     void tearDown() {}
 
     void testFlowCalc() {
-        Dinic dinic;
+        Dinic dinic(6);
 
         dinic.addEdge(0, 1, 8);
         dinic.addEdge(0, 2, 4);
