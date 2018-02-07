@@ -33,12 +33,22 @@ public:
         V[a]->op = V[b]; V[b]->op = V[a];
     }
 
-    int mincostFlow(int s, int t) {
-        int flow = 0;
-        while (SPFA(s, t)) {
-            flow += argument(t);
+    struct FlowCost {
+        int flow, cost;
+        FlowCost& operator += (const FlowCost &other) {
+            flow += other.flow;
+            cost += other.cost;
+            return *this;
         }
-        return flow;
+    };
+
+    // returns maxflow, mincost
+    pair<int, int> mincostFlow(int s, int t) {
+        FlowCost fc{};
+        while (SPFA(s, t)) {
+            fc += argument(t);
+        }
+        return make_pair(fc.flow, fc.cost);
     }
 
 private:
@@ -120,18 +130,18 @@ private:
         return sp[t] != INF;
     }
 
-    int argument(int t) {
-        int i, cost = INF, flow = 0;
+    FlowCost argument(int t) {
+        int i, low = INF, cost = 0;
         Edge *e;
         for (i = t; prev[i] != -1; i = prev[i]) {
             e = path[i];
-            if (e->c < cost) cost = e->c;
+            if (e->c < low) low = e->c;
         }
         for (i = t; prev[i] != -1; i = prev[i]) {
             e = path[i];
-            e->c -= cost; e->op->c += cost;
-            flow += e->v * cost;
+            e->c -= low; e->op->c += low;
+            cost += e->v * low;
         }
-        return flow;
+        return FlowCost{low, cost};
     }
 };
