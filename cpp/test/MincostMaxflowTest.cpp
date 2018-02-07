@@ -12,16 +12,17 @@ public:
     void tearDown() {}
 
     void testFlowCalc() {
-        using namespace MincostMaxflowNS;
-        S = 0, T = 4;
-        addEdge(0, 1, 4, 10);
-        addEdge(0, 2, 1, 8);
-        addEdge(2, 1, 2, 5);
-        addEdge(2, 3, 3, 10);
-        addEdge(1, 3, 6, 2);
-        addEdge(1, 4, 1, 7);
-        addEdge(3, 4, 2, 4);
-        CPPUNIT_ASSERT_EQUAL(55, mincostFlow());
+        //using namespace MincostMaxflowNS;
+        MincostMaxflow mincostMaxflow(5);
+        mincostMaxflow.S = 0, mincostMaxflow.T = 4;
+        mincostMaxflow.addEdge(0, 1, 4, 10);
+        mincostMaxflow.addEdge(0, 2, 1, 8);
+        mincostMaxflow.addEdge(2, 1, 2, 5);
+        mincostMaxflow.addEdge(2, 3, 3, 10);
+        mincostMaxflow.addEdge(1, 3, 6, 2);
+        mincostMaxflow.addEdge(1, 4, 1, 7);
+        mincostMaxflow.addEdge(3, 4, 2, 4);
+        CPPUNIT_ASSERT_EQUAL(55, mincostMaxflow.mincostFlow());
     }
 
     CPPUNIT_TEST_SUITE(MincostMaxflowTest);

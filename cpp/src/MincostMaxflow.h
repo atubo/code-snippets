@@ -1,30 +1,79 @@
 
-namespace MincostMaxflowNS {
+class MincostMaxflow {
     // NOTE
     // 1. set up the following values
     // 2. it is required S < other nodes < T (see code in SPFA)
     // 3. MAXM must be twice the number of edges you added
     // 4. call init() before you use it again
-    const int INF = 1000000;
-    const int MAXM = 1000, MAXN = 1000;
+public:
+    const static int INF = 1000000;
+    const static int MAXM = 1000, MAXN = 1000;
     int S, T, EC = -1;
 
+    MincostMaxflow(int N_):N(N_), Q(N_) {
+        V = new Edge*[N];
+        ES = new Edge[MAXM];
+        sp = new int[N];
+        prev = new int[N];
+        path = new Edge*[N];
+        init();
+    }
+
+    ~MincostMaxflow() {
+        delete[] V;
+        delete[] ES;
+        delete[] sp;
+        delete[] prev;
+        delete[] path;
+    }
+
+    void addEdge(int a, int b, int cost, int capacity) {
+        Edge e1 = {V[a], 0, b, capacity, cost}, e2 = {V[b], 0, a, 0, -cost};
+        ES[++EC] = e1; V[a] = &ES[EC];
+        ES[++EC] = e2; V[b] = &ES[EC];
+        V[a]->op = V[b]; V[b]->op = V[a];
+    }
+
+    int mincostFlow() {
+        int flow = 0;
+        while (SPFA()) {
+            flow += argument();
+        }
+        return flow;
+    }
+
+private:
+    int N;
     struct Edge {
         Edge *next, *op;
         int t, c, v;    // node, residual, cost
-    } ES[MAXM], *V[MAXN];
+    };
+    Edge *ES;
+    Edge **V;
 
     void init() {
         EC = -1;
-        memset(V, 0, sizeof(V));
+        memset(V, 0, N * sizeof(Edge*));
     }
 
     struct Queue {
-        int Q[MAXN], QH, QL, Size;
-        bool inq[MAXN];
+        Queue(int N_): N(N_) {
+            Q = new int[N];
+            inq = new bool[N];
+        }
+
+        ~Queue() {
+            delete[] Q;
+            delete[] inq;
+        }
+
+        int N;
+        int *Q;
+        int QH, QL, Size;
+        bool *inq;
 
         void ins(int v) {
-            if (++QL >= MAXN) QL = 0;
+            if (++QL >= N) QL = 0;
             Q[QL] = v;
             inq[v] = true;
             Size++;
@@ -34,27 +83,21 @@ namespace MincostMaxflowNS {
             int r = Q[QH];
             inq[r] = false;
             Size--;
-            if (++QH >= MAXN) QH = 0;
+            if (++QH >= N) QH = 0;
             return r;
         }
 
         void reset() {
-            memset(Q, 0, sizeof(Q));
+            memset(Q, 0, N* sizeof(int));
             QH = Size = 0;
             QL = -1;
         }
-    } Q;
+    };
+    Queue Q;
 
 
-    int sp[MAXN], prev[MAXN];
-    Edge *path[MAXN];
-
-    void addEdge(int a, int b, int v, int c) {
-        Edge e1 = {V[a], 0, b, c, v}, e2 = {V[b], 0, a, 0, -v};
-        ES[++EC] = e1; V[a] = &ES[EC];
-        ES[++EC] = e2; V[b] = &ES[EC];
-        V[a]->op = V[b]; V[b]->op = V[a];
-    }
+    int *sp, *prev;
+    Edge **path;
 
     bool SPFA() {
         int u, v;
@@ -92,11 +135,4 @@ namespace MincostMaxflowNS {
         return flow;
     }
 
-    int mincostFlow() {
-        int flow = 0;
-        while (SPFA()) {
-            flow += argument();
-        }
-        return flow;
-    }
-}
+};
