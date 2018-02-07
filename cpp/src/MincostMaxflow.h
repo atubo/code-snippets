@@ -2,13 +2,12 @@
 class MincostMaxflow {
     // NOTE
     // 1. set up the following values
-    // 2. it is required S < other nodes < T (see code in SPFA)
+    // 2. nodes are 0-indexed
     // 3. MAXM must be twice the number of edges you added
     // 4. call init() before you use it again
 public:
     const static int INF = 1000000;
-    const static int MAXM = 1000, MAXN = 1000;
-    int S, T, EC = -1;
+    const static int MAXM = 1000;
 
     MincostMaxflow(int N_):N(N_), Q(N_) {
         V = new Edge*[N];
@@ -34,10 +33,10 @@ public:
         V[a]->op = V[b]; V[b]->op = V[a];
     }
 
-    int mincostFlow() {
+    int mincostFlow(int s, int t) {
         int flow = 0;
-        while (SPFA()) {
-            flow += argument();
+        while (SPFA(s, t)) {
+            flow += argument(t);
         }
         return flow;
     }
@@ -50,6 +49,7 @@ private:
     };
     Edge *ES;
     Edge **V;
+    int EC = -1;
 
     void init() {
         EC = -1;
@@ -99,12 +99,12 @@ private:
     int *sp, *prev;
     Edge **path;
 
-    bool SPFA() {
+    bool SPFA(int s, int t) {
         int u, v;
-        for (u = S; u <= T; u++) sp[u] = INF;
+        for (u = 0; u < N; u++) sp[u] = INF;
         Q.reset();
-        Q.ins(S);
-        sp[S] = 0; prev[S] = -1;
+        Q.ins(s);
+        sp[s] = 0; prev[s] = -1;
         while (Q.Size) {
             u = Q.pop();
             for (Edge *k = V[u]; k; k = k->next) {
@@ -117,22 +117,21 @@ private:
                 }
             }
         }
-        return sp[T] != INF;
+        return sp[t] != INF;
     }
 
-    int argument() {
+    int argument(int t) {
         int i, cost = INF, flow = 0;
         Edge *e;
-        for (i = T; prev[i] != -1; i = prev[i]) {
+        for (i = t; prev[i] != -1; i = prev[i]) {
             e = path[i];
             if (e->c < cost) cost = e->c;
         }
-        for (i = T; prev[i] != -1; i = prev[i]) {
+        for (i = t; prev[i] != -1; i = prev[i]) {
             e = path[i];
             e->c -= cost; e->op->c += cost;
             flow += e->v * cost;
         }
         return flow;
     }
-
 };
