@@ -13,8 +13,8 @@ private:
 public:
     // N, and M need to be ceiled to the next power of 2
     SegmentTreeInSegmentTree(int N_, int M_): N(N_), M(M_) {
-        nodes = new Node[2*N*2*M];
-        roots = new int[2*N];
+        nodes = new Node[2*N*2*M]{};
+        roots = new int[2*N]{};
         nodeCnt = 1;
     }
 

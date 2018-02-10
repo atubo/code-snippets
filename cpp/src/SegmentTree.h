@@ -1,13 +1,18 @@
-const int MAXN = 50010 * 2;
-
-int64_t val[131100], lazy[131100];
 
 class SegmentTree {
     int N;
-    //vector<int64_t> val, lazy;
+    int64_t *val, *lazy;
 
 public:
-    SegmentTree(int N_): N(N_) {}
+    SegmentTree(int N_): N(N_) {
+        val = new int64_t[4*N]{};
+        lazy = new int64_t[4*N]{};
+    }
+
+    ~SegmentTree() {
+        delete[] val;
+        delete[] lazy;
+    }
     // add t to range [a, b]
     void update(int t, int a, int b) {
         update(1, t, 1, N, a, b);

@@ -68,8 +68,8 @@ private:
 
     struct Queue {
         Queue(int N_): N(N_) {
-            Q = new int[N];
-            inq = new bool[N];
+            Q = new int[N]{};
+            inq = new bool[N]{};
         }
 
         ~Queue() {
