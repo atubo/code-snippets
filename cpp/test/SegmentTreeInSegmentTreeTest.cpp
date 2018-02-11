@@ -7,11 +7,13 @@ using namespace std;
 class SegmentTreeInSegmentTreeTest:public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(SegmentTreeInSegmentTreeTest);
     CPPUNIT_TEST(test);
+    CPPUNIT_TEST(testInputRangeEmpty);
     CPPUNIT_TEST_SUITE_END();
 public:
     void setUp() {}
     void tearDown() {}
     void test();
+    void testInputRangeEmpty();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SegmentTreeInSegmentTreeTest);
@@ -31,4 +33,10 @@ void SegmentTreeInSegmentTreeTest::test() {
     CPPUNIT_ASSERT_EQUAL(4, st.query(3, 4, 3, 4));
     CPPUNIT_ASSERT_EQUAL(5, st.query(2, 4, 1, 4));
     CPPUNIT_ASSERT_EQUAL(5, st.query(1, 4, 1, 4));
+}
+
+void SegmentTreeInSegmentTreeTest::testInputRangeEmpty() {
+    SegmentTreeInSegmentTree st(8, 8);
+    st.put(1, 1, 1);
+    CPPUNIT_ASSERT_EQUAL(INT_MIN, st.query(2, 1, 3, 1));
 }

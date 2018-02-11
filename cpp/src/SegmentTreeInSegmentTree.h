@@ -1,8 +1,9 @@
 // 1-indexed
 class SegmentTreeInSegmentTree {
 private:
+    static const int NULL_ELEM = INT_MIN;
     struct Node {
-        Node(): left(0), right(0), maxVal(INT_MIN) {}
+        Node(): left(0), right(0), maxVal(NULL_ELEM) {}
         int left, right, maxVal;
     };
 
@@ -29,6 +30,7 @@ public:
     }
 
     int query(int x1, int x2, int y1, int y2) {
+        if (x1 > x2 || y1 > y2) return NULL_ELEM;
         return query(1, x1, x2, 1, N, y1, y2);
     }
 
@@ -63,10 +65,10 @@ private:
 
     int query(int k, int x1, int x2, int lx, int rx, int y1, int y2) {
         assert(x1 <= x2);
-        if (x2 < lx || rx < x1) return INT_MIN;
+        if (x2 < lx || rx < x1) return NULL_ELEM;
         if (lx >= x1 && rx <= x2) return query(roots[k], y1, y2, 1, M);
         int mid = (lx + rx) / 2;
-        int ret = INT_MIN;
+        int ret = NULL_ELEM;
         if (x1 <= mid) ret = query(2*k, x1, x2, lx, mid, y1, y2);
         if (mid < x2)  ret = max(ret, query(2*k+1, x1, x2, mid+1, rx, y1, y2));
         return ret;
@@ -74,10 +76,10 @@ private:
 
     int query(int node, int y1, int y2, int l, int r) {
         assert(y1 <= y2);
-        if (y2 < l || r < y1) return INT_MIN;
+        if (y2 < l || r < y1) return NULL_ELEM;
         if (l >= y1 && r <= y2) return nodes[node].maxVal;
         int mid = (l + r) / 2;
-        int ret = INT_MIN;
+        int ret = NULL_ELEM;
         if (y1 <= mid) ret = query(nodes[node].left, y1, y2, l, mid);
         if (mid < y2)  ret = max(ret, query(nodes[node].right, y1, y2, mid+1, r));
         return ret;
