@@ -82,7 +82,16 @@ private:
                const vector<array<int, 2>> &t,
                const vector<int> &val,
                const vector<int> &d) {
-        return f == lt.f && t == lt.t && val == lt.val && d == lt.d;
+        int n = f.size();
+        for (int i = 0; i < n; i++) {
+            if (f[i] != lt.f[i] ||
+                t[i] != lt.t[i] ||
+                val[i] != lt.val[i] ||
+                d[i] != lt.d[i]) {
+                return false;
+            }
+        }
+        return true;
     } 
 
 

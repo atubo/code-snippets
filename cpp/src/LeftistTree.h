@@ -7,10 +7,27 @@ public:
     LeftistTree(int size) {
         N = size;
 
-        f.resize(N+1);
+        f = new int[N+1]{};
         t.resize(N+1);
-        val.resize(N+1);
-        d.resize(N+1, -1);
+        val = new int[N+1]{};
+        d = new int[N+1];
+        memset(d, -1, (N+1) * sizeof(int));
+    }
+
+    ~LeftistTree() {
+        delete[] f;
+        delete[] val;
+        delete[] d;
+    }
+
+    void clear(int m) {
+        int sz = (m + 1) * sizeof(int);
+        memset(f, 0, sz);
+        memset(val, 0, sz);
+        memset(d, -1, sz);
+        for (int i = 0; i <= m; i++) {
+            t[i][0] = t[i][1] = 0;
+        }
     }
 
     // build single node
@@ -98,10 +115,10 @@ public:
     }
 
     int N;  // number of elements, 0 (NULL) excluded
-    vector<int> f;
+    int *f;
     vector<array<int, 2>> t;
-    vector<int> val;
-    vector<int> d;
+    int *val;
+    int *d;
     Cmp cmp;
 
 private:
