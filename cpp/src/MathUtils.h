@@ -49,19 +49,22 @@ namespace Binom {
 }
 
 // (g, x, y) that a*x + b*y = g
-tuple<int64_t, int64_t, int64_t> ext_gcd(int64_t a, int64_t b) {
+void ext_gcd(int64_t a, int64_t b, int64_t &g, int64_t &x, int64_t &y) {
     if (b == 0) {
-        return make_tuple(a, 1, 0);
+        g = a; x = 1; y = 0;
+        return;
     }
     int64_t dp, xp, yp;
-    tie(dp, xp, yp) = ext_gcd(b, a % b);
-    return make_tuple(dp, yp, xp - a / b * yp);
+    ext_gcd(b, a % b, dp, xp, yp);
+    g = dp;
+    x = yp;
+    y = xp - a / b * yp;
 }
 
 // find x that a*x = b mod n
 int64_t mod_solve(int64_t a, int64_t b, int n) {
     int64_t d, xp, yp;
-    tie(d, xp, yp) = ext_gcd(a, n);
+    ext_gcd(a, n, d, xp, yp);
     if (b % d == 0) {
         int64_t x0 = (xp * (b / d) % n + n) % n;
         return x0;
