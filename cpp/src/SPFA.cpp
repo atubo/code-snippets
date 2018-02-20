@@ -1,59 +1,78 @@
-#include <algorithm>
-#include <climits>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <tuple>
-#include <vector>
-using namespace std;
-
-typedef vector<map<int, int>> Adj;
-
 class SPFA {
+    const static int MAXM = 620000;
     const static int64_t INF;
 
+    struct Edge {
+        int next, to, wt;
+    };
+
 public:
-    SPFA(const Adj& adj_):adj(adj_) {
-        N = adj.size();
+    SPFA(int N_): N(N_) {
+        head = new int[N];
+        eTotal = 0;
+        for (int i = 0; i < N; i++) {
+            head[i] = -1;
+        }
+        E = new Edge[MAXM]{};
+
+        inq = new int[N];
+        cnt = new int[N];
+    }
+
+    ~SPFA() {
+        delete[] head;
+        delete[] E;
+        delete[] inq;
+        delete[] cnt;
+    }
+
+    void addEdge(int u, int v, int w) {
+        E[eTotal].to = v;
+        E[eTotal].next = head[u];
+        E[eTotal].wt = w;
+        head[u] = eTotal++;
     }
 
     void init(int src) {
         while (!Q.empty()) Q.pop();
-        inq.clear();
         dist.clear();
         path.clear();
 
-        inq.resize(N, 0);
+        memset(inq, 0, N * sizeof(int));
+        memset(cnt, 0, N * sizeof(int));
         dist.resize(N, INF);
         path.resize(N, src);
 
         dist[src] = 0;
-        inq[src]++;
     }
 
-    void solve(int src) {
+    bool solve(int src) {
         init(src);
 
         Q.push(src);
+        inq[src]++;
+        cnt[src]++;
         while (!Q.empty()) {
             int u = Q.front();
             Q.pop();
             inq[u]--;
 
-            for (const auto& nbr: adj[u]) {
-                int v;
-                int64_t w;
-                tie(v, w) = nbr;
+            for (int eidx = head[u]; eidx != -1; eidx = E[eidx].next) {
+                int v = E[eidx].to;
+                int64_t w = E[eidx].wt;
                 if (dist[v] > dist[u] + w) {
                     dist[v] = dist[u] + w;
                     path[v] = u;
                     if (!inq[v]) {
                         Q.push(v);
                         inq[v]++;
+                        cnt[v]++;
+                        if (cnt[v] > N) return false;
                     }
                 }
             }
         }
+        return true;
     }
 
     const vector<int64_t>& getDist() const {return dist;}
@@ -61,10 +80,14 @@ public:
     const vector<int>& getPath() const {return path;}
 
 private:
-    const Adj& adj;
+    int *head;
+    int eTotal;
+    Edge *E;
+
     queue<int> Q;
     int N;
-    vector<int> inq;    // if node is in queue
+    int *inq;    // if node is in queue
+    int *cnt;    // how many time a node has been in the queue
     vector<int64_t> dist;
     vector<int> path;
 };
