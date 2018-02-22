@@ -11,20 +11,18 @@ public:
     void tearDown() {}
 
     void testNegativeWeightCycle() {
-        SpfaDfs::Graph g(3);
-        g.addEdge(0, 1, 0);
-        g.addEdge(1, 2, 1);
-        g.addEdge(2, 0, -2);
-        SpfaDfs spfa(g);
+        SpfaDfs spfa(3);
+        spfa.addEdge(0, 1, 0);
+        spfa.addEdge(1, 2, 1);
+        spfa.addEdge(2, 0, -2);
         CPPUNIT_ASSERT(!spfa.check(0));
     }
 
     void testNoNegativeWeightCycle() {
-        SpfaDfs::Graph g(3);
-        g.addEdge(0, 1, 0);
-        g.addEdge(1, 2, 2);
-        g.addEdge(2, 0, -1);
-        SpfaDfs spfa(g);
+        SpfaDfs spfa(3);
+        spfa.addEdge(0, 1, 0);
+        spfa.addEdge(1, 2, 2);
+        spfa.addEdge(2, 0, -1);
         CPPUNIT_ASSERT(spfa.check(0));
     }
 

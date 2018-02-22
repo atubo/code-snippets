@@ -1,31 +1,31 @@
 class SpfaDfs {
+    static const int MAXM = 610000;
     static const int INF = INT_MAX;
 
 public:
-    struct Graph {
-        static const int MAXN = 20010;
-        vector<int> head;
-        int N;
-
-        int next[MAXN];
-        int to[MAXN];
-        int weight[MAXN];
-
-        explicit Graph(int N_): N(N_) {
-            head.resize(N);
-        }
-
-        void addEdge(int u, int v, int w) {
-            static int q = 1;
-            to[q] = v;
-            weight[q] = w;
-            next[q] = head[u];
-            head[u] = q++;
-        }
+    struct Edge {
+        int next, to, wt;
     };
 
-    SpfaDfs(const Graph& g): graph(g) {
-        N = graph.N;
+    SpfaDfs(int N_): N(N_) {
+        head = new int[N];
+        eTotal = 0;
+        for (int i = 0; i < N; i++) {
+            head[i] = -1;
+        }
+        E = new Edge[MAXM]{};
+    }
+
+    ~SpfaDfs() {
+        delete[] head;
+        delete[] E;
+    }
+
+    void addEdge(int u, int v, int w) {
+        E[eTotal].to = v;
+        E[eTotal].next = head[u];
+        E[eTotal].wt = w;
+        head[u] = eTotal++;
     }
 
     bool check(int u) {
@@ -33,13 +33,18 @@ public:
         return dfs(u);
     }
 
+    int getDist(int u) const {return dist[u];}
+
 private:
-    const Graph& graph;
     queue<int> Q;
     int N;
     vector<int> inq;    // if node is in queue
     vector<int> dist;
     vector<int> path;
+
+    int *head;
+    int eTotal;
+    Edge *E;
 
     void init(int src) {
         while (!Q.empty()) Q.pop();
@@ -57,9 +62,9 @@ private:
     bool dfs(int u) {
         if (inq[u]) return false;
         inq[u] = 1;
-        for (int j = graph.head[u]; j; j = graph.next[j]) {
-            int v = graph.to[j];
-            int w = graph.weight[j];
+        for (int eidx = head[u]; eidx != -1; eidx = E[eidx].next) {
+            int v = E[eidx].to;
+            int w = E[eidx].wt;
             if (dist[v] > dist[u] + w) {
                 dist[v] = dist[u] + w;
                 if (!dfs(v)) return false;
