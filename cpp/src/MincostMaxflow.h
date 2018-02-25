@@ -10,11 +10,11 @@ public:
     const static int MAXM = 1000;
 
     MincostMaxflow(int N_):N(N_), Q(N_) {
-        V = new Edge*[N];
-        ES = new Edge[MAXM];
-        sp = new int[N];
-        prev = new int[N];
-        path = new Edge*[N];
+        V = new Edge*[N]{};
+        ES = new Edge[MAXM]{};
+        sp = new int[N]{};
+        prev = new int[N]{};
+        path = new Edge*[N]{};
         init();
     }
 
@@ -46,7 +46,7 @@ public:
     pair<int, int> mincostFlow(int s, int t) {
         FlowCost fc{};
         while (SPFA(s, t)) {
-            fc += argument(t);
+            fc += augment(t);
         }
         return make_pair(fc.flow, fc.cost);
     }
@@ -130,7 +130,7 @@ private:
         return sp[t] != INF;
     }
 
-    FlowCost argument(int t) {
+    FlowCost augment(int t) {
         int i, low = INF, cost = 0;
         Edge *e;
         for (i = t; prev[i] != -1; i = prev[i]) {
