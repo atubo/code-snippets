@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "Graph.cpp"
+#include "Graph.h"
 #include "TopologicalSort.h"
 
 #include <cppunit/extensions/HelperMacros.h>

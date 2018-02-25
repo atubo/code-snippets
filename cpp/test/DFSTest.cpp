@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "Graph.cpp"
+#include "Graph.h"
 #include "DFS.cpp"
 
 #include <boost/assign/list_of.hpp>

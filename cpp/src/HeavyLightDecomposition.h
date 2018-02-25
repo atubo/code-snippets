@@ -1,5 +1,5 @@
 
-#include "Graph.cpp"
+#include "Graph.h"
 #include "SegmentTreeTD.h"
 
 class HeavyLightDecomposition {

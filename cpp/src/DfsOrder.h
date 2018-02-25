@@ -1,5 +1,5 @@
 // generate DFS order for a tree
-#include "Graph.cpp"
+#include "Graph.h"
 
 class DfsOrder {
 public:
