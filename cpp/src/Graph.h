@@ -4,11 +4,13 @@ class Graph {
 public:
     struct Edge {
         int next, to;
-    } E[MAXM];
+    };
 
     vector<int> head;
     int eidx;
     int N;
+
+    Edge *E;
 
     Graph(int N_):N(N_) {
         head.resize(N);
@@ -17,6 +19,12 @@ public:
         for (int i = 0; i < N; i++) {
             head[i] = -1;
         }
+
+        E = new Edge[MAXM]{};
+    }
+
+    ~Graph() {
+        delete[] E;
     }
 
     // assume 0-indexed and no duplication
