@@ -1,7 +1,7 @@
 
 class TarjanSCC {
     struct Edge {
-        int from, to, nex;
+        int to, next;
         bool sign;  // bridge?
     };
 
@@ -19,7 +19,7 @@ public:
         }
 
         void add(int u, int v) {
-            Edge e = {u, v, head[u], false};
+            Edge e = {v, head[u], false};
             edge.push_back(e);
             head[u] = edgenum++;
         }
@@ -38,7 +38,7 @@ public:
     vector<int> Stack;
 
     vector<vector<int> > ng;    // new graph
-    vector<int> du;             // in-degree of the new graph
+    vector<int> in, out;        // in and out degrees of the new graph
 
     TarjanSCC(Graph& g_):g(g_), N(g.N) {
         top = Time = 0;
@@ -59,12 +59,18 @@ public:
     void assign() {
         // set up new graph
         ng.resize(taj);
-        du.resize(taj, 0);
-        for (int i = 0; i < g.edgenum; i++) {
-            int u = belong[g.edge[i].from], v = belong[g.edge[i].to];
-            if (u != v) {
-                ng[u].push_back(v);
-                du[v]++;
+        in.resize(taj, 0);
+        out.resize(taj, 0);
+
+        for (int i = 0; i < g.N; i++) {
+            for (int eidx = g.head[i]; ~eidx; eidx = g.edge[eidx].next) {
+                int u = belong[i];
+                int v = belong[g.edge[eidx].to];
+                if (u != v) {
+                    ng[u].push_back(v);
+                    out[u]++;
+                    in[v]++;
+                }
             }
         }
     }
@@ -75,7 +81,7 @@ private:
         Stack[top++] = u;
         instack[u] = true;
 
-        for (int i = g.head[u]; ~i; i = g.edge[i].nex) {
+        for (int i = g.head[u]; ~i; i = g.edge[i].next) {
             int v = g.edge[i].to;
             if (DFN[v] == -1) {
                 tarjan(v, u);
