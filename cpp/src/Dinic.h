@@ -33,13 +33,25 @@ public:
         head[y] = e++;
     }
 
+    int dinic(int s, int t) {
+        int ans = 0;
+        while (bfs(s, t)) {
+            for (int i = 0; i < N; i++) {
+                curr[i] = head[i];
+            }
+            int k = dfs(s, inf, t);
+            if (k > 0) ans += k;
+        }
+        return ans;
+    }
+
 private:
     void alloc() {
-        head = new int[N];
-        curr = new int[N];
-        E    = new Edge[MAXM];
-        d    = new int[N];
-        q    = new int[N];
+        head = new int[N]{};
+        curr = new int[N]{};
+        E    = new Edge[MAXM]{};
+        d    = new int[N]{};
+        q    = new int[N]{};
     }
 
     void dealloc() {
@@ -89,18 +101,5 @@ private:
             }
         }
         return ret;
-    }
-
-public:
-    int dinic(int s, int t) {
-        int ans = 0;
-        while (bfs(s, t)) {
-            for (int i = 0; i < N; i++) {
-                curr[i] = head[i];
-            }
-            int k = dfs(s, inf, t);
-            if (k > 0) ans += k;
-        }
-        return ans;
     }
 };
