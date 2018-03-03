@@ -15,16 +15,16 @@ public:
 
     void testScc() {
         TarjanSCC::Graph g(8);
-        g.add(0, 1);
-        g.add(1, 2);
-        g.add(1, 6);
-        g.add(6, 2);
-        g.add(0, 3);
-        g.add(3, 4);
-        g.add(4, 5);
-        g.add(5, 7);
-        g.add(5, 3);
-        g.add(7, 3);
+        g.addEdge(0, 1);
+        g.addEdge(1, 2);
+        g.addEdge(1, 6);
+        g.addEdge(6, 2);
+        g.addEdge(0, 3);
+        g.addEdge(3, 4);
+        g.addEdge(4, 5);
+        g.addEdge(5, 7);
+        g.addEdge(5, 3);
+        g.addEdge(7, 3);
 
         TarjanSCC tarjan(g);
         tarjan.dfs();

@@ -8,9 +8,9 @@ class TarjanSCC {
 public:
     class Graph {
     private:
-        int N, M;
+        int N;
         vector<int> head;
-        vector<Edge> edge;
+        vector<Edge> E;
         int edgenum;
     public:
         Graph(int N_): N(N_) {
@@ -18,9 +18,9 @@ public:
             edgenum = 0;
         }
 
-        void add(int u, int v) {
+        void addEdge(int u, int v) {
             Edge e = {v, head[u], false};
-            edge.push_back(e);
+            E.push_back(e);
             head[u] = edgenum++;
         }
         friend class TarjanSCC;
@@ -63,9 +63,9 @@ public:
         out.resize(taj, 0);
 
         for (int i = 0; i < g.N; i++) {
-            for (int eidx = g.head[i]; ~eidx; eidx = g.edge[eidx].next) {
+            for (int eidx = g.head[i]; ~eidx; eidx = g.E[eidx].next) {
                 int u = belong[i];
-                int v = belong[g.edge[eidx].to];
+                int v = belong[g.E[eidx].to];
                 if (u != v) {
                     ng[u].push_back(v);
                     out[u]++;
@@ -81,13 +81,13 @@ private:
         Stack[top++] = u;
         instack[u] = true;
 
-        for (int i = g.head[u]; ~i; i = g.edge[i].next) {
-            int v = g.edge[i].to;
+        for (int i = g.head[u]; ~i; i = g.E[i].next) {
+            int v = g.E[i].to;
             if (DFN[v] == -1) {
                 tarjan(v, u);
                 low[u] = min(low[u], low[v]);
                 if (DFN[u] < low[v]) {
-                    g.edge[i].sign = 1;   // it's bridge
+                    g.E[i].sign = 1;   // it's bridge
                 }
             } else if (instack[v]) low[u] = min(low[u], DFN[v]);
         }
