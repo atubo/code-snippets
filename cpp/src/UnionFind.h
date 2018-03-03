@@ -15,6 +15,7 @@ private:
     }
 
     void link(int u, int v) {
+        if (u == v) return;
         if (rank[u] > rank[v]) {
             parent[v] = u;
             size[u] += size[v];
