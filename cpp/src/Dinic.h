@@ -1,15 +1,17 @@
 class Dinic {
 public:
     static const int inf = 0x3f3f3f3f;
-private:
-    static const int MAXM = 1000;
-    const int N;
-    int *head, *curr;
     struct Edge {
         int to, next, cap;
     };
+
+    const int N;
+    int *head;
     Edge *E;
     int e;
+private:
+    static const int MAXM = 1000;
+    int *curr;
 
 public:
     Dinic(int N_): N(N_) {
