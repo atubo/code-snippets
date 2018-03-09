@@ -17,7 +17,7 @@ public:
         ct.addEdge(0, 4, 5);
         ct.addEdge(2, 4, 8);
         ct.addEdge(2, 3, 2);
-        ct.build(0, 4);
+        ct.build();
 
         CPPUNIT_ASSERT(ct.edges[0][0] == make_pair(1, 0LL));
         CPPUNIT_ASSERT(ct.edges[0][1] == make_pair(2, 14LL));

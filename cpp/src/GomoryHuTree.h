@@ -24,6 +24,24 @@ public:
         dinic.addEdge(u, v, w, w);
     }
 
+    void build() {
+        build(0, N-1);
+    }
+private:
+    void alloc() {
+        vis = new int[N];
+        memset(vis, -1, N * sizeof(int));
+        id  = new int[N];
+        for (int i = 0; i < N; i++) {
+            id[i] = i;
+        }
+        edges.resize(N);
+    }
+
+    void dealloc() {
+        delete[] vis;
+    }
+
     void build(int l, int r) {
         if (l >= r) return;
         vector<int> tmp(N);
@@ -43,21 +61,6 @@ public:
         for (int i = l; i <= r; i++) id[i] = tmp[i];
         build(l, p - 1);
         build(q + 1, r);
-    }
-
-private:
-    void alloc() {
-        vis = new int[N];
-        memset(vis, -1, N * sizeof(int));
-        id  = new int[N];
-        for (int i = 0; i < N; i++) {
-            id[i] = i;
-        }
-        edges.resize(N);
-    }
-
-    void dealloc() {
-        delete[] vis;
     }
 
     void dfs(int x) {
