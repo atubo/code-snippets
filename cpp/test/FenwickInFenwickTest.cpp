@@ -11,7 +11,7 @@ public:
     void setUp() {}
     void tearDown() {}
 
-    void test() {
+    void testUpdate() {
         FenwickInFenwick ft(4, 3);
         ft.add(1, 1, 1);
         ft.add(2, 1, 2);
@@ -24,8 +24,16 @@ public:
         CPPUNIT_ASSERT_EQUAL(15, ft.query(1, 1, 4, 3));
     }
 
+    void testInvalidQueryRange() {
+        FenwickInFenwick ft(3, 3);
+        ft.add(2, 2, 1);
+        ft.add(2, 3, 2);
+        CPPUNIT_ASSERT_EQUAL(0, ft.query(3, 3, 2, 2));
+    }
+
     CPPUNIT_TEST_SUITE(FenwickInFenwickTest);
-    CPPUNIT_TEST(test);
+    CPPUNIT_TEST(testUpdate);
+    CPPUNIT_TEST(testInvalidQueryRange);
     CPPUNIT_TEST_SUITE_END();
 };
 

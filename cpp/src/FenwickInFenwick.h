@@ -21,6 +21,7 @@ public:
 
     // weight sum in region (x1, y1) -> (x2, y2), inclusive
     int query(int x1, int y1, int x2, int y2) {
+        if (x1 > x2 || y1 > y2) return 0;
         return query(x2, y2) - query(x1-1, y1) - query(x2, y1-1) +
             query(x1-1, y1-1);
     }
