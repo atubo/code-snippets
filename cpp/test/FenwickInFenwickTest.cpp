@@ -31,9 +31,20 @@ public:
         CPPUNIT_ASSERT_EQUAL(0, ft.query(3, 3, 2, 2));
     }
 
+    void testQuery() {
+        FenwickInFenwick ft(5, 2);
+        ft.add(2, 1, 1);
+        ft.add(2, 2, 1);
+        ft.add(5, 1, 1);
+        ft.add(5, 2, 1);
+        CPPUNIT_ASSERT_EQUAL(0, ft.query(3, 1, 4, 2));
+    }
+
+
     CPPUNIT_TEST_SUITE(FenwickInFenwickTest);
     CPPUNIT_TEST(testUpdate);
     CPPUNIT_TEST(testInvalidQueryRange);
+    CPPUNIT_TEST(testQuery);
     CPPUNIT_TEST_SUITE_END();
 };
 
