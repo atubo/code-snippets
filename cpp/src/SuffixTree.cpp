@@ -14,31 +14,36 @@ using namespace std;
  */
 class SuffixNode 
 {
-    public:
+public:
     static constexpr const char* ALPHABET = "abcdefghijklmnopqrstuvwxyz$";
     const static int ALPHASIZE = strlen(ALPHABET);
 
-        int depth, begin, end;
-        SuffixNode **children;
-        SuffixNode *parent, *suffixLink;  
-        /* 
-         * Constructor 
-         */
-        SuffixNode(int begin_, int end_, int depth_, SuffixNode *parent_) 
-        {
-            children = new SuffixNode* [ALPHASIZE];
-            for (int i = 0; i < ALPHASIZE; i++) children[i] = NULL;
-            this->begin = begin_;
-            this->end = end_;
-            this->parent = parent_;
-            this->depth = depth_;
-            this->suffixLink = NULL;
+    int depth, begin, end;
+    SuffixNode **children;
+    SuffixNode *parent, *suffixLink;
+    /*
+     * Constructor
+     */
+    SuffixNode(int begin_, int end_, int depth_, SuffixNode *parent_) {
+        children = new SuffixNode* [ALPHASIZE];
+        for (int i = 0; i < ALPHASIZE; i++) children[i] = NULL;
+        this->begin = begin_;
+        this->end = end_;
+        this->parent = parent_;
+        this->depth = depth_;
+        this->suffixLink = NULL;
+    }
+
+    ~SuffixNode() {
+        for (int i = 0; i < ALPHASIZE; i++) {
+            delete children[i];
         }
- 
-        bool contains(int d)
-        {
-            return depth <= d && d < depth + (end - begin);
-        }    
+        delete[] children;
+    }
+
+    bool contains(int d) {
+        return depth <= d && d < depth + (end - begin);
+    }
 };
  
 /* 
@@ -47,13 +52,19 @@ class SuffixNode
 class SuffixTree 
 {
 public:
-        /* 
-         * Funtion to build suffix tree for given text 
-         */
-    SuffixNode *buildSuffixTree(string s) 
-    {
+    SuffixTree() {
+        root = NULL;
+    }
+
+    ~SuffixTree() {
+        delete root;
+    }
+    /*
+     * Funtion to build suffix tree for given text
+     */
+    void build(string s) {
         int n = s.length();
-        int *a = new int[n];
+        int a[n];
         for (int i = 0; i < n; i++) 
         {
             bool found = false;
@@ -66,7 +77,7 @@ public:
             }
             assert(found);
         }
-        SuffixNode *root = new SuffixNode(0, 0, 0, NULL);
+        root = new SuffixNode(0, 0, 0, NULL);
         SuffixNode *cn = root;
         root->suffixLink = root;
         SuffixNode *needsSuffixLink = NULL;
@@ -138,6 +149,8 @@ public:
             }
         }
         root->suffixLink = NULL;
-        return root;
-    }        
+    }
+
+public:
+    SuffixNode *root;
 };
