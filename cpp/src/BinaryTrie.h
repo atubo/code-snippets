@@ -4,6 +4,13 @@ public:
     class Node {
     public:
         Node():children(2, NULL), count(0) {}
+
+        ~Node() {
+            for (Node* child: children) {
+                delete child;
+            }
+        }
+
         vector<Node*> children;
         int count;
     };
@@ -13,6 +20,10 @@ public:
 
     BinaryTrie(int N_): N(N_) {
         root = new Node();
+    }
+
+    ~BinaryTrie() {
+        delete root;
     }
 
     void insert(int x) {
