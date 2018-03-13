@@ -40,6 +40,7 @@ private:
 
     void dealloc() {
         delete[] vis;
+        delete[] id;
     }
 
     void build(int l, int r) {
