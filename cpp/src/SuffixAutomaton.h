@@ -7,25 +7,50 @@ public:
         Node *ch[CHARSET_SIZE], *next;
         int max, posCnt;
 
-        Node(int max = 0, bool newSuffix = false):
-            ch(), next(NULL), max(max), posCnt(newSuffix) {}
-
         int getMin() {
             return next->max + 1;
         }
+    private:
+        Node(int max = 0, bool newSuffix = false):
+            ch(), next(NULL), max(max), posCnt(newSuffix) {}
+        friend SuffixAutomaton;
     };
 
+    Node *_pool;
     Node *start, *last, *_curr;
-    Node _pool[MAXN * 2 + 1];
     vector<Node*> topo;
 
     SuffixAutomaton() {
+        _pool = new Node[MAXN * 2 + 1];
         _curr = _pool;
-        start = last = new (_curr++)Node;
+        start = last = alloc(0, false);
+    }
+
+    ~SuffixAutomaton() {
+        delete[] _pool;
+    }
+
+    void build(const string &s) {
+        for (char c: s) {
+            extend(c - 'a');
+        }
+    }
+
+    void calc() {
+        toposort();
+        for (int i = topo.size()-1; i > 0; i--) {
+            Node *v = topo[i];
+            v->next->posCnt += v->posCnt;
+        }
+    }
+
+private:
+    Node *alloc(int max, bool newSuffix) {
+        return new (_curr++)Node(max, newSuffix);
     }
 
     Node *extend(int c) {
-        Node *u = new (_curr++)Node(last->max + 1, true), *v = last;
+        Node *u = alloc(last->max + 1, true), *v = last;
 
         for (; v && !v->ch[c]; v = v->next) v->ch[c] = u;
 
@@ -34,7 +59,7 @@ public:
         } else if (v->ch[c]->max == v->max + 1) {
             u->next = v->ch[c];
         } else {
-            Node *n = new (_curr++)Node(v->max + 1, false), *o = v->ch[c];
+            Node *n = alloc(v->max + 1, false), *o = v->ch[c];
             std::copy(o->ch, o->ch + CHARSET_SIZE, n->ch);
             n->next = o->next;
             o->next = u->next = n;
@@ -45,21 +70,18 @@ public:
     }
 
     void toposort() {
+        static int buc[MAXN * 2 + 1];
+        int max = 0;
+        for (Node *p = _pool; p != _curr; p++) {
+            max = std::max(max, p->max);
+            buc[p->max]++;
+        }
+        for (int i = 1; i <= max; i++) buc[i] += buc[i-1];
         topo.clear();
         topo.resize(_curr - _pool);
-        for (int i = 0; i < _curr - _pool; i++) {
-            topo[i] = &_pool[i];
+        for (Node *p = _pool; p != _curr; p++) {
+            topo[--buc[p->max]] = p;
         }
-        sort(topo.begin(), topo.end(), [](const Node *a, const Node *b) {
-             return a->max < b->max;
-             });
-    }
-
-    void calc() {
-        toposort();
-        for (int i = topo.size()-1; i > 0; i--) {
-            Node *v = topo[i];
-            v->next->posCnt += v->posCnt;
-        }
+        std::fill(buc, buc + max + 1, 0);
     }
 };

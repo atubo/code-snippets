@@ -23,9 +23,7 @@ public:
     void testBuild() {
         string s = "abca";
         SuffixAutomaton sam;
-        for (int i = 0; i < 4; i++) {
-            sam.extend(s[i]-'a');
-        }
+        sam.build(s);
         CPPUNIT_ASSERT(checkSubstring(sam, "abca"));
         CPPUNIT_ASSERT(checkSubstring(sam, "bc"));
         CPPUNIT_ASSERT(checkSubstring(sam, "ab"));
@@ -35,9 +33,7 @@ public:
     void testCalc() {
         string s = "ababc";
         SuffixAutomaton sam;
-        for (int i = 0; i < 5; i++) {
-            sam.extend(s[i] - 'a');
-        }
+        sam.build(s);
         sam.calc();
         SuffixAutomaton::Node *node = sam.start;
         node = node->ch[0];
