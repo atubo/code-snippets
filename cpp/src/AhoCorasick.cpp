@@ -20,6 +20,7 @@ using namespace std;
     Please see
     1. http://www.cs.uku.fi/~kilpelai/BSA05/lectures/slides04.pdf
     2. http://codeforces.com/blog/entry/14854
+    3. https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm
  */
 class AhoCorasick {
 public:
@@ -28,68 +29,79 @@ public:
     vector<map<char, int> > to;
     vector<set<int> > out;
     int sz = 1;
-    int *link, *que;
+    int *link;  // blue link in the wiki
+    int *next;  // green link in the wiki
+    int *que;
     int keywordIndex;
 
     AhoCorasick(): to(MAXN), out(MAXN), keywordIndex(0) {
         link = new int[MAXN]{};
+        next = new int[MAXN]{};
         que  = new int[MAXN]{};
     }
 
     ~AhoCorasick() {
         delete[] link;
+        delete[] next;
         delete[] que;
     }
 
-    void add_str(string s)
-    {
+    void add_str(const string &s) {
         int v = 0;
-        for(auto c: s)
-        {
+        for(auto c: s) {
             if(!to[v][c]) to[v][c] = sz++;
             v = to[v][c];
         }
         out[v].insert(keywordIndex++);
     }
 
-    void push_links()
-    {
+    void push_links() {
         link[0] = -1;
         int st = 0, fi = 1;
         que[0] = 0;
-        while(st < fi)
-        {
+        while (st < fi) {
             int v = que[st++];
-            for(auto it: to[v])
-            {
+            for(auto it: to[v]) {
                 int u = it.second;
                 int c = it.first;
                 int j = link[v];
                 while(j != -1 && !to[j][c]) j = link[j];
                 if(j != -1) link[u] = to[j][c];
-                out[u].insert(out[link[u]].begin(), out[link[u]].end());
+                if (out[link[u]].empty()) {
+                    next[u] = next[link[u]];
+                } else {
+                    next[u] = link[u];
+                }
                 que[fi++] = u;
             }
         }
     }
 
-    int countTotalMatches(const string& T) {
+    int countTotalMatches(const string &t) {
         int result = 0;
         int q = 0;
-        for (int i = 0; i < (int)T.length(); i++) {
-            char c = T[i];
+        for (int i = 0; i < (int)t.length(); i++) {
+            char c = t[i];
             while (q != -1 && to[q][c] == 0) {
                 q = link[q];
             }
             if (q != -1) {
                 q = to[q][c];
-                if (!out[q].empty()) {
-                    result += out[q].size();
-                }
+                result += followDictSuffixLink(q);
             } else {
                 q = 0;
             }
         }
         return result;
+    }
+
+private:
+    int followDictSuffixLink(int q) {
+        int res = 0;
+        while (q != 0) {
+            res += out[q].size();
+            q = next[q];
+        }
+        return res;
     }
 };
