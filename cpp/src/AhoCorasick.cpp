@@ -27,14 +27,18 @@ public:
 
     vector<map<char, int> > to;
     vector<set<int> > out;
-    int link[MAXN], que[MAXN], sz = 1;
+    int sz = 1;
+    int *link, *que;
     int keywordIndex;
 
-    AhoCorasick():
-        to(MAXN), out(MAXN), keywordIndex(0) {
-        memset(link, 0, MAXN*sizeof(int));
-        memset(que,  0, MAXN*sizeof(int));
+    AhoCorasick(): to(MAXN), out(MAXN), keywordIndex(0) {
+        link = new int[MAXN]{};
+        que  = new int[MAXN]{};
+    }
 
+    ~AhoCorasick() {
+        delete[] link;
+        delete[] que;
     }
 
     void add_str(string s)
