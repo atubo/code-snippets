@@ -13,13 +13,13 @@ public:
         M = cmax - cmin + 1;
         MAXN = max(M, N);
 
-        wa = new int[MAXN];
-        wb = new int[MAXN];
-        wv = new int[MAXN];
-        ws = new int[MAXN];
-        sa = new int[MAXN];
-        r  = new int[MAXN];
-        lcp = new int[MAXN];
+        wa = new int[MAXN]{};
+        wb = new int[MAXN]{};
+        wv = new int[MAXN]{};
+        ws = new int[MAXN]{};
+        sa = new int[MAXN]{};
+        r  = new int[MAXN]{};
+        lcp = new int[MAXN]{};
 
         for (int i = 0; i < N; i++) {
             r[i] = s[i] - cmin;
