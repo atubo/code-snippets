@@ -1,12 +1,18 @@
 // Suffix array using radix sort
 // which means the alphabet of the input string should be small
 // END character must be the smallest
-// MAXN must >= max(N, M)
 // See: 罗穗骞 后缀数组 - 处理字符串的有力工具
-const int MAXN = 400010;
 class SuffixArrayRadix {
 public:
     SuffixArrayRadix(const string &s_):s(s_), N(s.length()) {
+        char cmin = 0x7F, cmax = 0;
+        for (char c: s) {
+            cmin = min(cmin, c);
+            cmax = max(cmax, c);
+        }
+        M = cmax - cmin + 1;
+        MAXN = max(M, N);
+
         wa = new int[MAXN];
         wb = new int[MAXN];
         wv = new int[MAXN];
@@ -15,12 +21,6 @@ public:
         r  = new int[MAXN];
         lcp = new int[MAXN];
 
-        char cmin = 0x7F, cmax = 0;
-        for (char c: s) {
-            cmin = min(cmin, c);
-            cmax = max(cmax, c);
-        }
-        M = cmax - cmin + 1;
         for (int i = 0; i < N; i++) {
             r[i] = s[i] - cmin;
         }
@@ -87,4 +87,5 @@ public:
     const int N;
 private:
     int M;
+    int MAXN;
 };

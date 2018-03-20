@@ -15,6 +15,7 @@ namespace SuffixArray
     int N, gap;
     int sa[MAXN], pos[MAXN], tmp[MAXN], lcp[MAXN];
     int P[MAXP][MAXN];
+    int height[MAXP][MAXN];
     int NP;
 
     bool sufCmp(int i, int j)
@@ -56,18 +57,24 @@ namespace SuffixArray
         }
     }
 
-    int calcLCP(int x, int y)
-    {
-        int k, ret = 0;
-        if (x == y) return N-x;
-        for (k = NP-1; k >= 0 && x < N && y < N; k--) {
-            if (P[k][x] == P[k][y]) {
-                x += 1 << k;
-                y += 1 << k;
-                ret += 1 << k;
+    void buildRMQ() {
+        for (int i = 0; i < N; i++) {
+            height[0][i] = lcp[i];
+        }
+        for (int j = 1; (1<<j) < N; j++) {
+            for (int i = 0; i < N; i++) {
+                if (i + (1<<j) > N) break;
+                height[j][i] = min(height[j-1][i], height[j-1][i+(1<<(j-1))]);
             }
         }
-        return ret;
+    }
+
+    int calcLCP(int x, int y) {
+        x = pos[x]; y = pos[y];
+        if (x > y) swap(x, y);
+        int k = 0;
+        while ((1<<(k+1)) < (y-x)) k++;
+        return min(height[k][x], height[k][y-(1<<k)]);
     }
 } // end namespace SuffixArray
 

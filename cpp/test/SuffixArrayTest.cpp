@@ -70,6 +70,7 @@ public:
             }
         }
         
+        SuffixArray::buildRMQ();
         CPPUNIT_ASSERT_EQUAL(2, SuffixArray::calcLCP(2, 0));
         CPPUNIT_ASSERT_EQUAL(1, SuffixArray::calcLCP(1, 3));
         CPPUNIT_ASSERT_EQUAL(0, SuffixArray::calcLCP(0, 6));
