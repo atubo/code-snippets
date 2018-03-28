@@ -21,6 +21,18 @@ public:
         T = new Node[(N+1) * int(log2(M)+1)]{};
     }
 
+    // for user's convenience
+    void insert(int currRootIndex, int prevRootIndex, int x, int t) {
+        root[currRootIndex] = root[prevRootIndex];
+        insert(root[currRootIndex], x, t, 0, M-1);
+    }
+
+    // query in range [start, end]
+    int query(int rootIndex, int start, int end) {
+        return query(root[rootIndex], start, end, 0, M-1);
+    }
+
+private:
     // insert a new weight node x with value t
     // current range is [l, r]
     void insert(int &now, int x, int t, int l, int r) {
@@ -31,17 +43,6 @@ public:
         int mid = (l + r) / 2;
         if (x <= mid) insert(T[now].L, x, t, l, mid);
         else          insert(T[now].R, x, t, mid+1, r);
-    }
-
-    // for user's convenience
-    void insert(int &now, int from, int x, int t) {
-        now = from;
-        insert(now, x, t, 0, M-1);
-    }
-
-    // query in range [start, end]
-    int query(int rootIndex, int start, int end) {
-        return query(root[rootIndex], start, end, 0, M-1);
     }
 
     int query(int node, int start, int end, int l, int r) {
