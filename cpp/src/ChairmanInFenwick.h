@@ -27,22 +27,11 @@ struct ChairmanInFenwick {
         delete[] rc;
     }
 
-    int lowbit(int x) {return x & -x;}
-
     // add value t to weight node w at position x
     void add(int x, int w, int t) {
         for (int i = x; i <= N; i += lowbit(i)) {
             update(root[i], w, t, 0, M-1);
         }
-    }
-
-    void update(int &now, int w, int t, int l, int r) {
-        if (!now) now = T_cnt++;
-        val[now] += t;
-        if (l == r) return;
-        int mid = (l + r) / 2;
-        if (w <= mid) update(lc[now], w, t, l, mid);
-        else          update(rc[now], w, t, mid+1, r);
     }
 
     // weight sum [l, r] for position [1, k]
@@ -55,6 +44,18 @@ struct ChairmanInFenwick {
         return sum;
     }
 
+private:
+    int lowbit(int x) {return x & -x;}
+
+    void update(int &now, int w, int t, int l, int r) {
+        if (!now) now = T_cnt++;
+        val[now] += t;
+        if (l == r) return;
+        int mid = (l + r) / 2;
+        if (w <= mid) update(lc[now], w, t, l, mid);
+        else          update(rc[now], w, t, mid+1, r);
+    }
+
     int querySingleTree(int node, int L, int R, int l, int r) {
         if (L >= l && R <= r) return val[node];
         if (L > r || R < l) return 0;
@@ -65,4 +66,3 @@ struct ChairmanInFenwick {
         return sum;
     }
 };
-
