@@ -1,8 +1,5 @@
 const int MAXN = 100000 * 90;
 
-int val[MAXN], lc[MAXN], rc[MAXN];
-int root[100010];
-
 struct ChairmanInFenwick {
     struct Node {
         Node() : L(0), R(0), sum(0) {}
@@ -10,21 +7,32 @@ struct ChairmanInFenwick {
         int L, R, sum;
     };
 
-    int n;  // number of positions
-    int tn; // number of weights
+    int n;  // number of positions, index is 1-based
+    int tn; // number of weights, index is 0-based
     int T_cnt;
-    //vector<int> root;
-    //vector<Node> T;
+    int *root;
+    int *val, *lc, *rc;
 
-    ChairmanInFenwick(int n_, int tn_):
-        n(n_), tn(tn_), T_cnt(1) {}
+    ChairmanInFenwick(int n_, int tn_): n(n_), tn(tn_), T_cnt(1) {
+        root = new int[n+1]{};
+        val = new int[MAXN]{};
+        lc = new int[MAXN]{};
+        rc = new int[MAXN]{};
+    }
+
+    ~ChairmanInFenwick() {
+        delete[] root;
+        delete[] val;
+        delete[] lc;
+        delete[] rc;
+    }
 
     int lowbit(int x) {return x & -x;}
 
     // add value t to weight node w at position x
     void add(int x, int w, int t) {
         for (int i = x; i <= n; i += lowbit(i)) {
-            update(root[i], w, t, 1, tn);
+            update(root[i], w, t, 0, tn-1);
         }
     }
 
@@ -42,7 +50,7 @@ struct ChairmanInFenwick {
         if (l > r) return 0;
         int sum = 0;
         for (int j = k; j; j -= lowbit(j)) {
-            sum += querySingleTree(root[j], 1, tn, l, r);
+            sum += querySingleTree(root[j], 0, tn-1, l, r);
         }
         return sum;
     }
