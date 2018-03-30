@@ -21,6 +21,11 @@ public:
         T = new Node[(N+1) * int(log2(M)+1)]{};
     }
 
+    ~PersistentSegmentTree() {
+        delete[] root;
+        delete[] T;
+    }
+
     // for user's convenience
     void insert(int currRootIndex, int prevRootIndex, int x, int t) {
         root[currRootIndex] = root[prevRootIndex];
