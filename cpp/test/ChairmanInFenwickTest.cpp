@@ -12,7 +12,7 @@ public:
     void tearDown() {}
 
     void test() {
-        ChairmanInFenwick tree(4, 4);
+        ChairmanInFenwick tree(4, 4, 4);
         tree.add(1, 2, 2);
         tree.add(2, 1, 1);
         tree.add(3, 3, 3);
@@ -23,7 +23,7 @@ public:
     }
 
     void testWeightIndexZero() {
-        ChairmanInFenwick tree(2, 2);
+        ChairmanInFenwick tree(2, 2, 4);
         tree.add(1, 0, 1);
         tree.add(1, 1, 2);
         tree.add(2, 0, 3);
