@@ -18,7 +18,7 @@ public:
 
     PersistentSegmentTree(int N_, int M_): N(N_), M(M_) {
         root = new int[N+1]{};
-        T = new Node[(N+1) * int(log2(M)+1)]{};
+        T = new Node[(N+1) * int(log2(M)+2)]{};
     }
 
     ~PersistentSegmentTree() {

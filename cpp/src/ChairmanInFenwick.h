@@ -14,7 +14,7 @@ struct ChairmanInFenwick {
     // cap is the number of elements to be added
     ChairmanInFenwick(int N_, int M_, int cap): N(N_), M(M_), T_cnt(1) {
         root = new int[N+1]{};
-        const int numOfNodes = cap * int(log2(N)+1) * int(log2(M)+1);
+        const int numOfNodes = cap * int(log2(N)+2) * int(log2(M)+2);
         val = new int[numOfNodes]{};
         lc = new int[numOfNodes]{};
         rc = new int[numOfNodes]{};
