@@ -34,13 +34,13 @@ public:
 
         hld.decompose();
 
-        CPPUNIT_ASSERT(hld.Seg_size == 13);
+        CPPUNIT_ASSERT(hld.Seg_size == 14);
 
         vector<int> result;
-        for (int i = 0; i < 13; i++) {
+        for (int i =0 ; i < 13; i++) {
             result.push_back(hld.num[2*i+1]);
         }
-        vector<int> expected = {8, 12, 9, 11, 10, 6, 7, 0, 5, 1, 2, 3, 4};
+        vector<int> expected = {9, 13, 10, 12, 11, 7, 8, 1, 6, 2, 3, 4, 5};
         CPPUNIT_ASSERT(expected == result);
 
         expected = {0, 1, 2, 0, 4, 1, 2, 7, 0, 9, 10, 1, 0, 0};
@@ -71,9 +71,9 @@ public:
 
         vector<int> result(13);
         for (int i = 0; i < 13; i++) {
-            result[i] = hld.st->query(i, i);
+            result[i] = hld.st.query(i+1, i+1);
         }
-        vector<int> expected = {2, 4, 4, 3, 1, 3, 2, 1, 4, 4, 1, 4, 1};
+        vector<int> expected = {1, 3, 3, 2, 0, 2, 1, 0, 3, 3, 0, 3, 0};
         CPPUNIT_ASSERT(expected ==  result);
     }
 

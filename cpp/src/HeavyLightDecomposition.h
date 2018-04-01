@@ -1,6 +1,4 @@
 
-#include "SegmentTreeTD.h"
-
 class HeavyLightDecomposition {
 private:
     // Note graph node is 0-indexed
@@ -39,9 +37,77 @@ private:
             head[u] = eidx++;
         }
     };
+
+    // 1-indexed
+    class SegmentTree {
+        int N;
+        int64_t *val, *lazy;
+
+    public:
+        SegmentTree(int N_): N(N_) {
+            val = new int64_t[4*N]{};
+            lazy = new int64_t[4*N]{};
+        }
+
+        ~SegmentTree() {
+            delete[] val;
+            delete[] lazy;
+        }
+        // add t to range [a, b]
+        void update(int t, int a, int b) {
+            update(1, t, 1, N, a, b);
+        }
+
+        // query range sum in [a, b]
+        int64_t query(int a, int b) {
+            return query(1, a, b, 1, N);
+        }
+
+    private:
+        // add t to range [a, b], current node range is [l, r]
+        void update(int k, int t, int l, int r, int a, int b) {
+            if (a > b) return;
+            pushDown(k, l, r);
+            if (a <= l && r <= b) {
+                val[k] += t * (r-l+1);
+                lazy[k] += t;
+                return;
+            }
+            if (l == r) return;
+            int mid = (l + r) / 2;
+            if (a <= mid) update(2*k,   t, l, mid, a, b);
+            if (mid < b)  update(2*k+1, t, mid+1, r, a, b);
+            val[k] = val[2*k] + val[2*k+1];
+        }
+
+        void pushDown(int k, int l, int r) {
+            if (!lazy[k] || l == r) return;
+            lazy[2*k] += lazy[k];
+            lazy[2*k+1] += lazy[k];
+            int mid = (l + r) / 2;
+            val[2*k] += (mid - l + 1) * lazy[k];
+            val[2*k+1] += (r - mid) * lazy[k];
+            lazy[k] = 0;
+        }
+
+        // query range sum in [a, b], current node is [L, R]
+        int64_t query(int k, int a, int b, int L, int R) {
+            if (!k) return 0;
+            if (b < L || a > R) return 0;
+            pushDown(k, L, R);
+            if (a <= L && R <= b) return val[k];
+            int64_t sum = 0;
+            int mid = (L + R) / 2;
+            if (a <= mid) sum += query(2*k, a, b, L, mid);
+            if (mid < b)  sum += query(2*k+1, a, b, mid+1, R);
+            return sum;
+        }
+    };
+
 public:
     const int N;
     Graph g;
+    SegmentTree st;
     vector<int> size;
     vector<int> dep;
     vector<int> rev;    // node to father-edge
@@ -51,9 +117,8 @@ public:
     vector<int> top;
     int root;
     int Seg_size;
-    SegmentTreeTD<int> *st;
 
-    HeavyLightDecomposition(int N_): N(N_), g(N_) {
+    HeavyLightDecomposition(int N_): N(N_), g(N_), st(N_) {
         size.resize(N);
         dep.resize(N);
         rev.resize(N);
@@ -63,7 +128,7 @@ public:
         top.resize(N);
 
         root = 0;
-        Seg_size = 0;
+        Seg_size = 1;   // segment tree is 1-indexed
     }
 
     void addEdge(int u, int v) {
@@ -71,11 +136,21 @@ public:
         g.addEdge(v, u);
     }
 
-    ~HeavyLightDecomposition() {
-        delete st;
-        st = NULL;
+    void decompose() {
+        dfs1(root, root);
+        top[root] = root;
+        dfs2(root, root);
     }
 
+    void update(int u, int v, int d) {
+        int p = lca(u, v);;
+        updateChain(u, p, d);
+        updateChain(v, p, d);
+
+        // if it's node update, update p related information here
+    }
+
+private:
     void dfs1(int u, int f) {
         int mx = -1, e = -1;
         size[u] = 1;
@@ -114,19 +189,6 @@ public:
         }
     }
 
-    void decompose() {
-        // set up segment tree
-        vector<int> A(N-1, 1);
-        auto comb = [](int x, int y) {return x + y;};
-        auto accu = [](int x, int y) {return x + y;};
-        auto appl = [](int x, int d, int sz) {return x + d * sz;};
-        st = new SegmentTreeTD<int>(A, 0, 0, comb, accu, appl);
-
-        dfs1(root, root);
-        top[root] = root;
-        dfs2(root, root);
-    }
-
     void updateChain(int u, int anc, int val) {
         while (u != anc) {
             int fe = rev[u];
@@ -135,23 +197,14 @@ public:
                 if (dep[p] < dep[anc]) p = anc;
                 int l = num[heavy[p]^1];
                 int r = num[fe];
-                st->update(l, r, val);
+                st.update(val, l, r);
                 u = p;
             } else {
                 int r = num[fe];
-                st->update(r, r, val);
+                st.update(val, r, r);
                 u = g.E[fe].to;
             }
         }
-    }
-
-
-    void update(int u, int v, int d) {
-        int p = lca(u, v);;
-        updateChain(u, p, d);
-        updateChain(v, p, d);
-
-        // if it's node update, update p related information here
     }
 
     int lca(int u, int v) {
