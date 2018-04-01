@@ -16,23 +16,23 @@ public:
     void tearDown() {}
 
     void testPrepare() {
-        Graph g(14);
+        HeavyLightDecomposition hld(14);
         
-        addEdge(g, 0, 1);
-        addEdge(g, 1, 4);
-        addEdge(g, 1, 5);
-        addEdge(g, 5, 10);
-        addEdge(g, 5, 11);
-        addEdge(g, 0, 2);
-        addEdge(g, 2, 6);
-        addEdge(g, 0, 3);
-        addEdge(g, 3, 7);
-        addEdge(g, 3, 8);
-        addEdge(g, 8, 12);
-        addEdge(g, 12, 13);
-        addEdge(g, 3, 9);
+        hld.addEdge(0, 1);
+        hld.addEdge(1, 4);
+        hld.addEdge(1, 5);
+        hld.addEdge(5, 10);
+        hld.addEdge(5, 11);
+        hld.addEdge(0, 2);
+        hld.addEdge(2, 6);
+        hld.addEdge(0, 3);
+        hld.addEdge(3, 7);
+        hld.addEdge(3, 8);
+        hld.addEdge(8, 12);
+        hld.addEdge(12, 13);
+        hld.addEdge(3, 9);
 
-        HeavyLightDecomposition hld(g);
+        hld.decompose();
 
         CPPUNIT_ASSERT(hld.Seg_size == 13);
 
@@ -48,23 +48,23 @@ public:
     }
 
     void testUpdate() {
-        Graph g(14);
-        
-        addEdge(g, 0, 1);
-        addEdge(g, 1, 4);
-        addEdge(g, 1, 5);
-        addEdge(g, 5, 10);
-        addEdge(g, 5, 11);
-        addEdge(g, 0, 2);
-        addEdge(g, 2, 6);
-        addEdge(g, 0, 3);
-        addEdge(g, 3, 7);
-        addEdge(g, 3, 8);
-        addEdge(g, 8, 12);
-        addEdge(g, 12, 13);
-        addEdge(g, 3, 9);
+        HeavyLightDecomposition hld(14);
+        hld.addEdge(0, 1);
+        hld.addEdge(1, 4);
+        hld.addEdge(1, 5);
+        hld.addEdge(5, 10);
+        hld.addEdge(5, 11);
+        hld.addEdge(0, 2);
+        hld.addEdge(2, 6);
+        hld.addEdge(0, 3);
+        hld.addEdge(3, 7);
+        hld.addEdge(3, 8);
+        hld.addEdge(8, 12);
+        hld.addEdge(12, 13);
+        hld.addEdge(3, 9);
 
-        HeavyLightDecomposition hld(g);
+        hld.decompose();
+
         hld.update(2, 12, 1);
         hld.update(7, 13, 2);
         hld.update(0, 10, 3);
@@ -81,12 +81,6 @@ public:
     CPPUNIT_TEST(testPrepare);
     CPPUNIT_TEST(testUpdate);
     CPPUNIT_TEST_SUITE_END();
-
-private:
-    void addEdge(Graph &g, int u, int v) {
-        g.addEdge(u, v);
-        g.addEdge(v, u);
-    }
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(HLDTest);

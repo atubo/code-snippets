@@ -1,11 +1,47 @@
 
-#include "Graph.h"
 #include "SegmentTreeTD.h"
 
 class HeavyLightDecomposition {
+private:
+    // Note graph node is 0-indexed
+    class Graph {
+    public:
+        struct Edge {
+            int next, to;
+        };
+
+        vector<int> head;
+        int eidx;
+        int N;
+
+        Edge *E;
+
+        Graph(int N_):N(N_) {
+            head.resize(N);
+            eidx = 0;
+
+            for (int i = 0; i < N; i++) {
+                head[i] = -1;
+            }
+
+            // since this should be a tree
+            E = new Edge[2*N-2]{};
+        }
+
+        ~Graph() {
+            delete[] E;
+        }
+
+        // assume 0-indexed and no duplication
+        void addEdge(int u, int v) {
+            E[eidx].to = v;
+            E[eidx].next = head[u];
+            head[u] = eidx++;
+        }
+    };
 public:
-    const Graph &g;
     const int N;
+    Graph g;
     vector<int> size;
     vector<int> dep;
     vector<int> rev;    // node to father-edge
@@ -17,7 +53,7 @@ public:
     int Seg_size;
     SegmentTreeTD<int> *st;
 
-    HeavyLightDecomposition(const Graph &g_): g(g_), N(g_.N) {
+    HeavyLightDecomposition(int N_): N(N_), g(N_) {
         size.resize(N);
         dep.resize(N);
         rev.resize(N);
@@ -28,8 +64,11 @@ public:
 
         root = 0;
         Seg_size = 0;
+    }
 
-        prepare();
+    void addEdge(int u, int v) {
+        g.addEdge(u, v);
+        g.addEdge(v, u);
     }
 
     ~HeavyLightDecomposition() {
@@ -75,7 +114,7 @@ public:
         }
     }
 
-    void prepare() {
+    void decompose() {
         // set up segment tree
         vector<int> A(N-1, 1);
         auto comb = [](int x, int y) {return x + y;};
