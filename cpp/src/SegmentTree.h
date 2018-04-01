@@ -1,4 +1,5 @@
 
+// note it's 1-indexed
 class SegmentTree {
     int N;
     int64_t *val, *lazy;
