@@ -34,14 +34,14 @@ public:
 
         hld.decompose();
 
-        CPPUNIT_ASSERT(hld.Seg_size == 14);
+        CPPUNIT_ASSERT(hld.Seg_size == 15);
 
         vector<int> result(14);
         for (int i = 0; i < 14; i++) {
             result[i] = hld.stIdx[i];
         }
 
-        vector<int> expected = {-1, 9, 7, 1, 13, 10, 8, 6, 2, 5, 12, 11, 3, 4};
+        vector<int> expected = {1, 10, 8, 2, 14, 11, 9, 7, 3, 6, 13, 12, 4, 5};
         CPPUNIT_ASSERT(expected == result);
 
         expected = {0, 1, 2, 0, 4, 1, 2, 7, 0, 9, 10, 1, 0, 0};

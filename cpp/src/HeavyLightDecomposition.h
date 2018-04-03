@@ -123,7 +123,7 @@ public:
         dep.resize(N);
         rev.resize(N);
         heavy.resize(N);
-        stIdx.resize(2*N, -1);
+        stIdx.resize(N, -1);
         fa.resize(N);
         top.resize(N);
 
@@ -180,6 +180,10 @@ private:
     }
 
     void dfs2(int u, int f) {
+        if (u == root) {
+            stIdx[u] = Seg_size++;
+        }
+
         if (heavy[u] != -1) {
             int t = heavy[u];
             int v = g.E[t].to;
