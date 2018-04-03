@@ -182,8 +182,8 @@ private:
     void dfs2(int u, int f) {
         if (heavy[u] != -1) {
             int t = heavy[u];
-            stIdx[t^1] = Seg_size++;
             int v = g.E[t].to;
+            stIdx[v] = Seg_size++;
             top[v] = top[u];
             dfs2(v, u);
         }
@@ -191,7 +191,7 @@ private:
         for (int eidx = g.head[u]; eidx != -1; eidx = g.E[eidx].next) {
             int v = g.E[eidx].to;
             if (v == f || eidx == heavy[u]) continue;
-            stIdx[eidx^1] = Seg_size++;
+            stIdx[v] = Seg_size++;
             top[v] = v;
             dfs2(v, u);
         }
@@ -203,12 +203,12 @@ private:
             if (top[u] != u) {
                 int p = top[u];
                 if (dep[p] < dep[anc]) p = anc;
-                int l = stIdx[heavy[p]^1];
-                int r = stIdx[fe];
+                int l = stIdx[heavyChild(p)];
+                int r = stIdx[u];
                 st.update(val, l, r);
                 u = p;
             } else {
-                int r = stIdx[fe];
+                int r = stIdx[u];
                 st.update(val, r, r);
                 u = g.E[fe].to;
             }
@@ -222,12 +222,12 @@ private:
             if (top[u] != u) {
                 int p = top[u];
                 if (dep[p] < dep[anc]) p = anc;
-                int l = stIdx[heavy[p]^1];
-                int r = stIdx[fe];
+                int l = stIdx[heavyChild(p)];
+                int r = stIdx[u];
                 ret += st.query(l, r);
                 u = p;
             } else {
-                int r = stIdx[fe];
+                int r = stIdx[u];
                 ret += st.query(r, r);
                 u = g.E[fe].to;
             }
@@ -243,5 +243,14 @@ private:
             else if (dep[a] >= dep[b]) u = g.E[rev[a]].to;
             else v = g.E[rev[b]].to;
         }
+    }
+
+    int heavyChild(int u) const {
+        int e = heavy[u];
+        int ret = 0;
+        if (e != -1) {
+            ret = g.E[e].to;
+        }
+        return ret;
     }
 };

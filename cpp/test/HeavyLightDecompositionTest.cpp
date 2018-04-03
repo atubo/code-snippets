@@ -36,11 +36,12 @@ public:
 
         CPPUNIT_ASSERT(hld.Seg_size == 14);
 
-        vector<int> result;
-        for (int i =0 ; i < 13; i++) {
-            result.push_back(hld.stIdx[2*i+1]);
+        vector<int> result(14);
+        for (int i = 0; i < 14; i++) {
+            result[i] = hld.stIdx[i];
         }
-        vector<int> expected = {9, 13, 10, 12, 11, 7, 8, 1, 6, 2, 3, 4, 5};
+
+        vector<int> expected = {-1, 9, 7, 1, 13, 10, 8, 6, 2, 5, 12, 11, 3, 4};
         CPPUNIT_ASSERT(expected == result);
 
         expected = {0, 1, 2, 0, 4, 1, 2, 7, 0, 9, 10, 1, 0, 0};
