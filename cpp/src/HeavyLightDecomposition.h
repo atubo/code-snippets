@@ -142,10 +142,10 @@ public:
         dfs2(root, root);
     }
 
-    void update(int u, int v, int d) {
+    void updateEdge(int u, int v, int d) {
         int p = lca(u, v);;
-        updateChain(u, p, d);
-        updateChain(v, p, d);
+        updateEdgeChain(u, p, d);
+        updateEdgeChain(v, p, d);
 
         // if it's node update, update p related information here
     }
@@ -197,7 +197,7 @@ private:
         }
     }
 
-    void updateChain(int u, int anc, int val) {
+    void updateEdgeChain(int u, int anc, int val) {
         while (u != anc) {
             int fe = rev[u];
             if (top[u] != u) {

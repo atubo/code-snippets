@@ -65,9 +65,9 @@ public:
 
         hld.decompose();
 
-        hld.update(2, 12, 1);
-        hld.update(7, 13, 2);
-        hld.update(0, 10, 3);
+        hld.updateEdge(2, 12, 1);
+        hld.updateEdge(7, 13, 2);
+        hld.updateEdge(0, 10, 3);
 
         vector<int> result(13);
         result[0] = hld.queryEdge(0, 3);
@@ -105,9 +105,9 @@ public:
 
         hld.decompose();
 
-        hld.update(2, 12, 1);
-        hld.update(7, 13, 2);
-        hld.update(0, 10, 3);
+        hld.updateEdge(2, 12, 1);
+        hld.updateEdge(7, 13, 2);
+        hld.updateEdge(0, 10, 3);
 
         CPPUNIT_ASSERT_EQUAL(9, hld.queryEdge(0, 13));
         CPPUNIT_ASSERT_EQUAL(8, hld.queryEdge(6, 12));
