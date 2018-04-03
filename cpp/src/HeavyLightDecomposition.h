@@ -150,6 +150,14 @@ public:
         // if it's node update, update p related information here
     }
 
+    int queryEdge(int u, int v) {
+        int ret = 0;
+        int p = lca(u, v);
+        ret += queryEdgeChain(p, u);
+        ret += queryEdgeChain(p, v);
+        return ret;
+    }
+
 private:
     void dfs1(int u, int f) {
         int mx = -1, e = -1;
@@ -206,6 +214,27 @@ private:
             }
         }
     }
+
+    int queryEdgeChain(int anc, int u) {
+        int ret = 0;
+        while (u != anc) {
+            int fe = rev[u];
+            if (top[u] != u) {
+                int p = top[u];
+                if (dep[p] < dep[anc]) p = anc;
+                int l = num[heavy[p]^1];
+                int r = num[fe];
+                ret += st.query(l, r);
+                u = p;
+            } else {
+                int r = num[fe];
+                ret += st.query(r, r);
+                u = g.E[fe].to;
+            }
+        }
+        return ret;
+    }
+
 
     int lca(int u, int v) {
         while (true) {
