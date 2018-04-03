@@ -112,7 +112,7 @@ public:
     vector<int> dep;
     vector<int> rev;    // node to father-edge
     vector<int> heavy;
-    vector<int> num;    // edge to segment tree index
+    vector<int> stIdx;    // edge to segment tree index
     vector<int> fa;
     vector<int> top;
     int root;
@@ -123,7 +123,7 @@ public:
         dep.resize(N);
         rev.resize(N);
         heavy.resize(N);
-        num.resize(2*N, -1);
+        stIdx.resize(2*N, -1);
         fa.resize(N);
         top.resize(N);
 
@@ -182,7 +182,7 @@ private:
     void dfs2(int u, int f) {
         if (heavy[u] != -1) {
             int t = heavy[u];
-            num[t^1] = Seg_size++;
+            stIdx[t^1] = Seg_size++;
             int v = g.E[t].to;
             top[v] = top[u];
             dfs2(v, u);
@@ -191,7 +191,7 @@ private:
         for (int eidx = g.head[u]; eidx != -1; eidx = g.E[eidx].next) {
             int v = g.E[eidx].to;
             if (v == f || eidx == heavy[u]) continue;
-            num[eidx^1] = Seg_size++;
+            stIdx[eidx^1] = Seg_size++;
             top[v] = v;
             dfs2(v, u);
         }
@@ -203,12 +203,12 @@ private:
             if (top[u] != u) {
                 int p = top[u];
                 if (dep[p] < dep[anc]) p = anc;
-                int l = num[heavy[p]^1];
-                int r = num[fe];
+                int l = stIdx[heavy[p]^1];
+                int r = stIdx[fe];
                 st.update(val, l, r);
                 u = p;
             } else {
-                int r = num[fe];
+                int r = stIdx[fe];
                 st.update(val, r, r);
                 u = g.E[fe].to;
             }
@@ -222,12 +222,12 @@ private:
             if (top[u] != u) {
                 int p = top[u];
                 if (dep[p] < dep[anc]) p = anc;
-                int l = num[heavy[p]^1];
-                int r = num[fe];
+                int l = stIdx[heavy[p]^1];
+                int r = stIdx[fe];
                 ret += st.query(l, r);
                 u = p;
             } else {
-                int r = num[fe];
+                int r = stIdx[fe];
                 ret += st.query(r, r);
                 u = g.E[fe].to;
             }

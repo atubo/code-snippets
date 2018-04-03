@@ -38,7 +38,7 @@ public:
 
         vector<int> result;
         for (int i =0 ; i < 13; i++) {
-            result.push_back(hld.num[2*i+1]);
+            result.push_back(hld.stIdx[2*i+1]);
         }
         vector<int> expected = {9, 13, 10, 12, 11, 7, 8, 1, 6, 2, 3, 4, 5};
         CPPUNIT_ASSERT(expected == result);
