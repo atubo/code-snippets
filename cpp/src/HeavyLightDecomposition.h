@@ -142,12 +142,25 @@ public:
         dfs2(root, root);
     }
 
+    void updateNode(int u, int v, int d) {
+        updateEdge(u, v, d);
+        int p = lca(u, v);
+        int r = stIdx[p];
+        st.update(d, r, r);
+    }
+
+    int queryNode(int u, int v) {
+        int ret = queryEdge(u, v);
+        int p = lca(u, v);
+        int r = stIdx[p];
+        ret += st.query(r, r);
+        return ret;
+    }
+
     void updateEdge(int u, int v, int d) {
         int p = lca(u, v);;
         updateEdgeChain(u, p, d);
         updateEdgeChain(v, p, d);
-
-        // if it's node update, update p related information here
     }
 
     int queryEdge(int u, int v) {

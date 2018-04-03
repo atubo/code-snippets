@@ -117,11 +117,43 @@ public:
         CPPUNIT_ASSERT_EQUAL(0, hld.queryEdge(9, 9));
     }
 
+    void testNodeUpdateAndQuery() {
+        HeavyLightDecomposition hld(14);
+        hld.addEdge(0, 1);
+        hld.addEdge(1, 4);
+        hld.addEdge(1, 5);
+        hld.addEdge(5, 10);
+        hld.addEdge(5, 11);
+        hld.addEdge(0, 2);
+        hld.addEdge(2, 6);
+        hld.addEdge(0, 3);
+        hld.addEdge(3, 7);
+        hld.addEdge(3, 8);
+        hld.addEdge(8, 12);
+        hld.addEdge(12, 13);
+        hld.addEdge(3, 9);
+
+        hld.decompose();
+
+        hld.updateNode(2, 12, 1);
+        hld.updateNode(7, 13, 2);
+        hld.updateNode(0, 10, 3);
+
+        CPPUNIT_ASSERT_EQUAL(15, hld.queryNode(0, 13));
+        CPPUNIT_ASSERT_EQUAL(14, hld.queryNode(6, 12));
+        CPPUNIT_ASSERT_EQUAL(19, hld.queryNode(8, 10));
+        CPPUNIT_ASSERT_EQUAL(15, hld.queryNode(7, 5));
+        CPPUNIT_ASSERT_EQUAL(0, hld.queryNode(9, 9));
+        CPPUNIT_ASSERT_EQUAL(4, hld.queryNode(0, 0));
+    }
+
+
 
     CPPUNIT_TEST_SUITE(HLDTest);
     CPPUNIT_TEST(testPrepare);
     CPPUNIT_TEST(testUpdate);
     CPPUNIT_TEST(testRangeQueryEdge);
+    CPPUNIT_TEST(testNodeUpdateAndQuery);
     CPPUNIT_TEST_SUITE_END();
 };
 
