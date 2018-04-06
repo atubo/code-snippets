@@ -15,7 +15,8 @@ public:
     void tearDown() {}
 
     void testBuildSA() {
-        SuffixArrayRadix sa("banana`");
+        string s = "banana`";
+        SuffixArrayRadix sa(s);
         sa.buildSA();
         vector<int> actual;
         for (int i = 0; i < 7; i++) {
@@ -26,7 +27,8 @@ public:
     }
 
     void testBuildLCP() {
-        SuffixArrayRadix sa("banana`");
+        string s = "banana`";
+        SuffixArrayRadix sa(s);
         sa.buildSA();
         sa.buildLCP();
         vector<int> actual;
