@@ -6,7 +6,8 @@ public:
         nData_ = 1;
         while (nData_ < n) nData_ = nData_ << 1;
         int sz = 2 * nData_ + 1;
-        data = new int[sz]{NULL_VALUE};
+        data = new int[sz];
+        for (int i = 0; i < sz; i++) data[i] = NULL_VALUE;
     }
 
     ~SegmentTreeSPU() {
