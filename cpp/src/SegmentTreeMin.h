@@ -1,7 +1,13 @@
 class SegmentTreeMin {
 public:
-    SegmentTreeMin(int n, int init)
-        :data(max(3*n, 30), init), nData(n) {}
+    SegmentTreeMin(int n, int init = 0) :nData(n) {
+        int sz = max(3*n, 30);
+        data = new int[sz]{init};
+    }
+
+    ~SegmentTreeMin() {
+        delete[] data;
+    }
 
     void update(int i, int value) {
         i += nData + 1;
@@ -32,7 +38,7 @@ public:
         return data[1];
     }
 private:
-    vector<int> data;
+    int *data;
     int nData;
     int combine(int a, int b) const {
         return min(a, b);
