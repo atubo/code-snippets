@@ -19,13 +19,13 @@ CPPUNIT_TEST_SUITE_REGISTRATION(SegmentTreeSPUTest);
 
 void SegmentTreeSPUTest::test1()
 {
-    SegmentTreeSPU tree(4, 1000);
+    SegmentTreeSPU tree(4);
     tree.update(0, 4);
     tree.update(1, 2);
     tree.update(2, 3);
     tree.update(3, 1);
 
-    CPPUNIT_ASSERT_EQUAL(1, tree.query(0, 3));
-    CPPUNIT_ASSERT_EQUAL(2, tree.query(0, 2));
-    CPPUNIT_ASSERT_EQUAL(1, tree.query(1, 3));
+    CPPUNIT_ASSERT_EQUAL(10, tree.query(0, 3));
+    CPPUNIT_ASSERT_EQUAL(9, tree.query(0, 2));
+    CPPUNIT_ASSERT_EQUAL(6, tree.query(1, 3));
 }

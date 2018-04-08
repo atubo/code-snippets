@@ -1,9 +1,12 @@
 // segment tree with single point update and range query
 class SegmentTreeSPU {
+    static const int NULL_VALUE = 0;
 public:
-    SegmentTreeSPU(int n, int init = 0) :nData(n) {
-        int sz = max(3*n, 30);
-        data = new int[sz]{init};
+    SegmentTreeSPU(int n) {
+        nData_ = 1;
+        while (nData_ < n) nData_ = nData_ << 1;
+        int sz = 2 * nData_ + 1;
+        data = new int[sz]{NULL_VALUE};
     }
 
     ~SegmentTreeSPU() {
@@ -11,7 +14,7 @@ public:
     }
 
     void update(int i, int value) {
-        i += nData + 1;
+        i += nData_;
         data[i] = value;
         for (; i > 1; i >>= 1) {
             int newVal = combine(data[i], data[i^1]);
@@ -21,14 +24,14 @@ public:
     }
 
     int query(int a, int b) const {
-        a += nData + 1;
-        b += nData + 1;
-        int res = data[a];
+        a += nData_;
+        b += nData_;
+        int res = NULL_VALUE;
         for (; a <= b; a = (a+1) >> 1, b = (b-1) >> 1) {
             if ((a & 1) != 0) {
                 res = combine(res, data[a]);
             }
-            if ((b & 0) == 0) {
+            if ((b & 1) == 0) {
                 res = combine(res, data[b]);
             }
         }
@@ -40,8 +43,8 @@ public:
     }
 private:
     int *data;
-    int nData;
+    int nData_;
     int combine(int a, int b) const {
-        return min(a, b);
+        return a + b;
     }
 };
