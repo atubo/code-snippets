@@ -24,7 +24,7 @@ private:
 
     // custmize the following
     struct Update {
-        int x, c;
+        int x, c, cp;
     };
     vector<Update> updates;
 
@@ -40,12 +40,17 @@ private:
     void moveTime(int t, int sign) {
         int x = updates[t].x;
         int c = updates[t].c;
+        int cp = updates[t].cp;
         if (lcurr <= x && x < rcurr) {
-            int cp = color[x];
-            if (--cnt[cp] == 0) nowAns--;
-            if (++cnt[c] == 1) nowAns++;
+            if (sign == 1) {
+                if (--cnt[cp] == 0) nowAns--;
+                if (++cnt[c] == 1) nowAns++;
+            } else {
+                if (--cnt[c] == 0) nowAns--;
+                if (++cnt[cp] == 1) nowAns++;
+            }
         }
-        color[x] = c;
+        color[x] = (sign == 1 ? c : cp);
     }
 
 public:
@@ -66,8 +71,8 @@ public:
         queries.push_back(q);
     }
 
-    void addUpdate(int x, int c) {
-        Update upd{x, c};
+    void addUpdate(int x, int c, int cp) {
+        Update upd{x, c, cp};
         updates.push_back(upd);
         updIdx++;
     }
@@ -80,7 +85,7 @@ public:
             while (tcurr < q.t) moveTime(tcurr++, 1);
             while (tcurr > q.t) moveTime(--tcurr, -1);
             while (lcurr < q.l) move(lcurr++, -1);
-            while (lcurr > q.l) move(lcurr--, 1);
+            while (lcurr > q.l) move(--lcurr, 1);
             while (rcurr < q.r) move(rcurr++, 1);
             while (rcurr > q.r) move(--rcurr, -1);
             ans[q.id] = nowAns;
