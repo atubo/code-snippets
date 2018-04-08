@@ -1,11 +1,12 @@
-class SegmentTreeMin {
+// segment tree with single point update and range query
+class SegmentTreeSPU {
 public:
-    SegmentTreeMin(int n, int init = 0) :nData(n) {
+    SegmentTreeSPU(int n, int init = 0) :nData(n) {
         int sz = max(3*n, 30);
         data = new int[sz]{init};
     }
 
-    ~SegmentTreeMin() {
+    ~SegmentTreeSPU() {
         delete[] data;
     }
 
