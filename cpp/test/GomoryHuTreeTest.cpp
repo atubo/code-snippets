@@ -12,7 +12,7 @@ public:
     void tearDown() {}
 
     void testBuild() {
-        GomoryHuTree ct(5);
+        GomoryHuTree ct(5, 4);
         ct.addEdge(0, 2, 9);
         ct.addEdge(0, 4, 5);
         ct.addEdge(2, 4, 8);

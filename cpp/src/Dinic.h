@@ -5,16 +5,15 @@ public:
         int to, next, cap;
     };
 
-    const int N;
+    const int N, MAXM;
     int *head;
     Edge *E;
     int e;
 private:
-    static const int MAXM = 1000;
     int *curr;
 
 public:
-    Dinic(int N_): N(N_) {
+    Dinic(int N_, int M_): N(N_), MAXM(2*M_) {
         alloc();
         reset();
     }

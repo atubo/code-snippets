@@ -12,7 +12,7 @@ private:
 public:
     vector<vector<pair<int, int64_t>>> edges;
 
-    GomoryHuTree(int N_): N(N_), dinic(N_), currCompId(0) {
+    GomoryHuTree(int N_, int M_): N(N_), dinic(N_, M_), currCompId(0) {
         alloc();
     }
 
