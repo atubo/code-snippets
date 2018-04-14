@@ -12,8 +12,7 @@ public:
     void tearDown() {}
 
     void testFlowCalc() {
-        //using namespace MincostMaxflowNS;
-        MincostMaxflow mincostMaxflow(5);
+        MincostMaxflow mincostMaxflow(5, 7);
         mincostMaxflow.addEdge(0, 1, 4, 10);
         mincostMaxflow.addEdge(0, 2, 1, 8);
         mincostMaxflow.addEdge(2, 1, 2, 5);

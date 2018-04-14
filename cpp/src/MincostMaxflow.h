@@ -7,11 +7,10 @@ class MincostMaxflow {
     // 4. call init() before you use it again
 public:
     const static int INF = 1000000;
-    const static int MAXM = 1000;
 
-    MincostMaxflow(int N_):N(N_), Q(N_) {
+    MincostMaxflow(int N_, int M):N(N_), Q(N_) {
         V = new Edge*[N]{};
-        ES = new Edge[MAXM]{};
+        ES = new Edge[2*M]{};
         sp = new int[N]{};
         prev = new int[N]{};
         path = new Edge*[N]{};
