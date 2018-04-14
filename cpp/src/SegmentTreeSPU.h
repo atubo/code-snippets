@@ -1,4 +1,5 @@
 // segment tree with single point update and range query
+// 0-indexed
 class SegmentTreeSPU {
     static const int NULL_VALUE = 0;
 public:
