@@ -112,7 +112,7 @@ public:
     vector<int> dep;
     vector<int> rev;    // node to father-edge
     vector<int> heavy;
-    vector<int> stIdx;    // edge to segment tree index
+    vector<int> stIdx;    // node to segment tree index
     vector<int> fa;
     vector<int> top;
     int root;
