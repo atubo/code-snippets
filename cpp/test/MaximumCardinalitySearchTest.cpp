@@ -26,8 +26,9 @@ public:
         mcs.addEdge(5, 6);
         mcs.solve();
 
+        vector<int> expected = {0, 1, 2, 3, 5, 4, 6};
         for (int i = 0; i < 7; i++) {
-            CPPUNIT_ASSERT_EQUAL(i, mcs.peo[i]);
+            CPPUNIT_ASSERT_EQUAL(expected[i], mcs.peo[i]);
         }
     }
 
