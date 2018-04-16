@@ -13,10 +13,10 @@ public:
 
     void testPrefixFunction() {
         KMP kmp("abccababc");
+        vector<int> expected = {0, 0, 0, 0, 1, 2, 1, 2, 3};
         for (int i = 0; i < 9; i++) {
-            printf("%d ", kmp[i]);
+            CPPUNIT_ASSERT_EQUAL(expected[i], kmp[i]);
         }
-        printf("\n");
     }
 
     CPPUNIT_TEST_SUITE(KMPTest);
