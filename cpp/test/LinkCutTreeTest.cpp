@@ -12,7 +12,7 @@ public:
     void tearDown() {}
 
     void testLinkCut() {
-        LinkCutTree lct;
+        LinkCutTree lct(5);
         for (int i = 1; i <= 5; i++) {
             lct.makeRoot(i);
         }
