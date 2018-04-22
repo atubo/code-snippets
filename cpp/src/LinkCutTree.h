@@ -14,6 +14,7 @@ public:
         for (int t = 0; x; t=x, x=fa[x]) {
             splay(x);
             c[x][1] = t;
+            pushUp(x);
         }
     }
 
@@ -39,6 +40,7 @@ public:
     void cut(int x, int y) {
         split(x, y);
         c[y][0] = fa[x] = 0;
+        pushUp(y);
     }
 
     int find(int x) {
@@ -49,15 +51,27 @@ public:
         return y;
     }
 
+    int query(int x, int y) {
+        makeRoot(x);
+        access(y);
+        splay(y);
+        return mx[y];
+    }
+
+
+public:
+    int *val;
 private:
     int N;
-    int *fa;
+    int *fa, *mx;
     int **c;
     int *q;
     bool *rev;
 
     void alloc() {
         fa = new int[N+1]{};
+        val = new int[N+1]{};
+        mx = new int[N+1]{};
         c = new int*[N+1]{};
         for (int i = 0; i <= N; i++) {
             c[i] = new int[2]{};
@@ -68,6 +82,8 @@ private:
 
     void dealloc() {
         delete[] fa;
+        delete[] val;
+        delete[] mx;
         for (int i = 1; i <= N; i++) {
             delete[] c[i];
         }
@@ -88,12 +104,20 @@ private:
         }
     }
 
+    void pushUp(int x) {
+        int l = c[x][0], r = c[x][1];
+        mx[x] = val[x];
+        mx[x] = max(mx[x], mx[l]);
+        mx[x] = max(mx[x], mx[r]);
+    }
+
     void rotate(int x) {
         int y = fa[x], z = fa[y], l, r;
         l = (c[y][1] == x); r = l^1;
         if (!isSplayRoot(y)) c[z][c[z][1]==y] = x;
         fa[c[x][r]] = y; fa[y] = x; fa[x] = z;
         c[y][l] = c[x][r]; c[x][r] = y;
+        pushUp(y); pushUp(x);
     }
 
     void splay(int x) {
