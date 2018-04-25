@@ -58,12 +58,60 @@ public:
         return mx[y];
     }
 
+    int queryTot(int x, int y) {
+        makeRoot(x);
+        access(y);
+        splay(y);
+        return tot[y];
+    }
+
+    void update(int u, int v, int d) {
+        makeRoot(u);
+        access(v);
+        splay(v);
+        updateAdd(v, d);
+    }
+
+    void print() {
+        printf("father: ");
+        for (int i = 1; i <= N; i++) {
+            printf("%d ", fa[i]);
+        }
+        printf("\n");
+        printf("child: ");
+        for (int i = 1; i <= N; i++) {
+            printf("(%d %d) ", c[i][0], c[i][1]);
+        }
+        printf("\n");
+        printf("rev: ");
+        for (int i = 1; i <= N; i++) {
+            printf("%d ", int(rev[i]));
+        }
+        printf("\n");
+
+        printf("val: ");
+        for (int i = 1; i <= N; i++) {
+            printf("%d ", val[i]);
+        }
+        printf("\n");
+        printf("tot: ");
+        for (int i = 1; i <= N; i++) {
+            printf("%d ", tot[i]);
+        }
+        printf("\n");
+        printf("d: ");
+        for (int i = 1; i <= N; i++) {
+            printf("%d ", delta[i]);
+        }
+        printf("\n");
+    }
 
 public:
     int *val;
 private:
     int N;
-    int *fa, *mx;
+    int *fa, *mx, *tot, *delta;
+    int *sz;
     int **c;
     int *q;
     bool *rev;
@@ -72,6 +120,9 @@ private:
         fa = new int[N+1]{};
         val = new int[N+1]{};
         mx = new int[N+1]{};
+        tot = new int[N+1]{};
+        delta = new int[N+1]{};
+        sz = new int[N+1]{};
         c = new int*[N+1]{};
         for (int i = 0; i <= N; i++) {
             c[i] = new int[2]{};
@@ -84,6 +135,9 @@ private:
         delete[] fa;
         delete[] val;
         delete[] mx;
+        delete[] tot;
+        delete[] delta;
+        delete[] sz;
         for (int i = 1; i <= N; i++) {
             delete[] c[i];
         }
@@ -102,6 +156,10 @@ private:
             rev[x] ^= 1; rev[l] ^= 1; rev[r] ^= 1;
             swap(c[x][1], c[x][0]);
         }
+
+        updateAdd(l, delta[x]);
+        updateAdd(r, delta[x]);
+        delta[x] = 0;
     }
 
     void pushUp(int x) {
@@ -109,6 +167,8 @@ private:
         mx[x] = val[x];
         mx[x] = max(mx[x], mx[l]);
         mx[x] = max(mx[x], mx[r]);
+        sz[x] = 1 + sz[l] + sz[r];
+        tot[x] = val[x] + tot[l] + tot[r];
     }
 
     void rotate(int x) {
@@ -135,5 +195,13 @@ private:
             }
             rotate(x);
         }
+    }
+
+    void updateAdd(int x, int d) {
+        if (!x) return;
+
+        tot[x] += d * sz[x];
+        val[x] += d;
+        delta[x] += d;
     }
 };

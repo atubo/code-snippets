@@ -45,10 +45,25 @@ public:
         CPPUNIT_ASSERT_EQUAL(5, lct.query(5, 3));
     }
 
+    void testPathUpdateAndQuery() {
+        LinkCutTree lct(5);
+        for (int i = 1; i <= 5; i++) {
+            lct.val[i] = 1;
+            lct.makeRoot(i);
+        }
+        lct.link(1, 2);
+        lct.link(1, 4);
+        lct.link(2, 3);
+        lct.link(4, 5);
+        CPPUNIT_ASSERT_EQUAL(5, lct.queryTot(5, 3));
+        lct.update(4, 3, 1);
+        CPPUNIT_ASSERT_EQUAL(9, lct.queryTot(5, 3));
+    }
+
     CPPUNIT_TEST_SUITE(LinkCutTreeTest);
     CPPUNIT_TEST(testLinkCut);
+    CPPUNIT_TEST(testPathUpdateAndQuery);
     CPPUNIT_TEST_SUITE_END();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LinkCutTreeTest);
-
