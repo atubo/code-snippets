@@ -1,4 +1,5 @@
 class PalindromicTree {
+
 public:
     const static int ALPHASIZE = 26;
     const int L_;
@@ -8,6 +9,7 @@ public:
     int *num;
     int *len;
     int *S;
+    int *node;  // position i -> node index (i is 1-indexed)
     int last;
     int n_;
     int p_;
@@ -30,6 +32,7 @@ private:
         num = new int[L_+2]{};
         len = new int[L_+2]{};
         S = new int[L_+2]{};
+        node = new int[L_+1]{};
     }
 
     void dealloc() {
@@ -42,6 +45,7 @@ private:
         delete[] num;
         delete[] len;
         delete[] S;
+        delete[] node;
     }
 
     void init() {
@@ -70,6 +74,7 @@ private:
             num[now] = num[fail[now]] + 1;
         }
         last = next[cur][c];
+        node[n_] = last;
         cnt[last]++;
     }
 
