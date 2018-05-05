@@ -1,11 +1,11 @@
 class BIT {
 public:
-    // Note size needs to be power of 2
+    // 1-indexed
     BIT(int size): N(size) {
         tree = (int64_t*)malloc((size+1) * sizeof(int64_t));
         clear();
     }
-    
+
     ~BIT() {
         free(tree);
         tree = NULL;
