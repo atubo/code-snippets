@@ -15,17 +15,17 @@ public:
 
     void testManacher() {
         string s = "12212321";
-        Manacher::manacher(s);
+        Manacher manacher(s);
         vector<int> expected = list_of(-1)(1)(2)(1)(2)(5)(2)(1)(4)
             (1)(2)(1)(6)(1)(2)(1)(2)(1);
         for (int i = 1; i <(int)expected.size(); i++) {
-            CPPUNIT_ASSERT_EQUAL(expected[i], Manacher::p[i]);
+            CPPUNIT_ASSERT_EQUAL(expected[i], manacher.p[i]);
         }
 
-        Manacher::calcMaxlen();
+        manacher.calcMaxlen();
         vector<int> expected2 = list_of(4)(2)(3)(5)(3)(1)(1)(1);
         for (int i = 0; i < (int)s.length(); i++) {
-            CPPUNIT_ASSERT_EQUAL(expected2[i], Manacher::maxlen[i]);
+            CPPUNIT_ASSERT_EQUAL(expected2[i], manacher.maxlen[i]);
         }
     }
 
