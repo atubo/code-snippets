@@ -212,7 +212,6 @@ private:
 
     void updateEdgeChain(int u, int anc, int val) {
         while (u != anc) {
-            int fe = rev[u];
             if (top[u] != u) {
                 int p = top[u];
                 if (dep[p] < dep[anc]) p = anc;
@@ -223,6 +222,7 @@ private:
             } else {
                 int r = stIdx[u];
                 st.update(val, r, r);
+                int fe = rev[u];
                 u = g.E[fe].to;
             }
         }
@@ -231,7 +231,6 @@ private:
     int queryEdgeChain(int anc, int u) {
         int ret = 0;
         while (u != anc) {
-            int fe = rev[u];
             if (top[u] != u) {
                 int p = top[u];
                 if (dep[p] < dep[anc]) p = anc;
@@ -242,6 +241,7 @@ private:
             } else {
                 int r = stIdx[u];
                 ret += st.query(r, r);
+                int fe = rev[u];
                 u = g.E[fe].to;
             }
         }
