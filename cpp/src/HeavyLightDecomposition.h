@@ -69,7 +69,7 @@ private:
             if (a > b) return;
             pushDown(k, l, r);
             if (a <= l && r <= b) {
-                val[k] += t * (r-l+1);
+                val[k] += int64_t(t) * (r-l+1);
                 lazy[k] += t;
                 return;
             }
@@ -149,8 +149,8 @@ public:
         st.update(d, r, r);
     }
 
-    int queryNode(int u, int v) {
-        int ret = queryEdge(u, v);
+    int64_t queryNode(int u, int v) {
+        int64_t ret = queryEdge(u, v);
         int p = lca(u, v);
         int r = stIdx[p];
         ret += st.query(r, r);
@@ -163,8 +163,8 @@ public:
         updateEdgeChain(v, p, d);
     }
 
-    int queryEdge(int u, int v) {
-        int ret = 0;
+    int64_t queryEdge(int u, int v) {
+        int64_t ret = 0;
         int p = lca(u, v);
         ret += queryEdgeChain(p, u);
         ret += queryEdgeChain(p, v);
@@ -228,8 +228,8 @@ private:
         }
     }
 
-    int queryEdgeChain(int anc, int u) {
-        int ret = 0;
+    int64_t queryEdgeChain(int anc, int u) {
+        int64_t ret = 0;
         while (u != anc) {
             if (top[u] != u) {
                 int p = top[u];

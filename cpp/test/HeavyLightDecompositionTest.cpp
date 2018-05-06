@@ -110,11 +110,11 @@ public:
         hld.updateEdge(7, 13, 2);
         hld.updateEdge(0, 10, 3);
 
-        CPPUNIT_ASSERT_EQUAL(9, hld.queryEdge(0, 13));
-        CPPUNIT_ASSERT_EQUAL(8, hld.queryEdge(6, 12));
-        CPPUNIT_ASSERT_EQUAL(13, hld.queryEdge(8, 10));
-        CPPUNIT_ASSERT_EQUAL(9, hld.queryEdge(7, 5));
-        CPPUNIT_ASSERT_EQUAL(0, hld.queryEdge(9, 9));
+        CPPUNIT_ASSERT_EQUAL(9LL, hld.queryEdge(0, 13));
+        CPPUNIT_ASSERT_EQUAL(8LL, hld.queryEdge(6, 12));
+        CPPUNIT_ASSERT_EQUAL(13LL, hld.queryEdge(8, 10));
+        CPPUNIT_ASSERT_EQUAL(9LL, hld.queryEdge(7, 5));
+        CPPUNIT_ASSERT_EQUAL(0LL, hld.queryEdge(9, 9));
     }
 
     void testNodeUpdateAndQuery() {
@@ -139,12 +139,24 @@ public:
         hld.updateNode(7, 13, 2);
         hld.updateNode(0, 10, 3);
 
-        CPPUNIT_ASSERT_EQUAL(15, hld.queryNode(0, 13));
-        CPPUNIT_ASSERT_EQUAL(14, hld.queryNode(6, 12));
-        CPPUNIT_ASSERT_EQUAL(19, hld.queryNode(8, 10));
-        CPPUNIT_ASSERT_EQUAL(15, hld.queryNode(7, 5));
-        CPPUNIT_ASSERT_EQUAL(0, hld.queryNode(9, 9));
-        CPPUNIT_ASSERT_EQUAL(4, hld.queryNode(0, 0));
+        CPPUNIT_ASSERT_EQUAL(15LL, hld.queryNode(0, 13));
+        CPPUNIT_ASSERT_EQUAL(14LL, hld.queryNode(6, 12));
+        CPPUNIT_ASSERT_EQUAL(19LL, hld.queryNode(8, 10));
+        CPPUNIT_ASSERT_EQUAL(15LL, hld.queryNode(7, 5));
+        CPPUNIT_ASSERT_EQUAL(0LL, hld.queryNode(9, 9));
+        CPPUNIT_ASSERT_EQUAL(4LL, hld.queryNode(0, 0));
+    }
+
+    void testSegmentTreeUpdateWillNotOverflow() {
+        HeavyLightDecomposition hld(5);
+        hld.addEdge(0, 1);
+        hld.addEdge(1, 2);
+        hld.addEdge(2, 3);
+        hld.addEdge(3, 4);
+        hld.decompose();
+
+        hld.updateNode(0, 4, 2000000000);
+        CPPUNIT_ASSERT_EQUAL(10000000000LL, hld.queryNode(0, 4));
     }
 
 
@@ -154,6 +166,7 @@ public:
     CPPUNIT_TEST(testUpdate);
     CPPUNIT_TEST(testRangeQueryEdge);
     CPPUNIT_TEST(testNodeUpdateAndQuery);
+    CPPUNIT_TEST(testSegmentTreeUpdateWillNotOverflow);
     CPPUNIT_TEST_SUITE_END();
 };
 
