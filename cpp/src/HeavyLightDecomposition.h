@@ -113,7 +113,7 @@ public:
     vector<int> rev;    // node to father-edge
     vector<int> heavy;
     vector<int> stIdx;    // node to segment tree index
-    vector<int> fa;
+    vector<int> fa; // father along heavy chain, -1 is father-edge isn't heavy
     vector<int> top;
     int root;
     int Seg_size;
@@ -124,7 +124,7 @@ public:
         rev.resize(N);
         heavy.resize(N);
         stIdx.resize(N, -1);
-        fa.resize(N);
+        fa.resize(N, -1);
         top.resize(N);
 
         root = 0;
