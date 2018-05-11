@@ -14,7 +14,7 @@ public:
     void testSort() {
         TopologicalSort t;
 
-        Graph g(10);
+        Graph g(10, 10);
         g.addEdge(0, 9);
         g.addEdge(2, 9);
         g.addEdge(6, 7);

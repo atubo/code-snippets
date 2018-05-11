@@ -21,7 +21,7 @@ public:
     void tearDown() {}
 
     void testDfn() {
-        Graph g(6);
+        Graph g(6, 10);
         addEdge(g, 0, 1);
         addEdge(g, 0, 2);
         addEdge(g, 0, 3);

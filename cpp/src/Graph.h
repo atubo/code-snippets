@@ -1,6 +1,5 @@
 // Note graph node is 0-indexed
 class Graph {
-    static const int MAXM = 1000;
 public:
     struct Edge {
         int next, to;
@@ -8,11 +7,11 @@ public:
 
     vector<int> head;
     int eidx;
-    int N;
+    int N, M;
 
     Edge *E;
 
-    Graph(int N_):N(N_) {
+    Graph(int N_, int M_):N(N_), M(M_) {
         head.resize(N);
         eidx = 0;
 
@@ -20,7 +19,7 @@ public:
             head[i] = -1;
         }
 
-        E = new Edge[MAXM]{};
+        E = new Edge[M]{};
     }
 
     ~Graph() {
