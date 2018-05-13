@@ -14,17 +14,19 @@ private:
         size[k] = 1;
     }
 
-    void link(int u, int v) {
-        if (u == v) return;
+    int link(int u, int v) {
+        if (u == v) return u;
         if (rank[u] > rank[v]) {
             parent[v] = u;
             size[u] += size[v];
+            return u;
         } else {
             parent[u] = v;
             size[v] += size[u];
             if (rank[u] == rank[v]) {
                 rank[v]++;
             }
+            return v;
         }
     }
 
@@ -49,8 +51,8 @@ public:
         return parent[k] = root;
     }
 
-    void join(int u, int v) {
-        link(find(u), find(v));
+    int join(int u, int v) {
+        return link(find(u), find(v));
     }
 
     int count(int u) {
