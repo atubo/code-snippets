@@ -1,6 +1,7 @@
 
 
 template <class Cmp = less<int>>
+// nodes are 1-indexed
 class LeftistTree {
 public:
 
@@ -87,6 +88,23 @@ public:
         }
         d[x] = d[t[x][1]] + 1;
         return x;
+    }
+
+    int update(int x, int delta) {
+        // increase val of node x by d
+        int root;
+        if (f[x]) {
+            root = find(x);
+            cut(x);
+            int subroot = pop(x);
+            root = merge(root, subroot);
+        } else {
+            root = pop(x);
+        }
+
+        build(x, val[x] + delta);
+        root = merge(root, x);
+        return root;
     }
 
     int find(int x) const {

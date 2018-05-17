@@ -76,6 +76,18 @@ public:
         vector<int> expected = {2, 3, 4, 5, 6, 7, 8, 10};
     }
 
+    void testUpdateNode() {
+        LeftistTree<> lt(5);
+        int root = lt.push(0, 1, 1);
+        for (int i = 2; i <= 5; i++) {
+            root = lt.push(root, i, i);
+        }
+        CPPUNIT_ASSERT_EQUAL(1, lt.top(root));
+        root = lt.update(1, 6);
+        CPPUNIT_ASSERT_EQUAL(2, lt.top(root));
+    }
+
+
 private:
     bool check(const LeftistTree<> &lt,
                const vector<int> &f,
@@ -98,6 +110,7 @@ private:
     CPPUNIT_TEST_SUITE(LeftistTreeTest);
     CPPUNIT_TEST(testOneTree);
     CPPUNIT_TEST(testMergeTwoTrees);
+    CPPUNIT_TEST(testUpdateNode);
     CPPUNIT_TEST_SUITE_END();
 };
 
