@@ -29,7 +29,7 @@ struct ChairmanInFenwick {
     }
 
     // weight sum [l, r] for position [1, k]
-    int query(int k, int l, int r) {
+    int query(int k, int l, int r) const {
         if (l > r) return 0;
         int sum = 0;
         for (int j = k; j; j -= lowbit(j)) {
@@ -39,7 +39,7 @@ struct ChairmanInFenwick {
     }
 
 private:
-    int lowbit(int x) {return x & -x;}
+    int lowbit(int x) const {return x & -x;}
 
     void update(int &now, int w, int t, int l, int r) {
         if (!now) now = T_cnt++;
@@ -50,7 +50,7 @@ private:
         else          update(rc[now], w, t, mid+1, r);
     }
 
-    int querySingleTree(int node, int L, int R, int l, int r) {
+    int querySingleTree(int node, int L, int R, int l, int r) const {
         if (L >= l && R <= r) return val[node];
         if (L > r || R < l) return 0;
         int sum = 0;
