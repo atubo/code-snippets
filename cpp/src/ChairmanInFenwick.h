@@ -1,10 +1,4 @@
 struct ChairmanInFenwick {
-    struct Node {
-        Node() : L(0), R(0), sum(0) {}
-        // note L and R are children's index, not query range
-        int L, R, sum;
-    };
-
     int N;  // number of positions, index is 1-based
     int M;  // number of weights, index is 0-based
     int T_cnt;
