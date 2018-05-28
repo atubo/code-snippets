@@ -66,7 +66,7 @@ public:
         binaryLift();
     }
 
-    int findLCA(int u, int v) {
+    int findLCA(int u, int v) const {
         if (depth[u] < depth[v]) swap(u, v);
         for (int b = MAXB_-1; b >= 0; b--) {
             if (father[u][b] == -1) continue;
