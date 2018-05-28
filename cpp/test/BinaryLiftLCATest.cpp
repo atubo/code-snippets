@@ -15,21 +15,16 @@ public:
     void tearDown() {}
 
     void testLCA() {
-        BinaryLiftLCA lca;
         const int N = 7;
-        lca.N = N;
-        lca.root = 0;
-        lca.adj.resize(N);
+        BinaryLiftLCA lca(N, 0);
+        lca.addEdge(0, 1);
+        lca.addEdge(0, 2);
+        lca.addEdge(1, 3);
+        lca.addEdge(1, 4);
+        lca.addEdge(2, 5);
+        lca.addEdge(2, 6);
 
-        lca.adj[0] = {1, 2};
-        lca.adj[1] = {0, 3, 4};
-        lca.adj[2] = {0, 5, 6};
-        lca.adj[3] = {1};
-        lca.adj[4] = {1};
-        lca.adj[5] = {2};
-        lca.adj[6] = {2};
-
-        lca.preCompute();
+        lca.build();
 
         CPPUNIT_ASSERT(lca.depth == list_of(0)(1)(1)(2)(2)(2)(2));
         CPPUNIT_ASSERT(lca.father[0] == list_of(-1)(-1)(-1));

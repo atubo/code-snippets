@@ -2,61 +2,73 @@
 // Each query O(log N)
 
 class BinaryLiftLCA {
+    // Note graph node is 0-indexed
+    class Graph {
+    public:
+        struct Edge {
+            int next, to;
+        };
+
+        vector<int> head;
+        int eidx;
+        int N, M;
+
+        Edge *E;
+
+        Graph(int N_, int M_):N(N_), M(M_) {
+            head.resize(N);
+            eidx = 0;
+
+            for (int i = 0; i < N; i++) {
+                head[i] = -1;
+            }
+
+            E = new Edge[M]{};
+        }
+
+        ~Graph() {
+            delete[] E;
+        }
+
+        // assume 0-indexed and no duplication
+        void addEdge(int u, int v) {
+            E[eidx].to = v;
+            E[eidx].next = head[u];
+            head[u] = eidx++;
+        }
+    };
+
+    int N_, root_;
+    int MAXB_;
+    Graph g_;
 public:
-    int N, root;
-    int MAXB;
-    vector<vector<int> > adj;
     vector<int> depth;
     vector<vector<int> > father;
 
 public:
-    BinaryLiftLCA() {
-        // initialization: N, root and adj
+    BinaryLiftLCA(int N, int root)
+        : N_(N), root_(root), MAXB_(log2(N)+1), g_(N, N-1) {
     }
 
-    void preCompute() {
-        MAXB = 0;
-        int x = 1;
-        while (x <= N) {
-           MAXB++;
-           x = x * 2;
+    void addEdge(int u, int v) {
+        g_.addEdge(u, v);
+    }
+
+    void build() {
+        depth.resize(N_);
+        father.resize(N_);
+        for (int i = 0; i < N_; i++) {
+            father[i].resize(MAXB_, -1);
         }
 
-        depth.resize(N);
-        father.resize(N);
-        for (int i = 0; i < N; i++) {
-            father[i].resize(MAXB, -1);
-        }
-
-        vector<bool> visited(N, false);
-        dfs(root, -1, visited, 0);
+        dfs(root_, -1, 0);
 
         binaryLift();
     }
 
-    void dfs(int x, int f, vector<bool>& visited, int d) {
-        depth[x] = d;
-        father[x][0] = f;
-        visited[x] = true;
-        for (int i = 0; i < (int)adj[x].size(); i++) {
-            int u = adj[x][i];
-            if (!visited[u]) dfs(u, x, visited, d+1);
-        }
-    }
-
-    void binaryLift() {
-        for (int j = 1; j < MAXB; j++) {
-            for (int i = 0; i < N; i++) {
-                if (father[i][j-1] != -1) {
-                    father[i][j] = father[father[i][j-1]][j-1];
-                }
-            }
-        }
-    }
-
     int findLCA(int u, int v) {
         if (depth[u] < depth[v]) swap(u, v);
-        for (int b = MAXB-1; b >= 0; b--) {
+        for (int b = MAXB_-1; b >= 0; b--) {
             if (father[u][b] == -1) continue;
             if (depth[father[u][b]] >= depth[v]) {
                 u = father[u][b];
@@ -65,7 +77,7 @@ public:
 
         if (u == v) return u;
 
-        for (int b = MAXB-1; b >= 0; b--) {
+        for (int b = MAXB_-1; b >= 0; b--) {
             if (father[u][b] == -1) continue;
             if (father[u][b] != father[v][b]) {
                 u = father[u][b];
@@ -73,5 +85,25 @@ public:
             }
         }
         return father[u][0];
+    }
+
+private:
+    void dfs(int x, int f, int d) {
+        depth[x] = d;
+        father[x][0] = f;
+        for (int eidx = g_.head[x]; ~eidx; eidx = g_.E[eidx].next) {
+            int u = g_.E[eidx].to;
+            if (u != f) dfs(u, x, d+1);
+        }
+    }
+
+    void binaryLift() {
+        for (int j = 1; j < MAXB_; j++) {
+            for (int i = 0; i < N_; i++) {
+                if (father[i][j-1] != -1) {
+                    father[i][j] = father[father[i][j-1]][j-1];
+                }
+            }
+        }
     }
 };
