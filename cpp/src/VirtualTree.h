@@ -35,10 +35,14 @@ public:
             E[eidx].next = head[u];
             head[u] = eidx++;
         }
+
+        void reset() {
+            fill(head.begin(), head.end(), -1);
+            eidx = 0;
+        }
     };
 
-
-    vector<pair<int, int> > vEdges;
+    Graph vg;
 
 private:
     int MAXB_;
@@ -52,7 +56,7 @@ private:
     Graph g_;
 
 public:
-    VirtualTree(int n, int r): N_(n), root_(r), g_(n, n-1) {
+    VirtualTree(int n, int r): vg(n, n-1), N_(n), root_(r), g_(n, n-1) {
         MAXB_ = int(log2(N_) + 1.5);
         sz_ = 0;
     }
@@ -129,7 +133,7 @@ public:
     };
 
     int buildVirtualTree(vector<int>& vertices, int k) {
-        vEdges.clear();
+        vg.reset();
 
         sz_ = 0;
         int cnt = k;
@@ -159,11 +163,10 @@ public:
             addVirtualEdge(stk_[i], stk_[i+1]);
         }
 
-        sort(vEdges.begin(), vEdges.end());
         return cnt;
     }
 
     void addVirtualEdge(int u, int v) {
-        vEdges.push_back(make_pair(u, v));
+        vg.addEdge(u, v);
     }
 };

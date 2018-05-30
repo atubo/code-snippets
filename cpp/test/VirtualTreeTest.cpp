@@ -18,6 +18,14 @@ public:
         t.addEdge(u, v);
     }
 
+    vector<int> getChildren(const VirtualTree::Graph &vg, int u) {
+        vector<int> ret;
+        for (int eidx = vg.head[u]; ~eidx; eidx = vg.E[eidx].next) {
+            ret.push_back(vg.E[eidx].to);
+        }
+        return ret;
+    }
+
     void testSingleNode() {
         VirtualTree t(1, 0);
 
@@ -26,7 +34,7 @@ public:
         int cnt = t.buildVirtualTree(vertices, 1);
         CPPUNIT_ASSERT_EQUAL(1, cnt);
         CPPUNIT_ASSERT_EQUAL(0, vertices[0]);
-        CPPUNIT_ASSERT(t.vEdges.empty());
+        CPPUNIT_ASSERT(getChildren(t.vg, 0).empty());
     }
 
     void testPartialNodes() {
@@ -45,19 +53,23 @@ public:
         CPPUNIT_ASSERT_EQUAL(3, cnt);
         CPPUNIT_ASSERT(vertices == list_of(4)(3)(1)(-1)(-1)(-1)(-1));
 
-        CPPUNIT_ASSERT(t.vEdges.size() == 2);
-        CPPUNIT_ASSERT(t.vEdges[0] == make_pair(1, 3));
-        CPPUNIT_ASSERT(t.vEdges[1] == make_pair(1, 4));
+        auto c = getChildren(t.vg, 1);
+        CPPUNIT_ASSERT(c == list_of(3)(4));
+        CPPUNIT_ASSERT(getChildren(t.vg, 3).empty());
+        CPPUNIT_ASSERT(getChildren(t.vg, 4).empty());
+
 
         vertices[2] = 2;    // now (3, 4, 2, ...)
         cnt = t.buildVirtualTree(vertices, 3);
         CPPUNIT_ASSERT_EQUAL(5, cnt);
         CPPUNIT_ASSERT(vertices == list_of(2)(4)(3)(0)(1)(-1)(-1));
-        CPPUNIT_ASSERT(t.vEdges.size() == 4);
-        CPPUNIT_ASSERT(t.vEdges[0] == make_pair(0, 1));
-        CPPUNIT_ASSERT(t.vEdges[1] == make_pair(0, 2));
-        CPPUNIT_ASSERT(t.vEdges[2] == make_pair(1, 3));
-        CPPUNIT_ASSERT(t.vEdges[3] == make_pair(1, 4));
+        c = getChildren(t.vg, 0);
+        CPPUNIT_ASSERT(c == list_of(1)(2));
+        c = getChildren(t.vg, 1);
+        CPPUNIT_ASSERT(c == list_of(3)(4));
+        CPPUNIT_ASSERT(getChildren(t.vg, 2).empty());
+        CPPUNIT_ASSERT(getChildren(t.vg, 3).empty());
+        CPPUNIT_ASSERT(getChildren(t.vg, 4).empty());
     }
 
     CPPUNIT_TEST_SUITE(VirtualTreeTest);
