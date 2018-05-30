@@ -15,15 +15,11 @@ public:
     void tearDown() {}
 
     void addEdge(VirtualTree& t, int u, int v) {
-        t.adj[u].push_back(v);
-        t.adj[v].push_back(u);
+        t.addEdge(u, v);
     }
 
     void testSingleNode() {
-        VirtualTree t;
-        t.N = 1;
-        t.root = 0;
-        t.adj.resize(1);
+        VirtualTree t(1, 0);
 
         t.preCompute();
         vector<int> vertices = {0};
@@ -34,10 +30,7 @@ public:
     }
 
     void testPartialNodes() {
-        VirtualTree t;
-        t.N = 7;
-        t.root = 0;
-        t.adj.resize(7);
+        VirtualTree t(7, 0);
         addEdge(t, 0, 1);
         addEdge(t, 0, 2);
         addEdge(t, 1, 3);
@@ -50,7 +43,7 @@ public:
         int cnt = t.buildVirtualTree(vertices, 2);
 
         CPPUNIT_ASSERT_EQUAL(3, cnt);
-        CPPUNIT_ASSERT(vertices == list_of(3)(4)(1)(-1)(-1)(-1)(-1));
+        CPPUNIT_ASSERT(vertices == list_of(4)(3)(1)(-1)(-1)(-1)(-1));
 
         CPPUNIT_ASSERT(t.vEdges.size() == 2);
         CPPUNIT_ASSERT(t.vEdges[0] == make_pair(1, 3));
@@ -59,7 +52,7 @@ public:
         vertices[2] = 2;    // now (3, 4, 2, ...)
         cnt = t.buildVirtualTree(vertices, 3);
         CPPUNIT_ASSERT_EQUAL(5, cnt);
-        CPPUNIT_ASSERT(vertices == list_of(3)(4)(2)(1)(0)(-1)(-1));
+        CPPUNIT_ASSERT(vertices == list_of(2)(4)(3)(0)(1)(-1)(-1));
         CPPUNIT_ASSERT(t.vEdges.size() == 4);
         CPPUNIT_ASSERT(t.vEdges[0] == make_pair(0, 1));
         CPPUNIT_ASSERT(t.vEdges[1] == make_pair(0, 2));

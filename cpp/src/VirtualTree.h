@@ -1,86 +1,122 @@
 
 class VirtualTree {
 public:
-    int N, root;
-    int MAXB;
-    vector<vector<int> > adj;
-    vector<int> dfn;
-    vector<int> depth;
-    vector<vector<int> > father;
-    int sz;
+    // Note graph node is 0-indexed
+    class Graph {
+    public:
+        struct Edge {
+            int next, to;
+        };
 
-    vector<int> stk;
+        vector<int> head;
+        int eidx;
+        int N, M;
+
+        Edge *E;
+
+        Graph(int N_, int M_):N(N_), M(M_) {
+            head.resize(N);
+            eidx = 0;
+
+            for (int i = 0; i < N; i++) {
+                head[i] = -1;
+            }
+
+            E = new Edge[M]{};
+        }
+
+        ~Graph() {
+            delete[] E;
+        }
+
+        // assume 0-indexed and no duplication
+        void addEdge(int u, int v) {
+            E[eidx].to = v;
+            E[eidx].next = head[u];
+            head[u] = eidx++;
+        }
+    };
+
+
     vector<pair<int, int> > vEdges;
 
+private:
+    int MAXB_;
+    int sz_;
+    int N_, root_;
+    vector<int> depth_;
+    vector<vector<int> > father_;
+    vector<int> dfn_;
+    vector<int> stk_;
+
+    Graph g_;
+
 public:
-    VirtualTree() {
-        // initialization: N, root and adj
+    VirtualTree(int n, int r): N_(n), root_(r), g_(n, n-1) {
+        MAXB_ = int(log2(N_) + 1.5);
+        sz_ = 0;
+    }
+
+    // only father to child edges are allowed
+    void addEdge(int u, int v) {
+        g_.addEdge(u, v);
     }
 
     void preCompute() {
-        MAXB = 0;
-        int x = 1;
-        while (x <= N) {
-           MAXB++;
-           x = x * 2;
+
+        depth_.resize(N_);
+        father_.resize(N_);
+        dfn_.resize(N_);
+        for (int i = 0; i < N_; i++) {
+            father_[i].resize(MAXB_, -1);
         }
 
-        depth.resize(N);
-        father.resize(N);
-        dfn.resize(N);
-        for (int i = 0; i < N; i++) {
-            father[i].resize(MAXB, -1);
-        }
-
-        vector<bool> visited(N, false);
-        sz = 0;
-        dfs(root, -1, visited, 0);
+        dfs(root_, root_, 0);
 
         binaryLift();
 
-        stk.resize(N);
+        stk_.resize(N_);
     }
 
-    void dfs(int x, int f, vector<bool>& visited, int d) {
-        dfn[x] = sz++;
-        depth[x] = d;
-        father[x][0] = f;
-        visited[x] = true;
-        for (int i = 0; i < (int)adj[x].size(); i++) {
-            int u = adj[x][i];
-            if (!visited[u]) dfs(u, x, visited, d+1);
+    void dfs(int x, int f, int d) {
+        dfn_[x] = sz_++;
+        depth_[x] = d;
+        father_[x][0] = f;
+        for (int eidx = g_.head[x]; ~eidx; eidx = g_.E[eidx].next) {
+            int u = g_.E[eidx].to;
+            if (u != f) dfs(u, x, d+1);
         }
     }
 
     void binaryLift() {
-        for (int j = 1; j < MAXB; j++) {
-            for (int i = 0; i < N; i++) {
-                if (father[i][j-1] != -1) {
-                    father[i][j] = father[father[i][j-1]][j-1];
+        for (int j = 1; j < MAXB_; j++) {
+            for (int i = 0; i < N_; i++) {
+                if (father_[i][j-1] != -1) {
+                    father_[i][j] = father_[father_[i][j-1]][j-1];
                 }
             }
         }
     }
 
     int findLCA(int u, int v) {
-        if (depth[u] < depth[v]) swap(u, v);
-        for (int b = MAXB-1; b >= 0; b--) {
-            if (father[u][b] == -1) continue;
-            if (depth[father[u][b]] >= depth[v]) {
-                u = father[u][b];
+        if (depth_[u] < depth_[v]) swap(u, v);
+        for (int b = MAXB_-1; b >= 0; b--) {
+            if (father_[u][b] == -1) continue;
+            if (depth_[father_[u][b]] >= depth_[v]) {
+                u = father_[u][b];
             }
         }
 
         if (u == v) return u;
 
-        for (int b = MAXB-1; b >= 0; b--) {
-            if (father[u][b] == -1) continue;
-            if (father[u][b] != father[v][b]) {
-                u = father[u][b];
-                v = father[v][b];
+        for (int b = MAXB_-1; b >= 0; b--) {
+            if (father_[u][b] == -1) continue;
+            if (father_[u][b] != father_[v][b]) {
+                u = father_[u][b];
+                v = father_[v][b];
             }
         }
-        return father[u][0];
+        return father_[u][0];
     }
 
     struct CmpByDfn {
@@ -88,39 +124,39 @@ public:
         const VirtualTree& m_t;
 
         bool operator()(int i, int j) {
-            return m_t.dfn[i] < m_t.dfn[j];
+            return m_t.dfn_[i] < m_t.dfn_[j];
         }
     };
 
     int buildVirtualTree(vector<int>& vertices, int k) {
         vEdges.clear();
 
-        sz = 0;
+        sz_ = 0;
         int cnt = k;
         sort(vertices.begin(), vertices.begin()+k, CmpByDfn(*this));
 
         for (int i = 0; i < k; i++) {
             int u = vertices[i];
-            int lca = (sz > 0 ? findLCA(u, stk[sz-1]) : u);
-            if (sz == 0 || lca == stk[sz-1]) stk[sz++] = u;
+            int lca = (sz_ > 0 ? findLCA(u, stk_[sz_-1]) : u);
+            if (sz_ == 0 || lca == stk_[sz_-1]) stk_[sz_++] = u;
             else {
-                while (sz - 2 >= 0 && depth[stk[sz-2]] >= depth[lca]) {
-                    addVirtualEdge(stk[sz-2], stk[sz-1]);
-                    sz--;
+                while (sz_ - 2 >= 0 && depth_[stk_[sz_-2]] >= depth_[lca]) {
+                    addVirtualEdge(stk_[sz_-2], stk_[sz_-1]);
+                    sz_--;
                 }
 
-                if (stk[sz-1] != lca) {
-                    addVirtualEdge(lca, stk[--sz]);
-                    stk[sz++] = lca;
+                if (stk_[sz_-1] != lca) {
+                    addVirtualEdge(lca, stk_[--sz_]);
+                    stk_[sz_++] = lca;
                     vertices[cnt++] = lca;
                 }
 
-                stk[sz++] = u;
+                stk_[sz_++] = u;
             }
         }
 
-        for (int i = 0; i < sz-1; i++) {
-            addVirtualEdge(stk[i], stk[i+1]);
+        for (int i = 0; i < sz_-1; i++) {
+            addVirtualEdge(stk_[i], stk_[i+1]);
         }
 
         sort(vEdges.begin(), vEdges.end());
