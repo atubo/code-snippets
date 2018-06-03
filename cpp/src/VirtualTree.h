@@ -82,6 +82,41 @@ public:
         stk_.resize(N_);
     }
 
+    int buildVirtualTree(vector<int>& vertices, int k) {
+        vg.reset();
+
+        sz_ = 0;
+        int cnt = k;
+        sort(vertices.begin(), vertices.begin()+k, CmpByDfn(*this));
+
+        for (int i = 0; i < k; i++) {
+            int u = vertices[i];
+            int lca = (sz_ > 0 ? findLCA(u, stk_[sz_-1]) : u);
+            if (sz_ == 0 || lca == stk_[sz_-1]) stk_[sz_++] = u;
+            else {
+                while (sz_ - 2 >= 0 && depth_[stk_[sz_-2]] >= depth_[lca]) {
+                    addVirtualEdge(stk_[sz_-2], stk_[sz_-1]);
+                    sz_--;
+                }
+
+                if (stk_[sz_-1] != lca) {
+                    addVirtualEdge(lca, stk_[--sz_]);
+                    stk_[sz_++] = lca;
+                    vertices[cnt++] = lca;
+                }
+
+                stk_[sz_++] = u;
+            }
+        }
+
+        for (int i = 0; i < sz_-1; i++) {
+            addVirtualEdge(stk_[i], stk_[i+1]);
+        }
+
+        return cnt;
+    }
+
+private:
     void dfs(int x, int f, int d) {
         dfn_[x] = sz_++;
         depth_[x] = d;
@@ -134,39 +169,6 @@ public:
         }
     };
 
-    int buildVirtualTree(vector<int>& vertices, int k) {
-        vg.reset();
-
-        sz_ = 0;
-        int cnt = k;
-        sort(vertices.begin(), vertices.begin()+k, CmpByDfn(*this));
-
-        for (int i = 0; i < k; i++) {
-            int u = vertices[i];
-            int lca = (sz_ > 0 ? findLCA(u, stk_[sz_-1]) : u);
-            if (sz_ == 0 || lca == stk_[sz_-1]) stk_[sz_++] = u;
-            else {
-                while (sz_ - 2 >= 0 && depth_[stk_[sz_-2]] >= depth_[lca]) {
-                    addVirtualEdge(stk_[sz_-2], stk_[sz_-1]);
-                    sz_--;
-                }
-
-                if (stk_[sz_-1] != lca) {
-                    addVirtualEdge(lca, stk_[--sz_]);
-                    stk_[sz_++] = lca;
-                    vertices[cnt++] = lca;
-                }
-
-                stk_[sz_++] = u;
-            }
-        }
-
-        for (int i = 0; i < sz_-1; i++) {
-            addVirtualEdge(stk_[i], stk_[i+1]);
-        }
-
-        return cnt;
-    }
 
     void addVirtualEdge(int u, int v) {
         vg.addEdge(u, v);
