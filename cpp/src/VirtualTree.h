@@ -102,14 +102,16 @@ public:
         }
     }
 
+    int ancestor(int u, int k) {
+        for (int i = 0; k; ++i, k>>=1) {
+            if (k&1) u = father_[u][i];
+        }
+        return u;
+    }
+
     int findLCA(int u, int v) {
         if (depth_[u] < depth_[v]) swap(u, v);
-        for (int b = MAXB_-1; b >= 0; b--) {
-            if (father_[u][b] == -1) continue;
-            if (depth_[father_[u][b]] >= depth_[v]) {
-                u = father_[u][b];
-            }
-        }
+        u = ancestor(u, depth_[u] - depth_[v]);
 
         if (u == v) return u;
 
