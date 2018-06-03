@@ -38,7 +38,7 @@ private:
         }
     };
 
-    // 1-indexed
+    // 0-indexed
     class SegmentTree {
         int N;
         int64_t *val, *lazy;
@@ -55,12 +55,12 @@ private:
         }
         // add t to range [a, b]
         void update(int t, int a, int b) {
-            update(1, t, 1, N, a, b);
+            update(1, t, 0, N-1, a, b);
         }
 
         // query range sum in [a, b]
         int64_t query(int a, int b) {
-            return query(1, a, b, 1, N);
+            return query(1, a, b, 0, N-1);
         }
 
     private:
@@ -128,7 +128,7 @@ public:
         top.resize(N);
 
         root = 0;
-        Seg_size = 1;   // segment tree is 1-indexed
+        Seg_size = 0;   // segment tree is 1-indexed
     }
 
     void addEdge(int u, int v) {
