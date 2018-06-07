@@ -75,9 +75,7 @@ public:
             father_[i].resize(MAXB_, -1);
         }
 
-        dfs(root_, root_, 0);
-
-        binaryLift();
+        dfs(root_, -1, 0);
 
         stk_.resize(N_);
     }
@@ -121,19 +119,12 @@ private:
         dfn_[x] = sz_++;
         depth_[x] = d;
         father_[x][0] = f;
+        for (int i = 0; ~father_[x][i]; i++) {
+            father_[x][i+1] = father_[father_[x][i]][i];
+        }
         for (int eidx = g_.head[x]; ~eidx; eidx = g_.E[eidx].next) {
             int u = g_.E[eidx].to;
             if (u != f) dfs(u, x, d+1);
-        }
-    }
-
-    void binaryLift() {
-        for (int j = 1; j < MAXB_; j++) {
-            for (int i = 0; i < N_; i++) {
-                if (father_[i][j-1] != -1) {
-                    father_[i][j] = father_[father_[i][j-1]][j-1];
-                }
-            }
         }
     }
 
