@@ -35,13 +35,7 @@ public:
         Fft::four1(a, 1);
         Fft::four1(b, 1);
 
-        vector<double> c(16);
-        for (int i = 0; i < 8; i++) {
-            double x1 = a[2*i], y1 = a[2*i+1];
-            double x2 = b[2*i], y2 = b[2*i+1];
-            c[2*i] = x1*x2 - y1*y2;
-            c[2*i+1] = x1*y2 + y1*x2;
-        }
+        vector<double> c = Fft::innerProduct(a, b);
         Fft::four1(c, -1);
         vector<double> expected = {5, 16, 34, 60, 61, 52, 32, 0};
         for (int i = 0; i < 8; i++) {

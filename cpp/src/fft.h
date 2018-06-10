@@ -44,7 +44,17 @@ public:
             mmax = istep;
         }
     }
+
+    static vector<double> innerProduct(const vector<double> &x,
+                                       const vector<double> &y) {
+        const int n = x.size() / 2;
+        vector<double> ret(2*n);
+        for (int i = 0; i < n; i++) {
+            double a = x[2*i], b = x[2*i+1];
+            double c = y[2*i], d = y[2*i+1];
+            ret[2*i] = a*c - b*d;
+            ret[2*i+1] = a*d + b*c;
+        }
+        return ret;
+    }
 };
-
-
-
