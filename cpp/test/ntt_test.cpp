@@ -12,6 +12,7 @@ public:
     void tearDown() {}
 
     void testPrimeRoot() {
+        CPPUNIT_ASSERT_EQUAL(2, Ntt::primeRoot(3));
         CPPUNIT_ASSERT_EQUAL(2, Ntt::primeRoot(11));
         CPPUNIT_ASSERT_EQUAL(5, Ntt::primeRoot(23));
     }

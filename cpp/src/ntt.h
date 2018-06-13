@@ -10,7 +10,7 @@ public:
                 while (x % i == 0) x /= i;
             }
         }
-        if (x > 1) factors.push_back(x);
+        if (x > 1) factors.push_back((p-1)/x);
 
         for (int i = 2; ; i++) {
             bool ok = true;
