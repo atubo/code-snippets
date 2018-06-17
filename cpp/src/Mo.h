@@ -26,7 +26,7 @@ private:
 
     void alloc() {
         queries_ = new Query[Q_]{};
-        cnt_ = new int[100]{};
+        cnt_ = new int[N_+1]{};
 
         elem = new int[N_]{};
         ans  = new int[Q_]{};
