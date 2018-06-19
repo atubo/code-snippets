@@ -31,9 +31,36 @@ public:
         }
     }
 
+    void testPolynomialInverse() {
+        vector<int> a{3, 4, 5, 1, 2};
+        auto b = Ntt::polynomialInverse(5, a, 998244353, 3);
+        vector<int> expected = {332748118,
+            221832078, 480636170, 875004310, 398476140};
+        CPPUNIT_ASSERT(b.size() == 16);
+        for (int i = 0; i < 5; i++) {
+            CPPUNIT_ASSERT_EQUAL(expected[i], b[i]);
+        }
+        for (int i = 5; i < 16; i++) {
+            CPPUNIT_ASSERT_EQUAL(0, b[i]);
+        }
+    }
+
+    void testBernoulli() {
+        auto b = Ntt::bernoulli(1<<10, 1004535809, 3);
+        CPPUNIT_ASSERT_EQUAL(1, b[0]);
+        CPPUNIT_ASSERT_EQUAL(502267904, b[1]);
+        CPPUNIT_ASSERT_EQUAL(167422635, b[2]);
+        CPPUNIT_ASSERT_EQUAL(0, b[3]);
+        CPPUNIT_ASSERT_EQUAL(971051282, b[4]);
+        CPPUNIT_ASSERT_EQUAL(756407540, b[1022]);
+        CPPUNIT_ASSERT_EQUAL(0, b[1023]);
+    }
+
     CPPUNIT_TEST_SUITE(NttTest);
     CPPUNIT_TEST(testPrimeRoot);
     CPPUNIT_TEST(testConvolution);
+    CPPUNIT_TEST(testPolynomialInverse);
+    CPPUNIT_TEST(testBernoulli);
     CPPUNIT_TEST_SUITE_END();
 };
 

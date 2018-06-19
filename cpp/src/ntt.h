@@ -77,7 +77,49 @@ public:
         ntt(c, -1, p, g);
         return c;
     }
-        
+
+    static vector<int> polynomialInverse(int deg,
+                                         const vector<int> &a,
+                                         int prime, int g) {
+        if (deg == 1) {
+            vector<int> b(2);
+            b[0] = pow(a[0], prime-2, prime);
+            return b;
+        }
+        auto b = polynomialInverse((deg+1)>>1, a, prime, g);
+        int p = 1;
+        while (p < deg << 1) p <<= 1;
+        vector<int> tmp(p);
+        copy(a.begin(), a.begin()+deg, tmp.begin());
+        ntt(tmp, 1, prime, g);
+        b.resize(p);
+        ntt(b, 1, prime, g);
+        for (int i = 0; i < p; i++) {
+            b[i] = (2LL - int64_t(tmp[i]) * b[i] % prime) * b[i] % prime;
+            if (b[i] < 0) b[i] += prime;
+        }
+        ntt(b, -1, prime, g);
+        fill(b.begin()+deg, b.begin()+p, 0);
+        return b;
+    }
+
+    static vector<int> bernoulli(int n, int p, int g) {
+        // assume n is power of 2
+        vector<int> a(n), f(n+1), nf(n+1);
+        f[0] = 1;
+        for (int i = 1; i <= n; i++) f[i] = 1LL * f[i-1] * i % p;
+        nf[n] = pow(f[n], p-2, p);
+        for (int i = n-1; i >= 0; i--) {
+            nf[i] = 1LL * nf[i+1] * (i+1) % p;
+        }
+        for (int i = 0; i < n; i++) a[i] = nf[i+1];
+        auto b = polynomialInverse(n, a, p, g);
+        for (int i = 0; i < n; i++) {
+            b[i] = 1LL * b[i] * f[i] % p;
+        }
+        return b;
+    }
+
 private:
     static int pow(int64_t x, int y, int m) {
         int64_t ans = 1;
