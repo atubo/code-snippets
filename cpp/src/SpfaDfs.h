@@ -1,22 +1,28 @@
+// Determine if there is any negative weight loop
+// Nodes in graph are 0-indexed
+// Node N is a virtual node that has 0 weight edge to all nodes
+// But we don't have to explicitly add that node
 class SpfaDfs {
-    static const int MAXM = 610000;
-    static const int INF = INT_MAX;
-
 public:
     struct Edge {
-        int next, to, wt;
+        int next, to;
+        int wt;
     };
 
-    SpfaDfs(int N_): N(N_) {
+    SpfaDfs(int N_, int M): N(N_) {
+        inq = new bool[N]{};
+        dist = new int[N];
         head = new int[N];
         eTotal = 0;
         for (int i = 0; i < N; i++) {
             head[i] = -1;
         }
-        E = new Edge[MAXM]{};
+        E = new Edge[M]{};
     }
 
     ~SpfaDfs() {
+        delete[] inq;
+        delete[] dist;
         delete[] head;
         delete[] E;
     }
@@ -28,35 +34,26 @@ public:
         head[u] = eTotal++;
     }
 
-    bool check(int u) {
-        init(u);
-        return dfs(u);
+    bool check() {
+        init();
+        for (int i = 0; i < N; i++) {
+            if (!dfs(i)) return false;
+        }
+        return true;
     }
 
-    int getDist(int u) const {return dist[u];}
-
 private:
-    queue<int> Q;
     int N;
-    vector<int> inq;    // if node is in queue
-    vector<int> dist;
-    vector<int> path;
+    bool *inq;  // if node is in queue
+    int *dist;
 
     int *head;
     int eTotal;
     Edge *E;
 
-    void init(int src) {
-        while (!Q.empty()) Q.pop();
-        inq.clear();
-        dist.clear();
-        path.clear();
-
-        inq.resize(N, 0);
-        dist.resize(N, INF);
-        path.resize(N, src);
-
-        dist[src] = 0;
+    void init() {
+        memset(inq, 0, N*sizeof(bool));
+        memset(dist, 0, N*sizeof(int));
     }
 
     bool dfs(int u) {
@@ -74,5 +71,3 @@ private:
         return true;
     }
 };
-
-const int SpfaDfs::INF;

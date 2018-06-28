@@ -11,19 +11,19 @@ public:
     void tearDown() {}
 
     void testNegativeWeightCycle() {
-        SpfaDfs spfa(3);
+        SpfaDfs spfa(3, 3);
         spfa.addEdge(0, 1, 0);
         spfa.addEdge(1, 2, 1);
         spfa.addEdge(2, 0, -2);
-        CPPUNIT_ASSERT(!spfa.check(0));
+        CPPUNIT_ASSERT(!spfa.check());
     }
 
     void testNoNegativeWeightCycle() {
-        SpfaDfs spfa(3);
+        SpfaDfs spfa(3, 3);
         spfa.addEdge(0, 1, 0);
         spfa.addEdge(1, 2, 2);
         spfa.addEdge(2, 0, -1);
-        CPPUNIT_ASSERT(spfa.check(0));
+        CPPUNIT_ASSERT(spfa.check());
     }
 
     CPPUNIT_TEST_SUITE(SpfaDfsTest);
