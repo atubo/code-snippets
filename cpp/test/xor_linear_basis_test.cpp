@@ -27,8 +27,22 @@ public:
         }
     }
 
+    void testMerge() {
+        XorLinearBasis a(4);
+        a.insert(1);
+        a.insert(3);
+        XorLinearBasis b(4);
+        b.insert(15);
+        XorLinearBasis c = XorLinearBasis::merge(a, b);
+        vector<int64_t> expected = {1, 2, 0, 12, 0};
+        for (int i = 0; i <= 4; i++) {
+            CPPUNIT_ASSERT_EQUAL(expected[i], c.a[i]);
+        }
+    }
+
     CPPUNIT_TEST_SUITE(XorLinearBasisTest);
     CPPUNIT_TEST(test);
+    CPPUNIT_TEST(testMerge);
     CPPUNIT_TEST_SUITE_END();
 };
 

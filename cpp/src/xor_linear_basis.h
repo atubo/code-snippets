@@ -4,7 +4,13 @@ public:
     int64_t *a;
 
     XorLinearBasis(int maxl): maxl_(maxl) {
-        a = new int64_t[maxl_+1]{};
+        alloc();
+    }
+
+    XorLinearBasis(const XorLinearBasis &b) {
+        maxl_ = b.maxl_;
+        alloc();
+        memcpy(a, b.a, maxl_*sizeof(int64_t));
     }
 
     ~XorLinearBasis() {
@@ -30,6 +36,19 @@ public:
         }
     }
 
+    static XorLinearBasis merge(const XorLinearBasis &a,
+                                const XorLinearBasis &b) {
+        XorLinearBasis res = a;
+        for (int i = 0; i <= res.maxl_; i++) {
+            res.insert(b.a[i]);
+        }
+        return res;
+    }
+
 private:
     int maxl_;
+
+    void alloc() {
+        a = new int64_t[maxl_+1]{};
+    }
 };
