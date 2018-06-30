@@ -40,9 +40,23 @@ public:
         }
     }
 
+    void testMergeFrom() {
+        XorLinearBasis a(4);
+        a.insert(1);
+        a.insert(3);
+        XorLinearBasis b(4);
+        b.insert(15);
+        a.mergeFrom(b);
+        vector<int64_t> expected = {1, 2, 0, 12, 0};
+        for (int i = 0; i <= 4; i++) {
+            CPPUNIT_ASSERT_EQUAL(expected[i], a.a[i]);
+        }
+    }
+
     CPPUNIT_TEST_SUITE(XorLinearBasisTest);
     CPPUNIT_TEST(test);
     CPPUNIT_TEST(testMerge);
+    CPPUNIT_TEST(testMergeFrom);
     CPPUNIT_TEST_SUITE_END();
 };
 

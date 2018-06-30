@@ -36,6 +36,12 @@ public:
         }
     }
 
+    void mergeFrom(const XorLinearBasis &other) {
+        for (int i = 0; i <= maxl_; i++) {
+            insert(other.a[i]);
+        }
+    }
+
     static XorLinearBasis merge(const XorLinearBasis &a,
                                 const XorLinearBasis &b) {
         XorLinearBasis res = a;
