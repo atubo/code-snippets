@@ -25,6 +25,13 @@ public:
         }
     }
 
+    void build() {
+        // assume all leaf nodes are already set up
+        for (int i = nData_-1; i >= 1; i--) {
+            data[i] = combine(data[2*i], data[2*i+1]);
+        }
+    }
+
     int query(int a, int b) const {
         a += nData_;
         b += nData_;
