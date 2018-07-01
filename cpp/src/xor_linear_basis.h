@@ -13,8 +13,16 @@ public:
         memcpy(a, b.a, maxl_*sizeof(int64_t));
     }
 
+    XorLinearBasis& operator = (const XorLinearBasis &b) {
+        dealloc();
+        maxl_ = b.maxl_;
+        alloc();
+        memcpy(a, b.a, maxl_*sizeof(int64_t));
+        return *this;
+    }
+
     ~XorLinearBasis() {
-        delete[] a;
+        dealloc();
     }
 
     void insert(int64_t t) {
@@ -56,5 +64,9 @@ private:
 
     void alloc() {
         a = new int64_t[maxl_+1]{};
+    }
+
+    void dealloc() {
+        delete[] a;
     }
 };
