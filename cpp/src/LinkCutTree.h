@@ -13,6 +13,7 @@ public:
     void access(int x) {
         for (int t = 0; x; t=x, x=fa[x]) {
             splay(x);
+            sizeVirtualChildren[x] += size[c[x][1]] - size[t];
             c[x][1] = t;
             pushUp(x);
         }
@@ -26,8 +27,11 @@ public:
 
     void link(int x, int y) {
         makeRoot(x);
+        makeRoot(y);
         fa[x] = y;
+        sizeVirtualChildren[y] += size[x];
         splay(x);
+        pushUp(y);
     }
 
     // split out the path from x to y
@@ -108,10 +112,12 @@ public:
 
 public:
     int *val;
+    int *size;  // size of subtree in the original tree
 private:
     int N;
     int *fa, *mx, *tot, *delta;
-    int *sz;
+    int *sz;    // size of subtree in the splay tree
+    int *sizeVirtualChildren;
     int **c;
     int *q;
     bool *rev;
@@ -123,6 +129,8 @@ private:
         tot = new int[N+1]{};
         delta = new int[N+1]{};
         sz = new int[N+1]{};
+        size = new int[N+1]{};
+        sizeVirtualChildren = new int[N+1]{};
         c = new int*[N+1]{};
         for (int i = 0; i <= N; i++) {
             c[i] = new int[2]{};
@@ -138,6 +146,8 @@ private:
         delete[] tot;
         delete[] delta;
         delete[] sz;
+        delete[] size;
+        delete[] sizeVirtualChildren;
         for (int i = 1; i <= N; i++) {
             delete[] c[i];
         }
@@ -169,6 +179,7 @@ private:
         mx[x] = max(mx[x], mx[r]);
         sz[x] = 1 + sz[l] + sz[r];
         tot[x] = val[x] + tot[l] + tot[r];
+        size[x] = size[l] + size[r] + sizeVirtualChildren[x] + 1;
     }
 
     void rotate(int x) {
