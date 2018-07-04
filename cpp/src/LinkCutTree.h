@@ -13,7 +13,7 @@ public:
     void access(int x) {
         for (int t = 0; x; t=x, x=fa_[x]) {
             splay(x);
-            size_vc[x] += size[c_[x][1]] - size[t];
+            size_vc_[x] += size[c_[x][1]] - size[t];
             c_[x][1] = t;
             pushUp(x);
         }
@@ -22,14 +22,14 @@ public:
     void makeRoot(int x) {
         access(x);
         splay(x);
-        rev[x] ^= 1;
+        rev_[x] ^= 1;
     }
 
     void link(int x, int y) {
         makeRoot(x);
         makeRoot(y);
         fa_[x] = y;
-        size_vc[y] += size[x];
+        size_vc_[y] += size[x];
         splay(x);
         pushUp(y);
     }
@@ -89,7 +89,7 @@ public:
         printf("\n");
         printf("rev: ");
         for (int i = 1; i <= N_; i++) {
-            printf("%d ", int(rev[i]));
+            printf("%d ", int(rev_[i]));
         }
         printf("\n");
 
@@ -117,10 +117,10 @@ private:
     const int N_;
     int *fa_, *mx_, *tot_, *delta_;
     int *sz_;    // size of subtree in the splay tree
-    int *size_vc;
+    int *size_vc_;   // size of virtual children
     int **c_;
     int *q_;
-    bool *rev;
+    bool *rev_;
 
     void alloc() {
         fa_ = new int[N_+1]{};
@@ -130,13 +130,13 @@ private:
         delta_ = new int[N_+1]{};
         sz_ = new int[N_+1]{};
         size = new int[N_+1]{};
-        size_vc = new int[N_+1]{};
+        size_vc_ = new int[N_+1]{};
         c_ = new int*[N_+1]{};
         for (int i = 0; i <= N_; i++) {
             c_[i] = new int[2]{};
         }
         q_ = new int[N_+1]{};
-        rev = new bool[N_+1]{};
+        rev_ = new bool[N_+1]{};
     }
 
     void dealloc() {
@@ -147,13 +147,13 @@ private:
         delete[] delta_;
         delete[] sz_;
         delete[] size;
-        delete[] size_vc;
+        delete[] size_vc_;
         for (int i = 1; i <= N_; i++) {
             delete[] c_[i];
         }
         delete[] c_;
         delete[] q_;
-        delete[] rev;
+        delete[] rev_;
     }
 
     bool isSplayRoot(int x) {
@@ -162,8 +162,8 @@ private:
 
     void pushDown(int x) {
         int l = c_[x][0], r = c_[x][1];
-        if (rev[x]) {
-            rev[x] ^= 1; rev[l] ^= 1; rev[r] ^= 1;
+        if (rev_[x]) {
+            rev_[x] ^= 1; rev_[l] ^= 1; rev_[r] ^= 1;
             swap(c_[x][1], c_[x][0]);
         }
 
@@ -179,7 +179,7 @@ private:
         mx_[x] = max(mx_[x], mx_[r]);
         sz_[x] = 1 + sz_[l] + sz_[r];
         tot_[x] = val[x] + tot_[l] + tot_[r];
-        size[x] = size[l] + size[r] + size_vc[x] + 1;
+        size[x] = size[l] + size[r] + size_vc_[x] + 1;
     }
 
     void rotate(int x) {
