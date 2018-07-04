@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "LinkCutTree.h"
+#include "link_cut_tree.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
