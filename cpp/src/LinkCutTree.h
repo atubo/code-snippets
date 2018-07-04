@@ -2,7 +2,7 @@ class LinkCutTree {
     // tree nodes are 1-indexed
 
 public:
-    LinkCutTree(int N_): N(N_) {
+    LinkCutTree(int N): N_(N) {
         alloc();
     }
 
@@ -11,10 +11,10 @@ public:
     }
 
     void access(int x) {
-        for (int t = 0; x; t=x, x=fa[x]) {
+        for (int t = 0; x; t=x, x=fa_[x]) {
             splay(x);
-            sizeVirtualChildren[x] += size[c[x][1]] - size[t];
-            c[x][1] = t;
+            size_vc[x] += size[c_[x][1]] - size[t];
+            c_[x][1] = t;
             pushUp(x);
         }
     }
@@ -28,8 +28,8 @@ public:
     void link(int x, int y) {
         makeRoot(x);
         makeRoot(y);
-        fa[x] = y;
-        sizeVirtualChildren[y] += size[x];
+        fa_[x] = y;
+        size_vc[y] += size[x];
         splay(x);
         pushUp(y);
     }
@@ -43,7 +43,7 @@ public:
 
     void cut(int x, int y) {
         split(x, y);
-        c[y][0] = fa[x] = 0;
+        c_[y][0] = fa_[x] = 0;
         pushUp(y);
     }
 
@@ -51,7 +51,7 @@ public:
         access(x);
         splay(x);
         int y = x;
-        while (c[y][0]) y = c[y][0];
+        while (c_[y][0]) y = c_[y][0];
         return y;
     }
 
@@ -59,14 +59,14 @@ public:
         makeRoot(x);
         access(y);
         splay(y);
-        return mx[y];
+        return mx_[y];
     }
 
     int queryTot(int x, int y) {
         makeRoot(x);
         access(y);
         splay(y);
-        return tot[y];
+        return tot_[y];
     }
 
     void update(int u, int v, int d) {
@@ -78,34 +78,34 @@ public:
 
     void print() {
         printf("father: ");
-        for (int i = 1; i <= N; i++) {
-            printf("%d ", fa[i]);
+        for (int i = 1; i <= N_; i++) {
+            printf("%d ", fa_[i]);
         }
         printf("\n");
         printf("child: ");
-        for (int i = 1; i <= N; i++) {
-            printf("(%d %d) ", c[i][0], c[i][1]);
+        for (int i = 1; i <= N_; i++) {
+            printf("(%d %d) ", c_[i][0], c_[i][1]);
         }
         printf("\n");
         printf("rev: ");
-        for (int i = 1; i <= N; i++) {
+        for (int i = 1; i <= N_; i++) {
             printf("%d ", int(rev[i]));
         }
         printf("\n");
 
         printf("val: ");
-        for (int i = 1; i <= N; i++) {
+        for (int i = 1; i <= N_; i++) {
             printf("%d ", val[i]);
         }
         printf("\n");
         printf("tot: ");
-        for (int i = 1; i <= N; i++) {
-            printf("%d ", tot[i]);
+        for (int i = 1; i <= N_; i++) {
+            printf("%d ", tot_[i]);
         }
         printf("\n");
         printf("d: ");
-        for (int i = 1; i <= N; i++) {
-            printf("%d ", delta[i]);
+        for (int i = 1; i <= N_; i++) {
+            printf("%d ", delta_[i]);
         }
         printf("\n");
     }
@@ -114,94 +114,94 @@ public:
     int *val;
     int *size;  // size of subtree in the original tree
 private:
-    int N;
-    int *fa, *mx, *tot, *delta;
-    int *sz;    // size of subtree in the splay tree
-    int *sizeVirtualChildren;
-    int **c;
-    int *q;
+    const int N_;
+    int *fa_, *mx_, *tot_, *delta_;
+    int *sz_;    // size of subtree in the splay tree
+    int *size_vc;
+    int **c_;
+    int *q_;
     bool *rev;
 
     void alloc() {
-        fa = new int[N+1]{};
-        val = new int[N+1]{};
-        mx = new int[N+1]{};
-        tot = new int[N+1]{};
-        delta = new int[N+1]{};
-        sz = new int[N+1]{};
-        size = new int[N+1]{};
-        sizeVirtualChildren = new int[N+1]{};
-        c = new int*[N+1]{};
-        for (int i = 0; i <= N; i++) {
-            c[i] = new int[2]{};
+        fa_ = new int[N_+1]{};
+        val = new int[N_+1]{};
+        mx_ = new int[N_+1]{};
+        tot_ = new int[N_+1]{};
+        delta_ = new int[N_+1]{};
+        sz_ = new int[N_+1]{};
+        size = new int[N_+1]{};
+        size_vc = new int[N_+1]{};
+        c_ = new int*[N_+1]{};
+        for (int i = 0; i <= N_; i++) {
+            c_[i] = new int[2]{};
         }
-        q = new int[N+1]{};
-        rev = new bool[N+1]{};
+        q_ = new int[N_+1]{};
+        rev = new bool[N_+1]{};
     }
 
     void dealloc() {
-        delete[] fa;
+        delete[] fa_;
         delete[] val;
-        delete[] mx;
-        delete[] tot;
-        delete[] delta;
-        delete[] sz;
+        delete[] mx_;
+        delete[] tot_;
+        delete[] delta_;
+        delete[] sz_;
         delete[] size;
-        delete[] sizeVirtualChildren;
-        for (int i = 1; i <= N; i++) {
-            delete[] c[i];
+        delete[] size_vc;
+        for (int i = 1; i <= N_; i++) {
+            delete[] c_[i];
         }
-        delete[] c;
-        delete[] q;
+        delete[] c_;
+        delete[] q_;
         delete[] rev;
     }
 
     bool isSplayRoot(int x) {
-        return c[fa[x]][1] != x && c[fa[x]][0] != x;
+        return c_[fa_[x]][1] != x && c_[fa_[x]][0] != x;
     }
 
     void pushDown(int x) {
-        int l = c[x][0], r = c[x][1];
+        int l = c_[x][0], r = c_[x][1];
         if (rev[x]) {
             rev[x] ^= 1; rev[l] ^= 1; rev[r] ^= 1;
-            swap(c[x][1], c[x][0]);
+            swap(c_[x][1], c_[x][0]);
         }
 
-        updateAdd(l, delta[x]);
-        updateAdd(r, delta[x]);
-        delta[x] = 0;
+        updateAdd(l, delta_[x]);
+        updateAdd(r, delta_[x]);
+        delta_[x] = 0;
     }
 
     void pushUp(int x) {
-        int l = c[x][0], r = c[x][1];
-        mx[x] = val[x];
-        mx[x] = max(mx[x], mx[l]);
-        mx[x] = max(mx[x], mx[r]);
-        sz[x] = 1 + sz[l] + sz[r];
-        tot[x] = val[x] + tot[l] + tot[r];
-        size[x] = size[l] + size[r] + sizeVirtualChildren[x] + 1;
+        int l = c_[x][0], r = c_[x][1];
+        mx_[x] = val[x];
+        mx_[x] = max(mx_[x], mx_[l]);
+        mx_[x] = max(mx_[x], mx_[r]);
+        sz_[x] = 1 + sz_[l] + sz_[r];
+        tot_[x] = val[x] + tot_[l] + tot_[r];
+        size[x] = size[l] + size[r] + size_vc[x] + 1;
     }
 
     void rotate(int x) {
-        int y = fa[x], z = fa[y], l, r;
-        l = (c[y][1] == x); r = l^1;
-        if (!isSplayRoot(y)) c[z][c[z][1]==y] = x;
-        fa[c[x][r]] = y; fa[y] = x; fa[x] = z;
-        c[y][l] = c[x][r]; c[x][r] = y;
+        int y = fa_[x], z = fa_[y], l, r;
+        l = (c_[y][1] == x); r = l^1;
+        if (!isSplayRoot(y)) c_[z][c_[z][1]==y] = x;
+        fa_[c_[x][r]] = y; fa_[y] = x; fa_[x] = z;
+        c_[y][l] = c_[x][r]; c_[x][r] = y;
         pushUp(y); pushUp(x);
     }
 
     void splay(int x) {
         int top = 0;
-        q[++top] = x;
-        for (int i = x; !isSplayRoot(i); i = fa[i]) {
-            q[++top] = fa[i];
+        q_[++top] = x;
+        for (int i = x; !isSplayRoot(i); i = fa_[i]) {
+            q_[++top] = fa_[i];
         }
-        while (top) pushDown(q[top--]);
+        while (top) pushDown(q_[top--]);
         while (!isSplayRoot(x)) {
-            int y = fa[x], z = fa[y];
+            int y = fa_[x], z = fa_[y];
             if (!isSplayRoot(y)) {
-                if ((c[y][0] == x) ^ (c[z][0] == y)) rotate(x);
+                if ((c_[y][0] == x) ^ (c_[z][0] == y)) rotate(x);
                 else rotate(y);
             }
             rotate(x);
@@ -211,8 +211,8 @@ private:
     void updateAdd(int x, int d) {
         if (!x) return;
 
-        tot[x] += d * sz[x];
+        tot_[x] += d * sz_[x];
         val[x] += d;
-        delta[x] += d;
+        delta_[x] += d;
     }
 };
