@@ -1,10 +1,8 @@
 
 class MincostMaxflow {
     // NOTE
-    // 1. set up the following values
-    // 2. nodes are 0-indexed
-    // 3. MAXM must be twice the number of edges you added
-    // 4. call init() before you use it again
+    // 1. nodes are 0-indexed
+    // 2. call init() before you use it again
 public:
     const static int INF = 1000000;
 
