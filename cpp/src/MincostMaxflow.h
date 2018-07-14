@@ -4,12 +4,12 @@ class MincostMaxflow {
     // 1. nodes are 0-indexed
     // 2. call init() before you use it again
 public:
-    const static int INF = 1000000;
+    const static int64_t INF = 1e13;
 
     MincostMaxflow(int N_, int M):N(N_), Q(N_) {
         V = new Edge*[N]{};
         ES = new Edge[2*M]{};
-        sp = new int[N]{};
+        sp = new int64_t[N]{};
         prev = new int[N]{};
         path = new Edge*[N]{};
         init();
@@ -23,7 +23,7 @@ public:
         delete[] path;
     }
 
-    void addEdge(int a, int b, int cost, int capacity) {
+    void addEdge(int a, int b, int64_t cost, int64_t capacity) {
         Edge e1 = {V[a], 0, b, capacity, cost}, e2 = {V[b], 0, a, 0, -cost};
         ES[++EC] = e1; V[a] = &ES[EC];
         ES[++EC] = e2; V[b] = &ES[EC];
@@ -31,7 +31,7 @@ public:
     }
 
     struct FlowCost {
-        int flow, cost;
+        int64_t flow, cost;
         FlowCost& operator += (const FlowCost &other) {
             flow += other.flow;
             cost += other.cost;
@@ -40,7 +40,7 @@ public:
     };
 
     // returns maxflow, mincost
-    pair<int, int> mincostFlow(int s, int t) {
+    pair<int64_t, int64_t> mincostFlow(int s, int t) {
         FlowCost fc{};
         while (SPFA(s, t)) {
             fc += augment(t);
@@ -52,8 +52,10 @@ private:
     int N;
     struct Edge {
         Edge *next, *op;
-        int t, c, v;    // node, residual, cost
+        int t;
+        int64_t c, v;    // node, residual, cost
     };
+
     Edge *ES;
     Edge **V;
     int EC = -1;
@@ -103,7 +105,8 @@ private:
     Queue Q;
 
 
-    int *sp, *prev;
+    int64_t *sp;
+    int *prev;
     Edge **path;
 
     bool SPFA(int s, int t) {
@@ -128,7 +131,8 @@ private:
     }
 
     FlowCost augment(int t) {
-        int i, low = INF, cost = 0;
+        int i;
+        int64_t low = INF, cost = 0;
         Edge *e;
         for (i = t; prev[i] != -1; i = prev[i]) {
             e = path[i];
