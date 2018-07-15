@@ -28,7 +28,6 @@ public:
 
         TarjanSCC tarjan(g);
         tarjan.dfs();
-        tarjan.assign();
 
         CPPUNIT_ASSERT(tarjan.belong == list_of(4)(3)(1)(0)(0)(0)(2)(0));
 
@@ -38,15 +37,26 @@ public:
         CPPUNIT_ASSERT(tarjan.bcc[3] == list_of(1));
         CPPUNIT_ASSERT(tarjan.bcc[4] == list_of(0));
 
-        CPPUNIT_ASSERT(tarjan.ng[0].empty());
-        CPPUNIT_ASSERT(tarjan.ng[1].empty());
-        CPPUNIT_ASSERT(tarjan.ng[2] == list_of(1));
-        CPPUNIT_ASSERT(tarjan.ng[3] == list_of(2)(1));
-        CPPUNIT_ASSERT(tarjan.ng[4] == list_of(0)(3));
+        TarjanSCC::Graph ng = tarjan.build();
+        CPPUNIT_ASSERT(neighbors(ng, 0).empty());
+        CPPUNIT_ASSERT(neighbors(ng, 1).empty());
+        CPPUNIT_ASSERT(neighbors(ng, 2) == list_of(1));
+        CPPUNIT_ASSERT(neighbors(ng, 3) == list_of(1)(2));
+        CPPUNIT_ASSERT(neighbors(ng, 4) == list_of(3)(0));
 
         CPPUNIT_ASSERT(tarjan.in == list_of(1)(2)(1)(1)(0));
         CPPUNIT_ASSERT(tarjan.out == list_of(0)(0)(1)(2)(2));
     }
+
+    vector<int> neighbors(const TarjanSCC::Graph &g, int u) {
+        vector<int> ret;
+        for (int eidx = g.head[u]; ~eidx; eidx = g.E[eidx].next) {
+            int v = g.E[eidx].to;
+            ret.push_back(v);
+        }
+        return ret;
+    }
+
 
     CPPUNIT_TEST_SUITE(TarjanSCCTest);
     CPPUNIT_TEST(testScc);

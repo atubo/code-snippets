@@ -8,10 +8,11 @@ class TarjanSCC {
 public:
     class Graph {
     private:
-        int N;
+        int edgenum;
+    public:
+        const int N;
         vector<int> head;
         vector<Edge> E;
-        int edgenum;
     public:
         Graph(int N_): N(N_) {
             head.resize(N, -1);
@@ -37,7 +38,6 @@ public:
     vector<int> low;
     vector<int> Stack;
 
-    vector<vector<int> > ng;    // new graph
     vector<int> in, out;        // in and out degrees of the new graph
 
     TarjanSCC(Graph& g_):g(g_), N(g.N) {
@@ -56,9 +56,9 @@ public:
         }
     }
 
-    void assign() {
+    Graph build() {
         // set up new graph
-        ng.resize(taj);
+        Graph ng(taj);
         in.resize(taj, 0);
         out.resize(taj, 0);
 
@@ -67,12 +67,13 @@ public:
                 int u = belong[i];
                 int v = belong[g.E[eidx].to];
                 if (u != v) {
-                    ng[u].push_back(v);
+                    ng.addEdge(u, v);
                     out[u]++;
                     in[v]++;
                 }
             }
         }
+        return ng;
     }
 
 private:
