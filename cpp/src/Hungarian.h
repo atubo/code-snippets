@@ -3,14 +3,35 @@
 class Hungarian {
 private:
     static const int MAXN = 55;
-    int nx, ny;
-    int g[MAXN][MAXN];
+    int nx_, ny_;
+    int** g;
 
-    int cx[MAXN], cy[MAXN];
-    int mk[MAXN];
+    int *cx, *cy;
+    int *mk;
+
+    void alloc() {
+        g = new int*[nx_];
+        for (int i = 0; i < nx_; i++) {
+            g[i] = new int[ny_];
+        }
+        cx = new int[nx_];
+        cy = new int[ny_];
+        mk = new int[ny_];
+    }
+
+    void dealloc() {
+        for (int i = 0; i < nx_; i++) {
+            delete[] g[i];
+        }
+        delete[] g;
+
+        delete[] cx;
+        delete[] cy;
+        delete[] mk;
+    }
 
     int path(int u) {
-        for (int v = 0; v < ny; v++) {
+        for (int v = 0; v < ny_; v++) {
             if (g[u][v] && !mk[v]) {
                 mk[v] = 1;
                 if (cy[v] == -1 || path(cy[v])) {
@@ -24,14 +45,19 @@ private:
     }
 
 public:
-    Hungarian() {
-        reset(MAXN-1, MAXN-1);
+    Hungarian(int nx, int ny): nx_(nx), ny_(ny) {
+        alloc();
+        reset();
     }
 
-    void reset(int nx_, int ny_) {
-        nx = nx_;
-        ny = ny_;
-        memset(g, 0, sizeof(g));
+    ~Hungarian() {
+        dealloc();
+    }
+
+    void reset() {
+        for (int i = 0; i < nx_; i++) {
+            memset(g[i], 0, ny_ * sizeof(int));
+        }
     }
 
     void addEdge(int x, int y) {
@@ -40,11 +66,11 @@ public:
 
     int maxMatch() {
         int res = 0;
-        memset(cx, -1, sizeof(cx));
-        memset(cy, -1, sizeof(cy));
-        for (int i = 0; i < nx; i++) {
+        memset(cx, -1, nx_ * sizeof(int));
+        memset(cy, -1, ny_ * sizeof(int));
+        for (int i = 0; i < nx_; i++) {
             if (cx[i] == -1) {
-                memset(mk, 0, sizeof(mk));
+                memset(mk, 0, ny_ * sizeof(int));
                 res += path(i);
             }
         }

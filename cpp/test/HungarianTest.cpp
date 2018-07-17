@@ -11,12 +11,12 @@ public:
 	void tearDown() {}
 
 	void testMaxMatch() {
-		Hungarian hungarian;
-        hungarian.reset(3, 4);
+		Hungarian hungarian(3, 4);
+        hungarian.reset();
 		int result = hungarian.maxMatch();
 		CPPUNIT_ASSERT(result == 0);
 
-        hungarian.reset(3, 4);
+        hungarian.reset();
         hungarian.addEdge(0, 0);
         hungarian.addEdge(0, 2);
         hungarian.addEdge(1, 1);
