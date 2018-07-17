@@ -2,41 +2,40 @@
 // using DFS, time complexity O(N^3)
 class Hungarian {
 private:
-    static const int MAXN = 55;
     int nx_, ny_;
-    int** g;
+    bool** g_;
 
-    int *cx, *cy;
-    int *mk;
+    int *cx_, *cy_;
+    int *mk_;
 
     void alloc() {
-        g = new int*[nx_];
+        g_ = new bool*[nx_];
         for (int i = 0; i < nx_; i++) {
-            g[i] = new int[ny_];
+            g_[i] = new bool[ny_];
         }
-        cx = new int[nx_];
-        cy = new int[ny_];
-        mk = new int[ny_];
+        cx_ = new int[nx_];
+        cy_ = new int[ny_];
+        mk_ = new int[ny_];
     }
 
     void dealloc() {
         for (int i = 0; i < nx_; i++) {
-            delete[] g[i];
+            delete[] g_[i];
         }
-        delete[] g;
+        delete[] g_;
 
-        delete[] cx;
-        delete[] cy;
-        delete[] mk;
+        delete[] cx_;
+        delete[] cy_;
+        delete[] mk_;
     }
 
     int path(int u) {
         for (int v = 0; v < ny_; v++) {
-            if (g[u][v] && !mk[v]) {
-                mk[v] = 1;
-                if (cy[v] == -1 || path(cy[v])) {
-                    cx[u] = v;
-                    cy[v] = u;
+            if (g_[u][v] && !mk_[v]) {
+                mk_[v] = 1;
+                if (cy_[v] == -1 || path(cy_[v])) {
+                    cx_[u] = v;
+                    cy_[v] = u;
                     return 1;
                 }
             }
@@ -56,21 +55,21 @@ public:
 
     void reset() {
         for (int i = 0; i < nx_; i++) {
-            memset(g[i], 0, ny_ * sizeof(int));
+            memset(g_[i], 0, ny_ * sizeof(bool));
         }
     }
 
     void addEdge(int x, int y) {
-        g[x][y] = 1;
+        g_[x][y] = true;
     }
 
     int maxMatch() {
         int res = 0;
-        memset(cx, -1, nx_ * sizeof(int));
-        memset(cy, -1, ny_ * sizeof(int));
+        memset(cx_, -1, nx_ * sizeof(int));
+        memset(cy_, -1, ny_ * sizeof(int));
         for (int i = 0; i < nx_; i++) {
-            if (cx[i] == -1) {
-                memset(mk, 0, ny_ * sizeof(int));
+            if (cx_[i] == -1) {
+                memset(mk_, 0, ny_ * sizeof(int));
                 res += path(i);
             }
         }
