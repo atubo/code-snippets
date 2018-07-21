@@ -18,14 +18,14 @@ public:
         return dad;
     }
 
-    int64_t solve(int s, int t) {
+    void solve(int s) {
         // use priority queue in which top element has the "smallest" priority
         priority_queue<PII, vector<PII>, greater<PII> > Q;
         Q.push (make_pair (0, s));
         dist[s] = 0;
         while (!Q.empty()){
             PII p = Q.top();
-            if (p.second == t) break;
+            // break here if we want to stop when we find a target node
             Q.pop();
 
             int here = p.second;
@@ -38,7 +38,11 @@ public:
                 }
             }
         }
-        return dist[t];
+    }
+
+    void reset() {
+        dist.assign(N, INF);
+        dad.assign(N, -1);
     }
 
 private:
