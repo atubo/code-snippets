@@ -12,7 +12,7 @@ public:
     void tearDown() {}
 
     void test() {
-        vector<vector<int>> g(4);
+        vector<vector<int64_t>> g(4);
         for (int i = 0; i < 4; i++) g[i].resize(4, 1e9);
         g[0][1] = 12;
         g[1][2] = 7;
@@ -20,9 +20,9 @@ public:
         g[3][0] = 14;
         g[0][2] = 16;
         FloydWarshall floyd(g);
-        auto actual = floyd.getDist();
+        auto actual = floyd.dist_;
 
-        vector<vector<int>> expected = {
+        vector<vector<int64_t>> expected = {
             {39, 12, 16, 25},
             {30, 42, 7, 16},
             {23, 35, 39, 9},
