@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "SpfaDfs.h"
+#include "spfa_dfs.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
