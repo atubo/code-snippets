@@ -9,73 +9,72 @@ public:
         int64_t wt;
     };
 
-    SpfaDfs(int N_, int M_): N(N_) {
-        inq = new bool[N]{};
-        dist = new int64_t[N];
-        vis_ = new bool[N]{};
-        head = new int[N];
-        eTotal = 0;
-        for (int i = 0; i < N; i++) {
-            head[i] = -1;
+    SpfaDfs(int n, int m): n_(n) {
+        inq_ = new bool[n_]{};
+        dist_ = new int64_t[n_];
+        vis_ = new bool[n_]{};
+        head_ = new int[n_];
+        e_total_ = 0;
+        for (int i = 0; i < n_; i++) {
+            head_[i] = -1;
         }
-        E = new Edge[M_]{};
+        e_ = new Edge[m]{};
     }
 
     ~SpfaDfs() {
-        delete[] inq;
-        delete[] dist;
+        delete[] inq_;
+        delete[] dist_;
         delete[] vis_;
-        delete[] head;
-        delete[] E;
+        delete[] head_;
+        delete[] e_;
     }
 
     void addEdge(int u, int v, int64_t w) {
-        E[eTotal].to = v;
-        E[eTotal].next = head[u];
-        E[eTotal].wt = w;
-        head[u] = eTotal++;
+        e_[e_total_].to = v;
+        e_[e_total_].next = head_[u];
+        e_[e_total_].wt = w;
+        head_[u] = e_total_++;
     }
 
     bool check(bool include_zero = false) {
         init();
-        for (int i = 0; i < N; i++) {
-            if (include_zero) memset(vis_, 0, N*sizeof(bool));
+        for (int i = 0; i < n_; i++) {
+            if (include_zero) memset(vis_, 0, n_*sizeof(bool));
             if (!dfs(i, include_zero)) return false;
         }
         return true;
     }
 
 private:
-    int N;
-    bool *inq;  // if node is in queue
-    int64_t *dist;
+    int n_;
+    bool *inq_;  // if node is in queue
+    int64_t *dist_;
     bool *vis_;
 
-    int *head;
-public:
-    int eTotal;
-    Edge *E;
+    int *head_;
+    int e_total_;
+    Edge *e_;
 
     void init() {
-        memset(inq, 0, N*sizeof(bool));
-        memset(dist, 0, N*sizeof(int64_t));
+        memset(inq_, 0, n_*sizeof(bool));
+        memset(dist_, 0, n_*sizeof(int64_t));
     }
 
     bool dfs(int u, bool include_zero) {
-        if (inq[u]) return false;
-        inq[u] = 1;
+        if (inq_[u]) return false;
+        inq_[u] = 1;
         vis_[u] = true;
-        for (int eidx = head[u]; eidx != -1; eidx = E[eidx].next) {
-            int v = E[eidx].to;
-            int64_t w = E[eidx].wt;
-            if (include_zero && dist[v] == dist[u] + w && inq[v]) return false;
-            if (dist[v] > dist[u] + w ||
-                (include_zero && dist[v] == dist[u] + w && !vis_[v])) {
-                dist[v] = dist[u] + w;
+        for (int eidx = head_[u]; eidx != -1; eidx = e_[eidx].next) {
+            int v = e_[eidx].to;
+            int64_t w = e_[eidx].wt;
+            if (include_zero && dist_[v] == dist_[u] + w && inq_[v]) return false;
+            if (dist_[v] > dist_[u] + w ||
+                (include_zero && dist_[v] == dist_[u] + w && !vis_[v])) {
+                dist_[v] = dist_[u] + w;
                 if (!dfs(v, include_zero)) return false;
             }
         }
-        inq[u] = 0;
+        inq_[u] = 0;
         return true;
     }
 };
