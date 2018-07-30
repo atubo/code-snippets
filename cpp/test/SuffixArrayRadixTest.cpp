@@ -39,9 +39,23 @@ public:
         CPPUNIT_ASSERT(actual == expected);
     }
 
+    void testBuildRMQ() {
+        string s = "abcababc`";
+        SuffixArrayRadix sa(s);
+        sa.buildSA();
+        sa.buildLCP();
+        sa.buildRMQ();
+        CPPUNIT_ASSERT_EQUAL(3, sa.calcLCP(0, 5));
+        CPPUNIT_ASSERT_EQUAL(2, sa.calcLCP(0, 3));
+        CPPUNIT_ASSERT_EQUAL(2, sa.calcLCP(1, 6));
+        CPPUNIT_ASSERT_EQUAL(1, sa.calcLCP(2, 7));
+        CPPUNIT_ASSERT_EQUAL(0, sa.calcLCP(2, 3));
+    }
+
     CPPUNIT_TEST_SUITE(SuffixArrayRadixTest);
     CPPUNIT_TEST(testBuildSA);
     CPPUNIT_TEST(testBuildLCP);
+    CPPUNIT_TEST(testBuildRMQ);
     CPPUNIT_TEST_SUITE_END();
 };
 

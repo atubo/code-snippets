@@ -24,6 +24,12 @@ public:
         for (int i = 0; i < N; i++) {
             r[i] = s[i] - cmin;
         }
+
+        nlog_ = int(log2(MAXN)) + 2;
+        height_ = new int*[nlog_]{};
+        for (int i = 0; i < nlog_; i++) {
+            height_[i] = new int[MAXN]{};
+        }
     }
 
     ~SuffixArrayRadix() {
@@ -34,23 +40,50 @@ public:
         delete[] sa;
         delete[] r;
         delete[] lcp;
+
+        for (int i = 0; i < nlog_; i++) {
+            delete[] height_[i];
+        }
+        delete[] height_;
     }
     int *wa, *wb, *wv, *ws;
     int *sa, *r, *rank;
     int *lcp;
+    int **height_;
+    int nlog_;
 
     void buildSA() {
         buildSA(N, M);
     }
 
     void buildLCP() {
-        for (int i = 0, k = 0; i < N; ++i) if (rank[i] != N - 1)
-        {
+        for (int i = 0, k = 0; i < N; ++i) if (rank[i] != N - 1) {
             for (int j = sa[rank[i] + 1]; s[i + k] == s[j + k];)
                 ++k;
             lcp[rank[i]] = k;
             if (k)--k;
         }
+    }
+
+    void buildRMQ() {
+        for (int i = 0; i < N; i++) {
+            height_[0][i] = lcp[i];
+        }
+        for (int j = 1; (1<<j) < N; j++) {
+            for (int i = 0; i < N; i++) {
+                if (i + (1<<j) > N) break;
+                height_[j][i] = min(height_[j-1][i],
+                                    height_[j-1][i+(1<<(j-1))]);
+            }
+        }
+    }
+
+    int calcLCP(int x, int y) const {
+        x = rank[x]; y = rank[y];
+        if (x > y) swap(x, y);
+        int k = 0;
+        while ((1<<(k+1)) < (y-x)) k++;
+        return min(height_[k][x], height_[k][y-(1<<k)]);
     }
 
 private:
