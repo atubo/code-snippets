@@ -22,7 +22,7 @@ public:
         for (int i = 0; i < _n; i++) {
             delete[] _m[i];
         }
-        delete _m;
+        delete[] _m;
     }
 
     void alloc() {
