@@ -148,7 +148,7 @@ private:
         delete[] sz_;
         delete[] size;
         delete[] size_vc_;
-        for (int i = 1; i <= N_; i++) {
+        for (int i = 0; i <= N_; i++) {
             delete[] c_[i];
         }
         delete[] c_;
