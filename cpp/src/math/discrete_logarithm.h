@@ -42,7 +42,7 @@ int babystepGiantstep(int alpha, int beta, int prime) {
     for (int i = 0; i < m; i++) {
         auto it = table.find(gamma);
         if (it != table.end()) {
-            return i * m + it->second;
+            return (i * m + it->second) % n;
         }
         gamma = (1LL * gamma * fac) % prime;
     }
