@@ -16,10 +16,10 @@ public:
         bit.set(2, 1);
         bit.set(4, 2);
 
-        CPPUNIT_ASSERT_EQUAL(0LL, bit.get(1));
-        CPPUNIT_ASSERT_EQUAL(1LL, bit.get(2));
-        CPPUNIT_ASSERT_EQUAL(1LL, bit.get(3));
-        CPPUNIT_ASSERT_EQUAL(3LL, bit.get(4));
+        CPPUNIT_ASSERT_EQUAL(int64_t(0), bit.get(1));
+        CPPUNIT_ASSERT_EQUAL(int64_t(1), bit.get(2));
+        CPPUNIT_ASSERT_EQUAL(int64_t(1), bit.get(3));
+        CPPUNIT_ASSERT_EQUAL(int64_t(3), bit.get(4));
     }
 
     void testGetind() {

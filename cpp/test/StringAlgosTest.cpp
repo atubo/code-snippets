@@ -13,10 +13,10 @@ public:
 
     void testNumCommonSubsequences() {
         int64_t result = numCommonSubsequences("aaa", "aa");
-        CPPUNIT_ASSERT_EQUAL(9LL, result);
+        CPPUNIT_ASSERT_EQUAL(int64_t(9), result);
 
         result = numCommonSubsequences("ab", "aba");
-        CPPUNIT_ASSERT_EQUAL(4LL, result);
+        CPPUNIT_ASSERT_EQUAL(int64_t(4), result);
     }
 
     CPPUNIT_TEST_SUITE(StringAlgosTest);

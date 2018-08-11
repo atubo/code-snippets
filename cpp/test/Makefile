@@ -20,6 +20,6 @@ test: unittest
 	./unittest
 
 clean:
-	rm *.o *.d unittest
+	rm -f *.o *.d unittest
 
 -include $(DEPFILES)

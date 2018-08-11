@@ -17,37 +17,37 @@ public:
 
     void testXorUpto() {
         int64_t x = xorUpto(0);
-        CPPUNIT_ASSERT_EQUAL(0LL, x);
+        CPPUNIT_ASSERT_EQUAL(int64_t(0), x);
 
         x = xorUpto(1);
-        CPPUNIT_ASSERT_EQUAL(1LL, x);
+        CPPUNIT_ASSERT_EQUAL(int64_t(1), x);
         
         x = xorUpto(7);
-        CPPUNIT_ASSERT_EQUAL(0LL, x);
+        CPPUNIT_ASSERT_EQUAL(int64_t(0), x);
 
         x = xorUpto(8);
-        CPPUNIT_ASSERT_EQUAL(8LL, x);
+        CPPUNIT_ASSERT_EQUAL(int64_t(8), x);
     }
 
     void testGcd() {
-        CPPUNIT_ASSERT_EQUAL(1LL, gcd(4, 5));
-        CPPUNIT_ASSERT_EQUAL(2LL, gcd(2, 4));
-        CPPUNIT_ASSERT_EQUAL(7LL, gcd(28, 21));
-        CPPUNIT_ASSERT_EQUAL(1LL, gcd(1, 5));
+        CPPUNIT_ASSERT_EQUAL(int64_t(1), gcd(4, 5));
+        CPPUNIT_ASSERT_EQUAL(int64_t(2), gcd(2, 4));
+        CPPUNIT_ASSERT_EQUAL(int64_t(7), gcd(28, 21));
+        CPPUNIT_ASSERT_EQUAL(int64_t(1), gcd(1, 5));
     }
 
     void testCountOnes() {
         int64_t x = countOnes(0);
-        CPPUNIT_ASSERT_EQUAL(0LL, x);
+        CPPUNIT_ASSERT_EQUAL(int64_t(0), x);
 
         x = countOnes(1);
-        CPPUNIT_ASSERT_EQUAL(1LL, x);
+        CPPUNIT_ASSERT_EQUAL(int64_t(1), x);
 
         x = countOnes(4);
-        CPPUNIT_ASSERT_EQUAL(5LL, x);
+        CPPUNIT_ASSERT_EQUAL(int64_t(5), x);
 
         x = countOnes(9);
-        CPPUNIT_ASSERT_EQUAL(15LL, x);
+        CPPUNIT_ASSERT_EQUAL(int64_t(15), x);
     }
 
     void testBinom() {
@@ -62,9 +62,9 @@ public:
     }
 
     void testModSolve() {
-        CPPUNIT_ASSERT_EQUAL(2LL, mod_solve(4, 1, 7));
-        CPPUNIT_ASSERT_EQUAL(3LL, mod_solve(5, 1, 7));
-        CPPUNIT_ASSERT_EQUAL(7LL, mod_solve(6, 2, 8));
+        CPPUNIT_ASSERT_EQUAL(int64_t(2), mod_solve(4, 1, 7));
+        CPPUNIT_ASSERT_EQUAL(int64_t(3), mod_solve(5, 1, 7));
+        CPPUNIT_ASSERT_EQUAL(int64_t(7), mod_solve(6, 2, 8));
     }
 
     void testPhi() {
@@ -74,7 +74,7 @@ public:
             CPPUNIT_ASSERT_EQUAL(expected[i], phi(i));
         }
 
-        CPPUNIT_ASSERT_EQUAL(2147483646LL, phi(4294967294));
+        CPPUNIT_ASSERT_EQUAL(int64_t(2147483646), phi(4294967294));
     }
 
 

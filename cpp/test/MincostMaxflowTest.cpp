@@ -20,7 +20,7 @@ public:
         mincostMaxflow.addEdge(1, 3, 6, 2);
         mincostMaxflow.addEdge(1, 4, 1, 7);
         mincostMaxflow.addEdge(3, 4, 2, 4);
-        CPPUNIT_ASSERT(make_pair(11LL, 55LL) ==
+        CPPUNIT_ASSERT(make_pair(int64_t(11), int64_t(55)) ==
                        mincostMaxflow.mincostFlow(0, 4));
     }
 

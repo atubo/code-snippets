@@ -110,11 +110,11 @@ public:
         hld.updateEdge(7, 13, 2);
         hld.updateEdge(0, 10, 3);
 
-        CPPUNIT_ASSERT_EQUAL(9LL, hld.queryEdge(0, 13));
-        CPPUNIT_ASSERT_EQUAL(8LL, hld.queryEdge(6, 12));
-        CPPUNIT_ASSERT_EQUAL(13LL, hld.queryEdge(8, 10));
-        CPPUNIT_ASSERT_EQUAL(9LL, hld.queryEdge(7, 5));
-        CPPUNIT_ASSERT_EQUAL(0LL, hld.queryEdge(9, 9));
+        CPPUNIT_ASSERT_EQUAL(9L, hld.queryEdge(0, 13));
+        CPPUNIT_ASSERT_EQUAL(8L, hld.queryEdge(6, 12));
+        CPPUNIT_ASSERT_EQUAL(13L, hld.queryEdge(8, 10));
+        CPPUNIT_ASSERT_EQUAL(9L, hld.queryEdge(7, 5));
+        CPPUNIT_ASSERT_EQUAL(0L, hld.queryEdge(9, 9));
     }
 
     void testNodeUpdateAndQuery() {
@@ -139,12 +139,12 @@ public:
         hld.updateNode(7, 13, 2);
         hld.updateNode(0, 10, 3);
 
-        CPPUNIT_ASSERT_EQUAL(15LL, hld.queryNode(0, 13));
-        CPPUNIT_ASSERT_EQUAL(14LL, hld.queryNode(6, 12));
-        CPPUNIT_ASSERT_EQUAL(19LL, hld.queryNode(8, 10));
-        CPPUNIT_ASSERT_EQUAL(15LL, hld.queryNode(7, 5));
-        CPPUNIT_ASSERT_EQUAL(0LL, hld.queryNode(9, 9));
-        CPPUNIT_ASSERT_EQUAL(4LL, hld.queryNode(0, 0));
+        CPPUNIT_ASSERT_EQUAL(15L, hld.queryNode(0, 13));
+        CPPUNIT_ASSERT_EQUAL(14L, hld.queryNode(6, 12));
+        CPPUNIT_ASSERT_EQUAL(19L, hld.queryNode(8, 10));
+        CPPUNIT_ASSERT_EQUAL(15L, hld.queryNode(7, 5));
+        CPPUNIT_ASSERT_EQUAL(0L, hld.queryNode(9, 9));
+        CPPUNIT_ASSERT_EQUAL(4L, hld.queryNode(0, 0));
     }
 
     void testSegmentTreeUpdateWillNotOverflow() {
@@ -156,7 +156,7 @@ public:
         hld.decompose();
 
         hld.updateNode(0, 4, 2000000000);
-        CPPUNIT_ASSERT_EQUAL(10000000000LL, hld.queryNode(0, 4));
+        CPPUNIT_ASSERT_EQUAL(10000000000L, hld.queryNode(0, 4));
     }
 
 
