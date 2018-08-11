@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "Matrix.h"
+#include "math/Matrix.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
