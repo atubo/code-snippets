@@ -1,46 +1,46 @@
 // square matrix fast power
 class Matrix {
 public:
-    int **_m;
-    int _n;
+    int **m_;
+    int n_;
 
 public:
-    Matrix(int n): _n(n) {
+    Matrix(int n): n_(n) {
         alloc();
     }
 
     Matrix(const Matrix &other) {
-        _n = other._n;
+        n_ = other.n_;
         alloc();
-        for (int i = 0; i < _n; i++) {
-            memcpy(_m[i], other._m[i], _n * sizeof(int));
+        for (int i = 0; i < n_; i++) {
+            memcpy(m_[i], other.m_[i], n_ * sizeof(int));
         }
     }
 
 
     ~Matrix() {
-        for (int i = 0; i < _n; i++) {
-            delete[] _m[i];
+        for (int i = 0; i < n_; i++) {
+            delete[] m_[i];
         }
-        delete[] _m;
+        delete[] m_;
     }
 
     void alloc() {
-        _m = new int*[_n]{};
-        for (int i = 0; i < _n; i++) {
-            _m[i] = new int[_n]{};
+        m_ = new int*[n_]{};
+        for (int i = 0; i < n_; i++) {
+            m_[i] = new int[n_]{};
         }
     }
 
 
 #if 0
     Matrix& operator *= (const Matrix &rhs) {
-        Matrix ret(_n);
-        for (int i = 0; i < _n; i++) {
-            for (int j = 0; j < _n; j++) {
-                for (int k = 0; k < _n; k++) {
-                    ret._m[i][j] += (_m[i][k] * rhs._m[k][j]) % MOD;
-                    ret._m[i][j] %= MOD;
+        Matrix ret(n_);
+        for (int i = 0; i < n_; i++) {
+            for (int j = 0; j < n_; j++) {
+                for (int k = 0; k < n_; k++) {
+                    ret.m_[i][j] += (m_[i][k] * rhs.m_[k][j]) % MOD;
+                    ret.m_[i][j] %= MOD;
                 }
             }
         }
@@ -50,12 +50,12 @@ public:
 #endif
 
     void mul(const Matrix &rhs, Matrix &tmp) {
-        for (int i = 0; i < _n; i++) {
-            memset(tmp._m[i], 0, _n * sizeof(int));
-            for (int k = 0; k < _n; k++) {
-                if (!_m[i][k]) continue;
-                for (int j = 0; j < _n; j++) {
-                    tmp._m[i][j] += _m[i][k] * rhs._m[k][j];
+        for (int i = 0; i < n_; i++) {
+            memset(tmp.m_[i], 0, n_ * sizeof(int));
+            for (int k = 0; k < n_; k++) {
+                if (!m_[i][k]) continue;
+                for (int j = 0; j < n_; j++) {
+                    tmp.m_[i][j] += m_[i][k] * rhs.m_[k][j];
                 }
             }
         }
@@ -63,12 +63,12 @@ public:
     }
 
     void swap(Matrix &other) {
-        std::swap(_m, other._m);
+        std::swap(m_, other.m_);
     }
 
     static Matrix power(Matrix x, int n) {
-        Matrix ret(x._n), tmp(x._n);
-        for (int i = 0; i < x._n; i++) ret._m[i][i] = 1;
+        Matrix ret(x.n_), tmp(x.n_);
+        for (int i = 0; i < x.n_; i++) ret.m_[i][i] = 1;
         while (n) {
             if (n & 1) ret.mul(x, tmp);
             x.mul(x, tmp);
@@ -78,9 +78,9 @@ public:
     }
 
     void print() const {
-        for (int i = 0; i < _n; i++) {
-            for (int j = 0; j < _n; j++) {
-                printf("%d ", _m[i][j]);
+        for (int i = 0; i < n_; i++) {
+            for (int j = 0; j < n_; j++) {
+                printf("%d ", m_[i][j]);
             }
             printf("\n");
         }
