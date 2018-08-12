@@ -73,12 +73,12 @@ public:
                    lucas(a / prime_, b / prime_));
     }
 
+private:
     int calc(int a, int b) const {
         BinomModuloPrime binom(a, prime_);
         return binom.calc(b);
     }
 
-private:
     int mul(int64_t a, int64_t b) const {
         return (a * b) % prime_;
     }
