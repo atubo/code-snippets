@@ -40,9 +40,10 @@ public:
 
     // get largest value with cumulative sum less than or equal to x;
     // for smallest, pass x-1 and add 1 to result
-    int getind(int x) {
-        int idx = 0, mask = N;
-        while(mask && idx < N) {
+    int getind(int64_t x) {
+        int clz = __builtin_clz(N);
+        int idx = 0, mask = 1 << (31 - clz);     // first power of 2 <= N
+        while(mask && idx <= N) {
             int t = idx + mask;
             if(x >= tree[t]) {
                 idx = t;
