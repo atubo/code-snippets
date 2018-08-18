@@ -6,7 +6,7 @@ private:
     bool** g_;
 
     int *cx_, *cy_;
-    int *mk_;
+    bool *mk_;
 
     void alloc() {
         g_ = new bool*[nx_];
@@ -15,7 +15,7 @@ private:
         }
         cx_ = new int[nx_];
         cy_ = new int[ny_];
-        mk_ = new int[ny_];
+        mk_ = new bool[ny_];
     }
 
     void dealloc() {
@@ -32,7 +32,7 @@ private:
     int path(int u) {
         for (int v = 0; v < ny_; v++) {
             if (g_[u][v] && !mk_[v]) {
-                mk_[v] = 1;
+                mk_[v] = true;
                 if (cy_[v] == -1 || path(cy_[v])) {
                     cx_[u] = v;
                     cy_[v] = u;
@@ -69,7 +69,7 @@ public:
         memset(cy_, -1, ny_ * sizeof(int));
         for (int i = 0; i < nx_; i++) {
             if (cx_[i] == -1) {
-                memset(mk_, 0, ny_ * sizeof(int));
+                memset(mk_, 0, ny_ * sizeof(bool));
                 res += path(i);
             }
         }
