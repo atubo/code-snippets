@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "Hungarian.h"
+#include "graph/hungarian.h"
 #include "graph/bipartite_min_vertex_cover.h"
 
 #include <cppunit/extensions/HelperMacros.h>

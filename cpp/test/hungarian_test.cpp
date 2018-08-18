@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "Hungarian.h"
+#include "graph/hungarian.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
