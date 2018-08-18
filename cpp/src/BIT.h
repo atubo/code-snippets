@@ -55,9 +55,9 @@ private:
     int bound(int64_t x, bool is_lower) {
         int clz = __builtin_clz(N);
         int idx = 0, mask = 1 << (31 - clz);     // first power of 2 <= N
-        while(mask && idx <= N) {
+        while (mask) {
             int t = idx + mask;
-            if(x >= tree[t]) {
+            if (t <= N && x >= tree[t]) {
                 idx = t;
                 x -= tree[t];
             }

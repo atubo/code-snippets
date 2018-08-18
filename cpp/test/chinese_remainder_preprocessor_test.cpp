@@ -41,7 +41,6 @@ public:
         ChineseRemainderPreprocessor crp(2);
         crp.setRemainder(0, 3);
         crp.setRemainder(1, 4);
-        crp.setRemainder(2, 2);
         crp.addModFactor(0, 2, 1);
         crp.addModFactor(0, 3, 1);
         crp.addModFactor(1, 2, 1);
