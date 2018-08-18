@@ -38,9 +38,21 @@ public:
         return get(y) - (x > 1 ? get(x-1) : 0);
     }
 
-    // get largest value with cumulative sum less than or equal to x;
-    // for smallest, pass x-1 and add 1 to result
-    int getind(int64_t x) {
+    // index of first element with cumulative sum >= x
+    // note it returns 0 for x = 0
+    int lowerBound(int64_t x) {
+        return bound(x, true);
+    }
+
+    int upperBound(int64_t x) {
+        return bound(x, false);
+    }
+
+private:
+    int64_t* tree;
+    const int N;
+
+    int bound(int64_t x, bool is_lower) {
         int clz = __builtin_clz(N);
         int idx = 0, mask = 1 << (31 - clz);     // first power of 2 <= N
         while(mask && idx <= N) {
@@ -51,10 +63,7 @@ public:
             }
             mask >>= 1;
         }
-        return idx;
+        if (is_lower) return x == 0 ? idx : idx+1;
+        else return idx+1;
     }
-
-private:
-    int64_t* tree;
-    const int N;
 };
