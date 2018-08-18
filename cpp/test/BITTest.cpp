@@ -40,7 +40,7 @@ public:
         bit.set(3, 3);
         bit.set(4, 4);
         bit.set(5, 5);
-        CPPUNIT_ASSERT_EQUAL(0, bit.lowerBound(0));
+        CPPUNIT_ASSERT_EQUAL(1, bit.lowerBound(0));
         CPPUNIT_ASSERT_EQUAL(1, bit.lowerBound(1));
         CPPUNIT_ASSERT_EQUAL(2, bit.lowerBound(2));
         CPPUNIT_ASSERT_EQUAL(2, bit.lowerBound(3));
@@ -54,6 +54,12 @@ public:
         CPPUNIT_ASSERT_EQUAL(5, bit.lowerBound(11));
         CPPUNIT_ASSERT_EQUAL(5, bit.lowerBound(15));
         CPPUNIT_ASSERT_EQUAL(6, bit.lowerBound(20));
+    }
+
+    void testLowerBoundWithZeros() {
+        BIT bit(9);
+        bit.set(1, 1);
+        CPPUNIT_ASSERT_EQUAL(1, bit.lowerBound(1));
     }
 
     void testUpperBound() {
@@ -79,11 +85,20 @@ public:
         CPPUNIT_ASSERT_EQUAL(6, bit.upperBound(20));
     }
 
+    void testUpperBoundWithZeros() {
+        BIT bit(9);
+        bit.set(1, 1);
+        bit.set(5, 1);
+        CPPUNIT_ASSERT_EQUAL(5, bit.upperBound(1));
+    }
+
     CPPUNIT_TEST_SUITE(BITTest);
     CPPUNIT_TEST(testSetAndGet);
     CPPUNIT_TEST(testLowerBound);
     CPPUNIT_TEST(testLowerBoundSizeNotPowerOf2);
+    CPPUNIT_TEST(testLowerBoundWithZeros);
     CPPUNIT_TEST(testUpperBound);
+    CPPUNIT_TEST(testUpperBoundWithZeros);
     CPPUNIT_TEST_SUITE_END();
 };
 

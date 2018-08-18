@@ -39,31 +39,27 @@ public:
     }
 
     // index of first element with cumulative sum >= x
-    // note it returns 0 for x = 0
     int lowerBound(int64_t x) {
-        return bound(x, true);
-    }
-
-    int upperBound(int64_t x) {
-        return bound(x, false);
-    }
-
-private:
-    int64_t* tree;
-    const int N;
-
-    int bound(int64_t x, bool is_lower) {
         int clz = __builtin_clz(N);
         int idx = 0, mask = 1 << (31 - clz);     // first power of 2 <= N
         while (mask) {
             int t = idx + mask;
-            if (t <= N && x >= tree[t]) {
+            if (t <= N && x > tree[t]) {
                 idx = t;
                 x -= tree[t];
             }
             mask >>= 1;
         }
-        if (is_lower) return x == 0 ? idx : idx+1;
-        else return idx+1;
+        return idx+1;
     }
+
+    int upperBound(int64_t x) {
+        int p = lowerBound(x);
+        if (p <= N && get(p) == x) p = lowerBound(x+1);
+        return p;
+    }
+
+private:
+    int64_t* tree;
+    const int N;
 };
