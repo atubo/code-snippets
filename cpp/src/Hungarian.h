@@ -75,4 +75,14 @@ public:
         }
         return res;
     }
+
+    struct Match {
+        int nx, ny;
+        const int *cx, *cy;
+        bool const * const *g;
+    };
+
+    Match getMatch() const {
+        return {nx_, ny_, cx_, cy_, g_};
+    }
 };
