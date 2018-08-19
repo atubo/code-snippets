@@ -2,6 +2,7 @@
 using namespace std;
 
 #include "MathUtils.h"
+#include "math/modular_utils.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
@@ -30,10 +31,10 @@ public:
     }
 
     void testGcd() {
-        CPPUNIT_ASSERT_EQUAL(int64_t(1), ModUtils::gcd(4, 5));
-        CPPUNIT_ASSERT_EQUAL(int64_t(2), ModUtils::gcd(2, 4));
-        CPPUNIT_ASSERT_EQUAL(int64_t(7), ModUtils::gcd(28, 21));
-        CPPUNIT_ASSERT_EQUAL(int64_t(1), ModUtils::gcd(1, 5));
+        CPPUNIT_ASSERT_EQUAL(int64_t(1), ModularUtils::gcd(4, 5));
+        CPPUNIT_ASSERT_EQUAL(int64_t(2), ModularUtils::gcd(2, 4));
+        CPPUNIT_ASSERT_EQUAL(int64_t(7), ModularUtils::gcd(28, 21));
+        CPPUNIT_ASSERT_EQUAL(int64_t(1), ModularUtils::gcd(1, 5));
     }
 
     void testCountOnes() {
@@ -62,13 +63,13 @@ public:
     }
 
     void testModSolve() {
-        CPPUNIT_ASSERT_EQUAL(int64_t(2), ModUtils::mod_solve(4, 1, 7));
-        CPPUNIT_ASSERT_EQUAL(int64_t(3), ModUtils::mod_solve(5, 1, 7));
-        CPPUNIT_ASSERT_EQUAL(int64_t(7), ModUtils::mod_solve(6, 2, 8));
+        CPPUNIT_ASSERT_EQUAL(int64_t(2), ModularUtils::mod_solve(4, 1, 7));
+        CPPUNIT_ASSERT_EQUAL(int64_t(3), ModularUtils::mod_solve(5, 1, 7));
+        CPPUNIT_ASSERT_EQUAL(int64_t(7), ModularUtils::mod_solve(6, 2, 8));
     }
 
     void testModSolveLargeInt() {
-        int64_t x = ModUtils::mod_solve(34891, 2695824305, 15753131385);
+        int64_t x = ModularUtils::mod_solve(34891, 2695824305, 15753131385);
         CPPUNIT_ASSERT_EQUAL(5287090205L, x);
     }
 
