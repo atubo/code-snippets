@@ -67,6 +67,11 @@ public:
         CPPUNIT_ASSERT_EQUAL(int64_t(7), mod_solve(6, 2, 8));
     }
 
+    void testModSolveLargeInt() {
+        int64_t x = mod_solve(34891, 2695824305, 15753131385);
+        CPPUNIT_ASSERT_EQUAL(5287090205L, x);
+    }
+
     void testPhi() {
         vector<int64_t> expected = list_of(0)( 1)(1)( 2)(2)(4)(2)( 6)(4)(6)
             (4)(10)(4)(12)(6)(8)(8)(16)(6)(18)(8);
@@ -84,6 +89,7 @@ public:
     CPPUNIT_TEST(testCountOnes);
     CPPUNIT_TEST(testBinom);
     CPPUNIT_TEST(testModSolve);
+    CPPUNIT_TEST(testModSolveLargeInt);
     CPPUNIT_TEST(testPhi);
     CPPUNIT_TEST_SUITE_END();
 };

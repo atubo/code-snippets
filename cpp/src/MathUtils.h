@@ -48,6 +48,22 @@ namespace Binom {
     }
 }
 
+// return (a * b) mod n, dealing with possible overflow
+int64_t mul_long(int64_t x, int64_t y, int64_t mod) {
+    if (y < 0) {
+        x = -x;
+        y = -y;
+    }
+    int64_t s = 0, n = y, t = x;
+    while (n) {
+        if (n & 1) (s += t) %= mod;
+        (t += t) %= mod;
+        n >>= 1;
+    }
+    return s;
+}
+
+
 // (g, x, y) that a*x + b*y = g
 void ext_gcd(int64_t a, int64_t b, int64_t &g, int64_t &x, int64_t &y) {
     if (b == 0) {
@@ -62,11 +78,11 @@ void ext_gcd(int64_t a, int64_t b, int64_t &g, int64_t &x, int64_t &y) {
 }
 
 // find x that a*x = b mod n
-int64_t mod_solve(int64_t a, int64_t b, int n) {
+int64_t mod_solve(int64_t a, int64_t b, int64_t n) {
     int64_t d, xp, yp;
     ext_gcd(a, n, d, xp, yp);
     if (b % d == 0) {
-        int64_t x0 = (xp * (b / d) % n + n) % n;
+        int64_t x0 = (mul_long(xp, b/d, n) + n) % n;
         return x0;
     } else {
         abort();
