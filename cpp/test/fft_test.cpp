@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "fft.h"
+#include "math/fft.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 

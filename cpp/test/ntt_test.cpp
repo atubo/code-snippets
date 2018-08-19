@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "ntt.h"
+#include "math/ntt.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
