@@ -25,7 +25,7 @@ public:
         delete[] m_;
     }
 
-    static Matrix power(Matrix x, int n) {
+    static Matrix power(Matrix x, int64_t n) {
         Matrix ret(x.n_), tmp(x.n_);
         for (int i = 0; i < x.n_; i++) ret.m_[i][i] = 1;
         while (n) {
