@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "EulerSieve.h"
+#include "math/euler_sieve.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
