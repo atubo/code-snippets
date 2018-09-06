@@ -25,7 +25,7 @@ public:
         dealloc();
     }
 
-    void insert(int64_t t) {
+    bool insert(int64_t t) {
         for (int j = maxl_; j >= 0; j--) {
             if (!(t & (1ll << j))) continue;
 
@@ -39,9 +39,10 @@ public:
                     if (a[k] & (1ll << j)) a[k] ^= t;
                 }
                 a[j] = t;
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     void mergeFrom(const XorLinearBasis &other) {
