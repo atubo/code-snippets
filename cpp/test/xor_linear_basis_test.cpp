@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "xor_linear_basis.h"
+#include "math/xor_linear_basis.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
