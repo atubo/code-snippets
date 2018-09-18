@@ -22,7 +22,7 @@ public:
 
     void testBuild() {
         string s = "abca";
-        SuffixAutomaton sam;
+        SuffixAutomaton sam(4);
         sam.build(s);
         CPPUNIT_ASSERT(checkSubstring(sam, "abca"));
         CPPUNIT_ASSERT(checkSubstring(sam, "bc"));
@@ -32,7 +32,7 @@ public:
 
     void testCalc() {
         string s = "ababc";
-        SuffixAutomaton sam;
+        SuffixAutomaton sam(5);
         sam.build(s);
         sam.calc();
         SuffixAutomaton::Node *node = sam.start;
