@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "SuffixAutomaton.h"
+#include "string/sam.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
