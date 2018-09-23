@@ -32,24 +32,6 @@ public:
     }
 
     /**
-     * split p->ch[c] if necessary
-     * @param p: a node whose transition state on c will be splitted if needed
-     * @param c: transition character
-     * @return: if split happens return the new node, otherwise the old node
-     */
-    Node* split(Node *p, int c) {
-        Node *q = p->ch[c];
-        if (q->maxlen == p->maxlen+1) return q;
-
-        Node *nq = alloc(p->maxlen+1, false);
-        std::copy(q->ch, q->ch + CHARSET_SIZE, nq->ch);
-        nq->next = q->next;
-        q->next = nq;
-        for (; p && p->ch[c] == q; p = p->next) p->ch[c] = nq;
-        return nq;
-    }
-
-    /**
      * @param p: current position in this SAM
      * @param c: new character to be inserted
      * @return: new position after insertion
@@ -80,6 +62,23 @@ private:
         return new (_curr++)Node(maxlen, newSuffix);
     }
 
+    /**
+     * split p->ch[c] if necessary
+     * @param p: a node whose transition state on c will be splitted if needed
+     * @param c: transition character
+     * @return: if split happens return the new node, otherwise the old node
+     */
+    Node* split(Node *p, int c) {
+        Node *q = p->ch[c];
+        if (q->maxlen == p->maxlen+1) return q;
+
+        Node *nq = alloc(p->maxlen+1, false);
+        std::copy(q->ch, q->ch + CHARSET_SIZE, nq->ch);
+        nq->next = q->next;
+        q->next = nq;
+        for (; p && p->ch[c] == q; p = p->next) p->ch[c] = nq;
+        return nq;
+    }
 
     void toposort() {
         vector<int> buc(cap_);
