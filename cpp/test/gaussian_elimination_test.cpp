@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "GaussianElimination.h"
+#include "math/gaussian_elimination.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
