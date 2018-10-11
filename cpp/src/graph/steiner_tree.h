@@ -84,7 +84,6 @@ private:
             f_[i] = new int[1<<m_]{};
         }
         in_ = new bool[n_]{};
-        fwd_ = new int[n_]{};
     }
 
     void dealloc() {
@@ -94,15 +93,6 @@ private:
         delete[] f_;
 
         delete[] in_;
-        delete[] fwd_;
-    }
-
-    void init() {
-        for (int i = 0; i < n_; i++) fwd_[i] = -1;
-        for (int i = 0; i < (int)t_.size(); i++) {
-            int x = t_[i];
-            fwd_[x] = i;
-        }
     }
 
     void spfa(int s) {
@@ -137,5 +127,4 @@ public:
     int **f_;
     queue<int> q_;
     bool *in_;
-    int *fwd_;  // node id (0..n-1) to terminal id (0..m-1)
 };
