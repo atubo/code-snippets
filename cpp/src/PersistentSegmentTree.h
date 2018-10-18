@@ -33,7 +33,7 @@ public:
     }
 
     // query in range [start, end]
-    int query(int rootIndex, int start, int end) {
+    int query(int rootIndex, int start, int end) const {
         return query(root[rootIndex], start, end, 0, M-1);
     }
 
@@ -50,7 +50,7 @@ private:
         else          insert(T[now].R, x, t, mid+1, r);
     }
 
-    int query(int node, int start, int end, int l, int r) {
+    int query(int node, int start, int end, int l, int r) const {
         if (l > r) return 0;
         if (start <= l && r <= end) return T[node].sum;
         int mid = (l + r) / 2;
