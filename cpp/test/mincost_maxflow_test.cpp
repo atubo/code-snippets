@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "MincostMaxflow.h"
+#include "netflow/mincost_maxflow.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
