@@ -1,4 +1,4 @@
-#include "data_structures/ImplicitTreap.cpp"
+#include "data_structures/implicit_treap.h"
 
 #include <iostream>
 #include <vector>
