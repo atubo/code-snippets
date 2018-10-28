@@ -1,61 +1,26 @@
 #include <bits/stdc++.h>
+using namespace std;
+
 #include "data_structures/implicit_treap.h"
 
-#include <boost/assign/list_of.hpp>
-
 #include <cppunit/extensions/HelperMacros.h>
-
-using namespace std;
-using boost::assign::list_of;
-using namespace ImplicitTreap;
 
 class ImplicitTreapTest:public CppUnit::TestFixture {
 public:
     void setUp() {}
     void tearDown() {}
 
-
     void testRangeQuery() {
-        vector<int> a = list_of(1)(4)(5)(2)(3);
-        NodePtr root = build_treap(a);
-        CPPUNIT_ASSERT_EQUAL(9, ImplicitTreap::range_query(root, 1, 2));
-        CPPUNIT_ASSERT_EQUAL(11, ImplicitTreap::range_query(root, 1, 3));
-    }
-
-    void testRangeUpdate() {
-        vector<int> a = list_of(1)(4)(5)(2)(3);
-        NodePtr root = build_treap(a);
-        CPPUNIT_ASSERT_EQUAL(9, ImplicitTreap::range_query(root, 1, 2));
-
-        ImplicitTreap::range_update(root, 1, 3, 2);
-        // 1 6 7 4 3
-        CPPUNIT_ASSERT_EQUAL(13, ImplicitTreap::range_query(root, 1, 2));
-        CPPUNIT_ASSERT_EQUAL(17, ImplicitTreap::range_query(root, 1, 3));
-        CPPUNIT_ASSERT_EQUAL(18, ImplicitTreap::range_query(root, 0, 3));
-    }
-
-    CPPUNIT_TEST_SUITE(ImplicitTreapTest);
-    CPPUNIT_TEST(testRangeQuery);
-    CPPUNIT_TEST(testRangeUpdate);
-    CPPUNIT_TEST_SUITE_END();
-};
-
-class ImplicitTreap2Test:public CppUnit::TestFixture {
-public:
-    void setUp() {}
-    void tearDown() {}
-
-    void testRangeQuery() {
-        ImplicitTreap2 treap(5);
-        vector<int> a = list_of(0)(1)(4)(5)(2)(3);
+        ImplicitTreap treap(5);
+        vector<int> a = {0, 1, 4, 5, 2, 3};
         treap.build(a);
         CPPUNIT_ASSERT_EQUAL(9, treap.rangeQuery(2, 3));
         CPPUNIT_ASSERT_EQUAL(11, treap.rangeQuery(2, 4));
     }
 
     void testRangeUpdate() {
-        ImplicitTreap2 treap(5);
-        vector<int> a = list_of(0)(1)(4)(5)(2)(3);
+        ImplicitTreap treap(5);
+        vector<int> a = {0, 1, 4, 5, 2, 3};
         treap.build(a);
         CPPUNIT_ASSERT_EQUAL(9, treap.rangeQuery(2, 3));
 
@@ -68,8 +33,8 @@ public:
     }
 
     void testGet() {
-        ImplicitTreap2 treap(5);
-        vector<int> a = list_of(0)(1)(4)(5)(2)(3);
+        ImplicitTreap treap(5);
+        vector<int> a = {0, 1, 4, 5, 2, 3};
         treap.build(a);
 
         for (int i = 1; i <= 5; i++) {
@@ -78,7 +43,7 @@ public:
     }
 
     void testInsert() {
-        ImplicitTreap2 treap(10);
+        ImplicitTreap treap(10);
         vector<int> a = {0, 2, 4};
         treap.build(a);
         vector<int> expected =  {0, 2, 4};
@@ -107,7 +72,7 @@ public:
         }
     }
 
-    CPPUNIT_TEST_SUITE(ImplicitTreap2Test);
+    CPPUNIT_TEST_SUITE(ImplicitTreapTest);
     CPPUNIT_TEST(testRangeQuery);
     CPPUNIT_TEST(testRangeUpdate);
     CPPUNIT_TEST(testGet);
@@ -116,4 +81,3 @@ public:
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ImplicitTreapTest);
-CPPUNIT_TEST_SUITE_REGISTRATION(ImplicitTreap2Test);
