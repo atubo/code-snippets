@@ -249,13 +249,8 @@ private:
     }
 
     // combining two ranges of segtree
-    void combine(int& t, int l, int r) {
-        // TODO: can we remove this check?
-        if (!l || !r) {
-            t = (l ? l : r);
-            return;
-        }
-        nodes_[t].sum = nodes_[l].sum + nodes_[r].sum;
+    void combine(int t, int l, int r) {
+        nodes_[t].sum = nodes_[l].sum + nodes_[r].sum + nodes_[t].val;
     }
 
     void pushUp(int t) {
@@ -268,8 +263,7 @@ private:
         // propaget lazy before combining
         pushDown(node.l);
         pushDown(node.r);
-        combine(t, node.l, t);
-        combine(t, t, node.r);
+        combine(t, node.l, node.r);
     }
 
     // invariant: values are right after lazy is pushed down
