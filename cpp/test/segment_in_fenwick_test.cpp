@@ -2,17 +2,17 @@
 
 using namespace std;
 
-#include "data_structures/ChairmanInFenwick.h"
+#include "data_structures/segment_in_fenwick.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class ChairmanInFenwickTest:public CppUnit::TestFixture {
+class SegmentInFenwickTest:public CppUnit::TestFixture {
 public:
     void setUp() {}
     void tearDown() {}
 
     void test() {
-        ChairmanInFenwick tree(4, 4, 4);
+        SegmentInFenwick tree(4, 4, 4);
         tree.add(1, 2, 2);
         tree.add(2, 1, 1);
         tree.add(3, 3, 3);
@@ -23,7 +23,7 @@ public:
     }
 
     void testWeightIndexZero() {
-        ChairmanInFenwick tree(2, 2, 4);
+        SegmentInFenwick tree(2, 2, 4);
         tree.add(1, 0, 1);
         tree.add(1, 1, 2);
         tree.add(2, 0, 3);
@@ -34,11 +34,11 @@ public:
         CPPUNIT_ASSERT_EQUAL(10, tree.query(2, 0, 1));
     }
 
-    CPPUNIT_TEST_SUITE(ChairmanInFenwickTest);
+    CPPUNIT_TEST_SUITE(SegmentInFenwickTest);
     CPPUNIT_TEST(test);
     CPPUNIT_TEST(testWeightIndexZero);
     CPPUNIT_TEST_SUITE_END();
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(ChairmanInFenwickTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(SegmentInFenwickTest);
 

@@ -1,4 +1,4 @@
-struct ChairmanInFenwick {
+struct SegmentInFenwick {
     int N;  // number of positions, index is 1-based
     int M;  // number of weights, index is 0-based
     int T_cnt;
@@ -6,7 +6,7 @@ struct ChairmanInFenwick {
     int *val, *lc, *rc;
 
     // cap is the number of elements to be added
-    ChairmanInFenwick(int N_, int M_, int cap): N(N_), M(M_), T_cnt(1) {
+    SegmentInFenwick(int N_, int M_, int cap): N(N_), M(M_), T_cnt(1) {
         root = new int[N+1]{};
         const int numOfNodes = cap * int(log2(N)+2) * int(log2(M)+2);
         val = new int[numOfNodes]{};
@@ -14,7 +14,7 @@ struct ChairmanInFenwick {
         rc = new int[numOfNodes]{};
     }
 
-    ~ChairmanInFenwick() {
+    ~SegmentInFenwick() {
         delete[] root;
         delete[] val;
         delete[] lc;
