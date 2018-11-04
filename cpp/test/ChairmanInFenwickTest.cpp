@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "ChairmanInFenwick.h"
+#include "data_structures/ChairmanInFenwick.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
