@@ -1,6 +1,6 @@
 // Gomory-Hu Tree (Cut Tree)
 
-#include "netflow/Dinic.h"
+#include "netflow/dinic.h"
 
 class GomoryHuTree {
 private:

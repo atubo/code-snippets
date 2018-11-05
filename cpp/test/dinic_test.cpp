@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "netflow/Dinic.h"
+#include "netflow/dinic.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
