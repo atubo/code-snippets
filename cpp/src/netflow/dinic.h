@@ -92,7 +92,7 @@ private:
         int ret = 0;
         for (int &i = curr[x]; i != -1; i = E[i].next) {
             int v = E[i].to;
-            if (d[v] == d[x] - 1) {
+            if (d[v] == d[x] - 1 && E[i].cap) {
                 int k = dfs(v, min(low-ret, E[i].cap), t);
                 if (k > 0) {
                     E[i].cap -= k;
@@ -100,6 +100,9 @@ private:
                     ret += k;
                 }
             }
+            // without the following line curr[x] might change
+            // prematurely, causing runtime increase
+            if (low == ret) break;
         }
         return ret;
     }
