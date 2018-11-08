@@ -1,4 +1,4 @@
-#include "AhoCorasick.cpp"
+#include "string/AhoCorasick.cpp"
 
 #include <boost/assign/list_of.hpp>
 
