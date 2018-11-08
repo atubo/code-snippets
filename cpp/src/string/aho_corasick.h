@@ -23,10 +23,11 @@ using namespace std;
     3. https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm
  */
 class AhoCorasick {
+    static constexpr const char *ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+    static const int ALPHA_SIZE = strlen(ALPHABET);
 public:
-    const static int MAXN = 1e6 + 42;
-
-    vector<map<char, int> > to;
+    const int n_;
+    int **to;
     vector<set<int> > out;
     int sz = 1;
     int *link;  // blue link in the wiki
@@ -34,13 +35,24 @@ public:
     int *que;
     int keywordIndex;
 
-    AhoCorasick(): to(MAXN), out(MAXN), keywordIndex(0) {
-        link = new int[MAXN]{};
-        next = new int[MAXN]{};
-        que  = new int[MAXN]{};
+    // n is total length, total number of nodes is at most n+1
+    AhoCorasick(int n): n_(n+1), out(n_), keywordIndex(0) {
+        to = new int*[n_]{};
+        for (int i = 0; i < n_; i++) {
+            to[i] = new int[ALPHA_SIZE]{};
+        }
+
+        link = new int[n_]{};
+        next = new int[n_]{};
+        que  = new int[n_]{};
     }
 
     ~AhoCorasick() {
+        for (int i = 0; i < n_; i++) {
+            delete[] to[i];
+        }
+        delete[] to;
+
         delete[] link;
         delete[] next;
         delete[] que;
@@ -48,7 +60,8 @@ public:
 
     void add_str(const string &s) {
         int v = 0;
-        for(auto c: s) {
+        for(int i = 0; i < (int)s.length(); i++) {
+            int c = s[i] - ALPHABET[0];
             if(!to[v][c]) to[v][c] = sz++;
             v = to[v][c];
         }
@@ -61,9 +74,9 @@ public:
         que[0] = 0;
         while (st < fi) {
             int v = que[st++];
-            for(auto it: to[v]) {
-                int u = it.second;
-                int c = it.first;
+            for (int c = 0; c < ALPHA_SIZE; c++) {
+                int u = to[v][c];
+                if (u == 0) continue;
                 int j = link[v];
                 while(j != -1 && !to[j][c]) j = link[j];
                 if(j != -1) link[u] = to[j][c];
@@ -81,7 +94,7 @@ public:
         int result = 0;
         int q = 0;
         for (int i = 0; i < (int)t.length(); i++) {
-            char c = t[i];
+            int c = t[i] - ALPHABET[0];
             while (q != -1 && to[q][c] == 0) {
                 q = link[q];
             }

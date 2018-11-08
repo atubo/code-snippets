@@ -13,16 +13,16 @@ public:
 
     void testAhoCorasick() {
 
-        AhoCorasick ac;
+        AhoCorasick ac(12);
         ac.add_str(string("he"));
         ac.add_str(string("she"));
         ac.add_str(string("his"));
         ac.add_str(string("hers"));
         ac.push_links();
 
-        CPPUNIT_ASSERT(ac.to[0]['s'] == 3);
-        CPPUNIT_ASSERT(ac.to[2]['r'] == 8);
-        CPPUNIT_ASSERT(ac.to[4]['e'] == 5);
+        CPPUNIT_ASSERT(ac.to[0]['s'-'a'] == 3);
+        CPPUNIT_ASSERT(ac.to[2]['r'-'a'] == 8);
+        CPPUNIT_ASSERT(ac.to[4]['e'-'a'] == 5);
 
         vector<int> link;
         link.assign(ac.link, ac.link+10);
@@ -46,7 +46,7 @@ public:
 
     void testDictSuffixLink() {
         // as in https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm
-        AhoCorasick ac;
+        AhoCorasick ac(15);
         ac.add_str("a");
         ac.add_str("ab");
         ac.add_str("bab");
