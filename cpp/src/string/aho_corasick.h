@@ -109,7 +109,7 @@ public:
     }
 
 private:
-    int followDictSuffixLink(int q) {
+    int followDictSuffixLink(int q) const {
         int res = 0;
         while (q != 0) {
             res += out[q].size();
