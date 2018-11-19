@@ -31,7 +31,8 @@ public:
         }
     }
 
-    int rmq(int u, int v) {
+    // RMQ for range [u, v]
+    int rmq(int u, int v) const {
         int j = 0;
         while (u + (1 << (j+1)) < v+1) j++;
         return min(st[u][j], st[v+1-(1<<j)][j]);
