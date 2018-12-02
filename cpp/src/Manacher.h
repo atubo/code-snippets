@@ -43,16 +43,16 @@ struct Manacher {
             int pos = (i - p[i]) / 2;
             maxlen[pos] = max(maxlen[pos], p[i]-1);
         }
-        for (int i = 1; s[i] != '\0'; i++) {
+        for (int i = 1; i < length_; i++) {
             maxlen[i] = max(maxlen[i-1]-2, maxlen[i]);
         }
     }
 
 private:
     void alloc() {
-        p = new int[2*length_+10]{};
-        s = new char[2*length_+10]{};
-        maxlen = new int[length_+10]{};
+        p = new int[2*length_+3]{};
+        s = new char[2*length_+3]{};
+        maxlen = new int[length_+1]{};
     }
 
     void dealloc() {

@@ -29,8 +29,19 @@ public:
         }
     }
 
+    void testMaxlen() {
+        string s = "ababa";
+        Manacher manacher(s);
+        manacher.calcMaxlen();
+        vector<int> expected = {5, 3, 3, 1, 1};
+        for (int i = 0; i < 5; i++) {
+            CPPUNIT_ASSERT_EQUAL(expected[i], manacher.maxlen[i]);
+        }
+    }
+
     CPPUNIT_TEST_SUITE(ManacherTest);
     CPPUNIT_TEST(testManacher);
+    CPPUNIT_TEST(testMaxlen);
     CPPUNIT_TEST_SUITE_END();
 };
 
