@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "string/Manacher.h"
+#include "string/manacher.h"
 
 #include <boost/assign/list_of.hpp>
 #include <cppunit/extensions/HelperMacros.h>
