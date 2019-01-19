@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "math/BigInt.h"
+#include "math/bigint.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
