@@ -101,6 +101,16 @@ public:
         return ret;
     }
 
+    friend int operator % (const BigInt &a, int d) {
+        const int N = a.splits.size();
+
+        int ret = 0;
+        for (int i = N-1; i >= 0; i--) {
+            ret = (1LL * ret * SPLIT_OVERFLOW + a.splits[i]) % d;
+        }
+        return ret;
+    }
+
     friend BigInt operator / (const BigInt &a, int d) {
         const int N = a.splits.size();
 

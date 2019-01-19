@@ -44,6 +44,12 @@ public:
                        == BigInt("1077220453371"));
     }
 
+    void testModInt() {
+        BigInt a("12345678909876543210123456789");
+        int r = a % 54321;
+        CPPUNIT_ASSERT_EQUAL(34632, r);
+    }
+
     void testToString() {
         CPPUNIT_ASSERT(BigInt("0").toString() == "0");
         CPPUNIT_ASSERT(BigInt("123").toString() == "123");
@@ -72,6 +78,7 @@ public:
     CPPUNIT_TEST(testMul);
     CPPUNIT_TEST(testDiv);
     CPPUNIT_TEST(testMod);
+    CPPUNIT_TEST(testModInt);
     CPPUNIT_TEST(testToString);
     CPPUNIT_TEST(testSwap);
     CPPUNIT_TEST(testFromStringWithLeadingZeros);
