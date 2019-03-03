@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "tree/HeavyLightDecomposition.h"
+#include "tree/heavy_light_decomposition.h"
 
 #include <boost/assign/list_of.hpp>
 
