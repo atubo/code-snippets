@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "graph/TarjanSCC.h"
+#include "graph/tarjan_scc.h"
 
 #include <boost/assign/list_of.hpp>
 #include <cppunit/extensions/HelperMacros.h>
