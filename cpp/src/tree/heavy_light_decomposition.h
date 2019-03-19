@@ -128,7 +128,7 @@ public:
         top.resize(N);
 
         root = 0;
-        Seg_size = 0;   // segment tree is 1-indexed
+        Seg_size = 0;   // segment tree is 0-indexed
     }
 
     void addEdge(int u, int v) {
