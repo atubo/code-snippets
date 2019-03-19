@@ -42,25 +42,25 @@ class BinaryLiftLCA {
     int MAXB_;
     Graph g_;
 public:
-    vector<int> depth;
-    vector<vector<int> > father;
+    int* depth;
+    int** father;
 
 public:
     BinaryLiftLCA(int N, int root)
-        : N_(N), root_(root), MAXB_(log2(N)+1), g_(N, N-1) {
+        : N_(N), root_(root), MAXB_(log2(N)+1), g_(N, 2*(N-1)) {
+            alloc();
+    }
+
+    ~BinaryLiftLCA() {
+        dealloc();
     }
 
     void addEdge(int u, int v) {
         g_.addEdge(u, v);
+        g_.addEdge(v, u);
     }
 
     void build() {
-        depth.resize(N_);
-        father.resize(N_);
-        for (int i = 0; i < N_; i++) {
-            father[i].resize(MAXB_, -1);
-        }
-
         dfs(root_, -1, 0);
 
         binaryLift();
@@ -88,6 +88,23 @@ public:
     }
 
 private:
+    void alloc() {
+        depth = new int[N_]{};
+        father = new int*[N_]{};
+        for (int i = 0; i < N_; i++) {
+            father[i] = new int[MAXB_]{};
+            memset(father[i], -1, MAXB_*sizeof(int));
+        }
+    }
+
+    void dealloc() {
+        delete[] depth;
+        for (int i = 0; i < N_; i++) {
+            delete[] father[i];
+        }
+        delete[] father;
+    }
+
     void dfs(int x, int f, int d) {
         depth[x] = d;
         father[x][0] = f;

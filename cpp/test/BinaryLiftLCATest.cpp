@@ -26,20 +26,28 @@ public:
 
         lca.build();
 
-        CPPUNIT_ASSERT(lca.depth == list_of(0)(1)(1)(2)(2)(2)(2));
-        CPPUNIT_ASSERT(lca.father[0] == list_of(-1)(-1)(-1));
-        CPPUNIT_ASSERT(lca.father[1] == list_of(0)(-1)(-1));
-        CPPUNIT_ASSERT(lca.father[2] == list_of(0)(-1)(-1));
-        CPPUNIT_ASSERT(lca.father[3] == list_of(1)(0)(-1));
-        CPPUNIT_ASSERT(lca.father[4] == list_of(1)(0)(-1));
-        CPPUNIT_ASSERT(lca.father[5] == list_of(2)(0)(-1));
-        CPPUNIT_ASSERT(lca.father[6] == list_of(2)(0)(-1));
+        CPPUNIT_ASSERT(buildVec(lca.depth, 7) == list_of(0)(1)(1)(2)(2)(2)(2));
+        CPPUNIT_ASSERT(buildVec(lca.father[0], 3) == list_of(-1)(-1)(-1));
+        CPPUNIT_ASSERT(buildVec(lca.father[1], 3) == list_of(0)(-1)(-1));
+        CPPUNIT_ASSERT(buildVec(lca.father[2], 3) == list_of(0)(-1)(-1));
+        CPPUNIT_ASSERT(buildVec(lca.father[3], 3) == list_of(1)(0)(-1));
+        CPPUNIT_ASSERT(buildVec(lca.father[4], 3) == list_of(1)(0)(-1));
+        CPPUNIT_ASSERT(buildVec(lca.father[5], 3) == list_of(2)(0)(-1));
+        CPPUNIT_ASSERT(buildVec(lca.father[6], 3) == list_of(2)(0)(-1));
 
         CPPUNIT_ASSERT_EQUAL(0, lca.findLCA(0, 0));
         CPPUNIT_ASSERT_EQUAL(0, lca.findLCA(0, 4));
         CPPUNIT_ASSERT_EQUAL(1, lca.findLCA(1, 4));
         CPPUNIT_ASSERT_EQUAL(0, lca.findLCA(3, 5));
         CPPUNIT_ASSERT_EQUAL(1, lca.findLCA(3, 4));
+    }
+
+    vector<int> buildVec(int *a, int n) {
+        vector<int> ret;
+        for (int i = 0; i < n; i++) {
+            ret.push_back(a[i]);
+        }
+        return ret;
     }
 
     CPPUNIT_TEST_SUITE(BinaryLiftLCATest);
