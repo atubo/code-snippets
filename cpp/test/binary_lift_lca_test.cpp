@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "BinaryLiftLCA.h"
+#include "tree/binary_lift_lca.h"
 
 #include <boost/assign/list_of.hpp>
 
