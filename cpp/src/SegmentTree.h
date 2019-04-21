@@ -21,7 +21,7 @@ public:
 
     // query range sum in [a, b]
     int64_t query(int a, int b) {
-        return query(1, a, b, 1, N);
+        return query(1, 1, N, a, b);
     }
 
 private:
@@ -51,16 +51,16 @@ private:
         lazy[k] = 0;
     }
 
-    // query range sum in [a, b], current node is [L, R]
-    int64_t query(int k, int a, int b, int L, int R) {
+    // query range sum in [a, b], current node is [l, r]
+    int64_t query(int k, int l, int r, int a, int b) {
         if (!k) return 0;
-        if (b < L || a > R) return 0;
-        pushDown(k, L, R);
-        if (a <= L && R <= b) return val[k];
+        if (b < l || a > r) return 0;
+        pushDown(k, l, r);
+        if (a <= l && r <= b) return val[k];
         int64_t sum = 0;
-        int mid = (L + R) / 2;
-        if (a <= mid) sum += query(2*k, a, b, L, mid);
-        if (mid < b)  sum += query(2*k+1, a, b, mid+1, R);
+        int mid = (l + r) / 2;
+        if (a <= mid) sum += query(2*k, l, mid, a, b);
+        if (mid < b)  sum += query(2*k+1, mid+1, r, a, b);
         return sum;
     }
 };
