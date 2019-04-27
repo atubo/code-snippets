@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "FenwickInFenwick.h"
+#include "data_structures/fenwick_in_fenwick.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
