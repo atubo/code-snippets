@@ -38,7 +38,7 @@ private:
     Line *sgt_;
 
     void alloc() {
-        sgt_ = new Line[2*n_+1]{};
+        sgt_ = new Line[4*n_+1]{};
     }
 
     void dealloc() {
