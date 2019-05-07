@@ -6,8 +6,8 @@ class SegmentTree {
 
 public:
     SegmentTree(int N_): N(N_) {
-        val = new int64_t[4*N]{};
-        lazy = new int64_t[4*N]{};
+        val = new int64_t[4*N+1]{};
+        lazy = new int64_t[4*N+1]{};
     }
 
     ~SegmentTree() {
