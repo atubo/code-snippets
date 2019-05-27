@@ -94,7 +94,7 @@ private:
         delete[] log_;
         delete[] dfn_;
         delete[] depth_;
-        for (int i = 0; i < N_; i++) {
+        for (int i = 0; i < 2*N_; i++) {
             delete[] st_[i];
         }
         delete[] st_;

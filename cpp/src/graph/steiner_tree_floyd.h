@@ -70,13 +70,13 @@ private:
 
     void dealloc() {
         for (int i = 0; i <= ALL; i++) {
-            delete dp[i];
+            delete[] dp[i];
         }
         delete[] dp;
 
         for (int i = 0; i < n_; i++) {
-            delete g_[i];
+            delete[] g_[i];
         }
-        delete g_;
+        delete[] g_;
     }
 };
