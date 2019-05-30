@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "persistent_binary_trie.h"
+#include "data_structures/persistent_binary_trie.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
