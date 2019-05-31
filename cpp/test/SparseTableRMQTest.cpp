@@ -15,30 +15,18 @@ public:
     void tearDown() {}
 
     void testSingleElement() {
-        SparseTableRMQ rmq;
-        rmq.N = 1;
-        rmq.A = {5};
+        int A[1] = {5};
+        SparseTableRMQ rmq(A, 1);
 
-        rmq.preCompute();
-        CPPUNIT_ASSERT(rmq.st[0][0] == 5);
         CPPUNIT_ASSERT(rmq.rmq(0, 0) == 5);
     }
 
     void testRMQ() {
-        SparseTableRMQ rmq;
-        rmq.N = 10;
-        rmq.A = {1, 2, 3, 4, 5, 3, 4, 5, 2, 1};
-        rmq.preCompute();
-        CPPUNIT_ASSERT(rmq.st[0] == list_of(1)(1)(1)(1));
-        CPPUNIT_ASSERT(rmq.st[1] == list_of(2)(2)(2)(2));
-        CPPUNIT_ASSERT(rmq.st[2] == list_of(3)(3)(3)(1));
-        CPPUNIT_ASSERT(rmq.st[3] == list_of(4)(4)(3)(INT_MAX));
-        CPPUNIT_ASSERT(rmq.st[4] == list_of(5)(3)(3)(INT_MAX));
-        CPPUNIT_ASSERT(rmq.st[5] == list_of(3)(3)(2)(INT_MAX));
-        CPPUNIT_ASSERT(rmq.st[6] == list_of(4)(4)(1)(INT_MAX));
-        CPPUNIT_ASSERT(rmq.st[7] == list_of(5)(2)(INT_MAX)(INT_MAX));
-        CPPUNIT_ASSERT(rmq.st[8] == list_of(2)(1)(INT_MAX)(INT_MAX));
-        CPPUNIT_ASSERT(rmq.st[9] == list_of(1)(INT_MAX)(INT_MAX)(INT_MAX));
+        int A[10] = {1, 2, 3, 4, 5, 3, 4, 5, 2, 1};
+        SparseTableRMQ rmq(A, 10);
+        CPPUNIT_ASSERT_EQUAL(3, rmq.rmq(0, 2));
+        CPPUNIT_ASSERT_EQUAL(5, rmq.rmq(2, 5));
+        CPPUNIT_ASSERT_EQUAL(3, rmq.rmq(5, 5));
     }
 
     CPPUNIT_TEST_SUITE(SparseTableRMQTest);
