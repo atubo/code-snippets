@@ -1,6 +1,4 @@
 
-// internal arrays are 1-based
-// assume no duplicated elements
 class Sbt {
 public:
     Sbt(int n): n_(n+1) {
@@ -15,10 +13,28 @@ public:
         insert(root_, v);
     }
 
+    void del(int key) {
+        del(root_, key);
+    }
+
+
     int rank(int v) const {
         return rank(root_, v);
     }
 
+    int findByOrder(int k) const {
+        return findByOrder(root_, k);
+    }
+
+    int pred(int x) const {
+        // find predecessor
+        return pred(root_, x);
+    }
+
+    int succ(int x) const {
+        // find successor
+        return succ(root_, x);
+    }
 
 private:
     int n_;
@@ -96,9 +112,46 @@ private:
     }
 
     int rank(int t, int v) const {
+        // if there are duplicates, return the minimum rank
         if (t == 0) return 0;
-        if (v == key_[t]) return size_[sons_[t][0]];
-        if (v < key_[t]) return rank(sons_[t][0], v);
+        if (v <= key_[t]) return rank(sons_[t][0], v);
         return 1 + size_[sons_[t][0]] + rank(sons_[t][1], v);
+    }
+
+    int findByOrder(int t, int k) const {
+        // k starts from 0
+        int sl = size_[sons_[t][0]];
+        if (k == sl) return key_[t];
+        if (k < sl) return findByOrder(sons_[t][0], k);
+        return findByOrder(sons_[t][1], k-sl-1);
+    }
+
+    int del(int &t, int v) {
+        size_[t]--;
+        if (v == key_[t] || (v < key_[t] && sons_[t][0] == 0) ||
+            (v > key_[t] && sons_[t][1] == 0)) {
+            int ret = key_[t];
+            if (sons_[t][0] == 0 || sons_[t][1] == 0) {
+                t = sons_[t][0] + sons_[t][1];
+            } else {
+                key_[t] = del(sons_[t][0], key_[t]+1);
+            }
+            return ret;
+        } else {
+            if (v < key_[t]) return del(sons_[t][0], v);
+            else return del(sons_[t][1], v);
+        }
+    }
+
+    int pred(int t, int x) const {
+        if (t == 0) return INT_MIN;
+        if (key_[t] >= x) return pred(sons_[t][0], x);
+        return max(key_[t], pred(sons_[t][1], x));
+    }
+
+    int succ(int t, int x) const {
+        if (t == 0) return INT_MAX;
+        if (key_[t] <= x) return succ(sons_[t][1], x);
+        return min(key_[t], succ(sons_[t][0], x));
     }
 };
