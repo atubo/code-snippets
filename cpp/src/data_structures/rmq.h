@@ -26,7 +26,7 @@ private:
         for (int i = 0; i < maxb_; i++) {
             st_[i] = new int[n_]{};
         }
-        log_ = new int[n_]{};
+        log_ = new int[n_+1]{};
     }
 
     void dealloc() {
