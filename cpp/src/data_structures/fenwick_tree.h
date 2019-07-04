@@ -1,24 +1,22 @@
 class FenwickTree {
 public:
     // 1-indexed
-    FenwickTree(int size): N(size) {
-        tree = (int64_t*)malloc((size+1) * sizeof(int64_t));
-        clear();
+    FenwickTree(int size): n_(size) {
+        tree_ = new int64_t[n_+1]{};
     }
 
     ~FenwickTree() {
-        free(tree);
-        tree = NULL;
+        delete[] tree_;
     }
 
     void clear() {
-        memset(tree, 0, (N+1) * sizeof(int64_t));
+        memset(tree_, 0, (n_+1) * sizeof(int64_t));
     }
 
     // add v to value at x
     void set(int x, int v) {
-        while(x <= N) {
-            tree[x] += v;
+        while(x <= n_) {
+            tree_[x] += v;
             x += (x & -x);
         }
     }
@@ -27,7 +25,7 @@ public:
     int64_t get(int x) const {
         int64_t res = 0;
         while(x) {
-            res += tree[x];
+            res += tree_[x];
             x -= (x & -x);
         }
         return res;
@@ -40,13 +38,13 @@ public:
 
     // index of first element with cumulative sum >= x
     int lowerBound(int64_t x) {
-        int clz = __builtin_clz(N);
-        int idx = 0, mask = 1 << (31 - clz);     // first power of 2 <= N
+        int clz = __builtin_clz(n_);
+        int idx = 0, mask = 1 << (31 - clz);     // first power of 2 <= n_
         while (mask) {
             int t = idx + mask;
-            if (t <= N && x > tree[t]) {
+            if (t <= n_ && x > tree_[t]) {
                 idx = t;
-                x -= tree[t];
+                x -= tree_[t];
             }
             mask >>= 1;
         }
@@ -55,11 +53,11 @@ public:
 
     int upperBound(int64_t x) {
         int p = lowerBound(x);
-        if (p <= N && get(p) == x) p = lowerBound(x+1);
+        if (p <= n_ && get(p) == x) p = lowerBound(x+1);
         return p;
     }
 
 private:
-    int64_t* tree;
-    const int N;
+    int64_t* tree_;
+    const int n_;
 };
