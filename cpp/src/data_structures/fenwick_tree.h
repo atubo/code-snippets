@@ -1,12 +1,12 @@
-class BIT {
+class FenwickTree {
 public:
     // 1-indexed
-    BIT(int size): N(size) {
+    FenwickTree(int size): N(size) {
         tree = (int64_t*)malloc((size+1) * sizeof(int64_t));
         clear();
     }
 
-    ~BIT() {
+    ~FenwickTree() {
         free(tree);
         tree = NULL;
     }
