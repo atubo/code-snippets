@@ -192,7 +192,7 @@ public:
             printf("%d ", minVal[i]);
         }
         printf("root: %d", root);
-               
+
         printf("\n");
     }
 
