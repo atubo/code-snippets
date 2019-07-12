@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "SplayTree.h"
+#include "data_structures/splay_tree.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 

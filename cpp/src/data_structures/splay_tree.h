@@ -102,6 +102,7 @@ public:
     }
 
     void splay(int x, int y) {
+        if (x == y) return;
         pushDown(x);
         while (f[x] != y) {
             if (f[f[x]] != y) {
