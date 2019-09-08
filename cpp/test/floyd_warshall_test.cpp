@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "floyd_warshall.h"
+#include "graph/floyd_warshall.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
