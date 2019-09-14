@@ -92,6 +92,7 @@ private:
 
     void setLeaf(int k) {
         lc_[k] = rc_[k] = 0;
+        size_[k] = 1;
         for (int i = 0; i < K; i++) {
             max_[i][k] = min_[i][k] = d_[k].x[i];
         }
@@ -176,6 +177,7 @@ private:
             printf(" ");
         }
         printf("k=%d ", k);
+        printf(" sz: %d", size_[k]);
         printArray(d_[k].x);
         printf(" max: ");
         printMinMax(max_, k);
