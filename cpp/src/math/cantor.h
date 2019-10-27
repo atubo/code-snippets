@@ -3,7 +3,7 @@ namespace math {
 class Cantor {
  public:
   // members in [0, n-1]
-  static int64_t forward(const vector<int>& a) {
+  static int64_t encode(const vector<int>& a) {
     int64_t ret = 0;
     int64_t fac = 1;
     const int n = a.size();
@@ -18,7 +18,7 @@ class Cantor {
     return ret;
   }
 
-  static vector<int> backward(int64_t code, int n) {
+  static vector<int> decode(int64_t code, int n) {
     vector<int64_t> fac(n);
     fac[0] = 1;
     for (int i = 1; i < n; i++) {
