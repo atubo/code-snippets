@@ -9,7 +9,7 @@ class MillerRabin {
     }
   }
 
-  bool check(int64_t n) {
+  bool check(int64_t n) const {
     if (n < 2) return false;
     if (n == 2) return true;
     if ((n&1) == 0) return false;
@@ -27,6 +27,23 @@ class MillerRabin {
       }
     }
     return true;
+  }
+
+  static int64_t mult_mod(int64_t a, int64_t b, int64_t mod) {
+    a %= mod;
+    b %= mod;
+    int64_t ret = 0;
+    int64_t x = a;
+    while (b) {
+      if (b & 1) {
+        ret += x;
+        if (ret >= mod) ret -= mod;
+      }
+      x <<= 1;
+      if (x >= mod) x -= mod;
+      b >>= 1;
+    }
+    return ret;
   }
 
  private:
@@ -51,23 +68,6 @@ class MillerRabin {
       if (n & 1) ret = mult_mod(ret, x, mod);
       x = mult_mod(x, x, mod);
       n >>= 1;
-    }
-    return ret;
-  }
-
-  static int64_t mult_mod(int64_t a, int64_t b, int64_t mod) {
-    a %= mod;
-    b %= mod;
-    int64_t ret = 0;
-    int64_t x = a;
-    while (b) {
-      if (b & 1) {
-        ret += x;
-        if (ret >= mod) ret -= mod;
-      }
-      x <<= 1;
-      if (x >= mod) x -= mod;
-      b >>= 1;
     }
     return ret;
   }
