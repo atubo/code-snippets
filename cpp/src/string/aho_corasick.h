@@ -1,11 +1,3 @@
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <set>
-#include <vector>
-
-using namespace std;
-
 /** Class to do multiple-pattern matching
   * usage example:
     AhoCorasick ac;

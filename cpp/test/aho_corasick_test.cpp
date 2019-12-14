@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 #include "string/aho_corasick.h"
 
 #include <boost/assign/list_of.hpp>
