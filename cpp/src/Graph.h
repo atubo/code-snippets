@@ -1,35 +1,35 @@
 // Note graph node is 0-indexed
 class Graph {
-public:
-    struct Edge {
-        int next, to;
-    };
+ public:
+  struct Edge {
+    int next, to;
+  };
 
-    vector<int> head;
-    int eidx;
-    int N, M;
+  vector<int> head;
+  int eidx;
+  int N, M;
 
-    Edge *E;
+  Edge *E;
 
-    Graph(int N_, int M_):N(N_), M(M_) {
-        head.resize(N);
-        eidx = 0;
+  Graph(int N_, int M_):N(N_), M(M_) {
+    head.resize(N);
+    eidx = 0;
 
-        for (int i = 0; i < N; i++) {
-            head[i] = -1;
-        }
-
-        E = new Edge[M]{};
+    for (int i = 0; i < N; i++) {
+      head[i] = -1;
     }
 
-    ~Graph() {
-        delete[] E;
-    }
+    E = new Edge[M]{};
+  }
 
-    // assume 0-indexed and no duplication
-    void addEdge(int u, int v) {
-        E[eidx].to = v;
-        E[eidx].next = head[u];
-        head[u] = eidx++;
-    }
+  ~Graph() {
+    delete[] E;
+  }
+
+  // assume 0-indexed and no duplication
+  void addEdge(int u, int v) {
+    E[eidx].to = v;
+    E[eidx].next = head[u];
+    head[u] = eidx++;
+  }
 };
