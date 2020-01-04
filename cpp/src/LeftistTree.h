@@ -9,7 +9,10 @@ public:
         N = size;
 
         f = new int[N+1]{};
-        t.resize(N+1);
+        t = new int*[N+1]{};
+        for (int i = 0; i <= N; i++) {
+            t[i] = new int[2]{};
+        }
         val = new int[N+1]{};
         d = new int[N+1];
         memset(d, -1, (N+1) * sizeof(int));
@@ -17,6 +20,10 @@ public:
 
     ~LeftistTree() {
         delete[] f;
+        for (int i = 0; i <= N; i++) {
+            delete[] t[i];
+        }
+        delete[] t;
         delete[] val;
         delete[] d;
     }
@@ -134,7 +141,7 @@ public:
 
     int N;  // number of elements, 0 (NULL) excluded
     int *f;
-    vector<array<int, 2>> t;
+    int **t;
     int *val;
     int *d;
     Cmp cmp;

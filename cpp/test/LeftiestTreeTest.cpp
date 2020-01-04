@@ -97,7 +97,7 @@ private:
         int n = f.size();
         for (int i = 0; i < n; i++) {
             if (f[i] != lt.f[i] ||
-                t[i] != lt.t[i] ||
+                t[i][0] != lt.t[i][0] || t[i][1] != lt.t[i][1] ||
                 val[i] != lt.val[i] ||
                 d[i] != lt.d[i]) {
                 return false;
