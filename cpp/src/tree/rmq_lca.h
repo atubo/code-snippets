@@ -73,7 +73,7 @@ class RmqLca {
     int x = dfn_[u], y = dfn_[v];
     if (x > y) swap(x, y);
     int d = log_[y-x+1];
-    int a = st_[x][d], b = st_[y-(1<<d)+1][d];
+    int a = st_[d][x], b = st_[d][y-(1<<d)+1];
     int lca = depth_[a] < depth_[b] ? a : b;
     return lca;
   }
@@ -83,10 +83,10 @@ class RmqLca {
     log_ = new int[2*N_]{};
     dfn_ = new int[N_]{};
     depth_ = new int[N_]{};
-    st_ = new int*[2*N_]{};
-    for (int i = 0; i < 2*N_; i++) {
-      st_[i] = new int[MAXB_]{};
-      memset(st_[i], -1, MAXB_*sizeof(int));
+    st_ = new int*[MAXB_]{};
+    for (int i = 0; i < MAXB_; i++) {
+      st_[i] = new int[2*N_]{};
+      memset(st_[i], -1, 2*N_*sizeof(int));
     }
   }
 
@@ -94,7 +94,7 @@ class RmqLca {
     delete[] log_;
     delete[] dfn_;
     delete[] depth_;
-    for (int i = 0; i < 2*N_; i++) {
+    for (int i = 0; i < MAXB_; i++) {
       delete[] st_[i];
     }
     delete[] st_;
@@ -103,12 +103,12 @@ class RmqLca {
   void dfs(int x, int f, int d) {
     dfn_[x] = dfs_clock_;
     depth_[x] = d;
-    st_[dfs_clock_++][0] = x;
+    st_[0][dfs_clock_++] = x;
     for (int eidx = g_.head[x]; ~eidx; eidx = g_.E[eidx].next) {
       int u = g_.E[eidx].to;
       if (u != f) {
         dfs(u, x, d+1);
-        st_[dfs_clock_++][0] = x;
+        st_[0][dfs_clock_++] = x;
       }
     }
   }
@@ -119,8 +119,8 @@ class RmqLca {
     }
     for (int j = 1; j < MAXB_; j++) {
       for (int i = 0; i <= dfs_clock_-(1<<j); i++) {
-        int x = st_[i][j-1], y = st_[i+(1<<(j-1))][j-1];
-        st_[i][j] = depth_[x] < depth_[y] ? x : y;
+        int x = st_[j-1][i], y = st_[j-1][i+(1<<(j-1))];
+        st_[j][i] = depth_[x] < depth_[y] ? x : y;
       }
     }
   }
