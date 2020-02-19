@@ -24,7 +24,7 @@ class FftTest:public CppUnit::TestFixture {
     }
   }
 
-  void testPolynomicalMultiplication() {
+  void testPolynomialMultiplication() {
     // (1+2x+3x^2+4x^3)(5+6x+7x^2+8x^3)
     // answser should be 32x^6+52x^5+61x^4+60x^3+34x^2+16x+5
     vector<double> a(16), b(16);
@@ -44,9 +44,22 @@ class FftTest:public CppUnit::TestFixture {
     }
   }
 
+  void testPolynomialProduct() {
+    // same as above
+    vector<double> a = {1, 2, 3, 4};
+    vector<double> b = {5, 6, 7, 8};
+    auto ret = Fft::polynomialProduct(a, b);
+    CPPUNIT_ASSERT_EQUAL(7, (int)ret.size());
+    vector<double> expected = {5, 16, 34, 60, 61, 52, 32};
+    for (int i = 0; i < 7; i++) {
+      CPPUNIT_ASSERT_DOUBLES_EQUAL(expected[i], ret[i], 1e-6);
+    }
+  }
+
   CPPUNIT_TEST_SUITE(FftTest);
   CPPUNIT_TEST(testLength4);
-  CPPUNIT_TEST(testPolynomicalMultiplication);
+  CPPUNIT_TEST(testPolynomialMultiplication);
+  CPPUNIT_TEST(testPolynomialProduct);
   CPPUNIT_TEST_SUITE_END();
 };
 

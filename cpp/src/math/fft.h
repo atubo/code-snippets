@@ -57,4 +57,33 @@ class Fft {
     }
     return ret;
   }
+
+  // f and g are real number coefficient polynomials
+  // In the function we will expand them to complex number
+  // and return another real number coefficient vector
+  static vector<double> polynomialProduct(
+      const vector<double>& f, const vector<double>& g) {
+    int n1 = f.size();
+    int n2 = g.size();
+    int n = 1;
+    while (n < n1+n2-1) n <<= 1;
+    vector<double> fc(2*n, 0), gc(2*n, 0);
+    for (int i = 0; i < n; i++) {
+      fc[2*i] = (i < n1 ? f[i] : 0);
+      gc[2*i] = (i < n2 ? g[i] : 0);
+    }
+
+    four1(fc, 1);
+    four1(gc, 1);
+
+    auto prod = innerProduct(fc, gc);
+
+    four1(prod, -1);
+
+    vector<double> ret(n1+n2-1);
+    for (int i = 0; i < n1+n2-1; i++) {
+      ret[i] = prod[2*i]/n;
+    }
+    return ret;
+  }
 };
