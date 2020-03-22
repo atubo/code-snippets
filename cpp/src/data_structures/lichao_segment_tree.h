@@ -48,11 +48,13 @@ class LcSegmentTree {
   void modify(int k, int l, int r, Line line) {
     // current range is [l, r], modify range is [a, b]
     if (line.l <= l && r <= line.r) {
-      double dl = calc(line, l) - calc(sgt_[k], l);
-      double dr = calc(line, r) - calc(sgt_[k], r);
       if (!sgt_[k].flag) {
         sgt_[k] = line;
-      } else if (dl > eps && dr > eps) {
+        return;
+      }
+      double dl = calc(line, l) - calc(sgt_[k], l);
+      double dr = calc(line, r) - calc(sgt_[k], r);
+      if (dl > eps && dr > eps) {
         sgt_[k] = line;
       } else if (dl > eps || dr > eps) {
         int mid = (l + r) / 2;
