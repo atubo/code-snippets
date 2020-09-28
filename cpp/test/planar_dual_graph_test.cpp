@@ -42,8 +42,41 @@ class PlanarDualGraphTest : public CppUnit::TestFixture {
     }
   }
 
+  void testLocator() {
+    PlanarDualGraph pdg(9, 12);
+    for (int i = 1; i <= 3; i++) {
+      for (int j = 1; j <= 3; j++) {
+        pdg.addPoint(i*2, j*2);
+      }
+    }
+
+    for (int i = 0; i <= 2; i++) {
+      pdg.addEdge(i, i+3);
+      pdg.addEdge(i+3, i+6);
+    }
+    for (int i = 0; i <= 6; i+=3) {
+      pdg.addEdge(i, i+1);
+      pdg.addEdge(i+1, i+2);
+    }
+    pdg.build();
+    PlanarDualGraph::Locator locator(pdg, 6);
+    locator.addQuery(3, 3);
+    locator.addQuery(5, 5);
+    locator.addQuery(3, 5);
+    locator.addQuery(5, 3);
+    locator.addQuery(1, 1);
+    locator.addQuery(3, 3);
+    locator.build();
+    vector<int> expected = {0, 4, 2, 3, 1, 0};
+    for (int i = 0; i < 6; i++) {
+      CPPUNIT_ASSERT_EQUAL(expected[i], locator.region_[i]);
+    }
+
+  }
+
   CPPUNIT_TEST_SUITE(PlanarDualGraphTest);
   CPPUNIT_TEST(testBuild);
+  CPPUNIT_TEST(testLocator);
   CPPUNIT_TEST_SUITE_END();
 };
 

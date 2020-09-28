@@ -118,5 +118,132 @@ class PlanarDualGraph {
     rid_++;
   }
 
+  class Locator {
+    int nowx;
+    struct Query {
+      int id;
+      Point pt;
+      bool operator < (const Query& other) const {
+        return pt.x < other.pt.x;
+      }
+    };
+
+    struct KeyPoint {
+      int id;
+      Point pt;
+      bool operator < (const KeyPoint& other) const {
+        if (pt.x == other.pt.x) {
+          return id < other.id;
+        }
+        return pt.x < other.pt.x;
+      }
+    };
+
+    struct Info {
+      const Locator& locator;
+      int id;
+      double k;
+      int x, y;
+      Info(const Locator& loc, int id0,
+          const Point& a, const Point& b)
+          : locator(loc), id(id0), x(a.x), y(b.y) {
+        k = 1.0 * (a.y - b.y) / (a.x - b.x);
+      }
+
+      bool operator < (const Info& other) const {
+        constexpr double EPS = 1e-8;
+        double y0 = k * (locator.nowx - x) + y;
+        double y1 = other.k * (locator.nowx - other.x) + other.y;
+        if (fabs(y1 - y0) > EPS) return y0 < y1;
+        return k < other.k;
+      }
+    };
+
+    const PlanarDualGraph& pdg_;
+    using Iter = set<Info>::iterator;
+    Query* queries_;
+    KeyPoint* keyPoints_;
+    set<Info> s_;
+    Iter* it_;
+    int* region_;
+    int m_, q_;
+    int kptid_ = 0;
+    int qid_ = 0;
+
+    void alloc() {
+      queries_ = new Query[q_]{};
+      keyPoints_ = new KeyPoint[2*m_]{};
+      it_ = new Iter[2*m_]{};
+      region_ = new int[q_]{};
+    }
+
+    void dealloc() {
+      delete[] queries_;
+      delete[] keyPoints_;
+      delete[] it_;
+      delete[] region_;
+    }
+
+   public:
+    Locator(const PlanarDualGraph& pdg, int q) : pdg_(pdg), q_(q) {
+      m_ = pdg_.m_;
+      alloc();
+    }
+
+    ~Locator() {
+      dealloc();
+    }
+
+    void addQuery(int x, int y) {
+      queries_[qid_] = Query{qid_, Point(x, y)};
+      qid_++;
+    }
+
+    void build() {
+      for (int i = 0; i < m_; i++) {
+        int eid = 2*i;
+        int u = pdg_.edges_[eid].u;
+        int v = pdg_.edges_[eid].v;
+        if (pdg_.points_[u].x > pdg_.points_[v].x) {
+          eid |= 1;
+          swap(u, v);
+        }
+
+        if (pdg_.points_[u].x != pdg_.points_[v].x) {
+          keyPoints_[kptid_].id = eid + 1;
+          keyPoints_[kptid_++].pt = pdg_.points_[u];
+          keyPoints_[kptid_].id = -(eid + 1);
+          keyPoints_[kptid_++].pt = pdg_.points_[v];
+        }
+      }
+
+      sort(keyPoints_, keyPoints_ + kptid_);
+      sort(queries_, queries_ + q_);
+
+      for (int i = 0, j = 0; i < q_; i++) {
+        for (; j < kptid_ && keyPoints_[j].pt.x <= queries_[i].pt.x; j++) {
+          nowx = keyPoints_[j].pt.x;
+          int id = keyPoints_[j].id;
+          if (id < 0) {
+            s_.erase(it_[-id-1]);
+          } else {
+            id--;
+            int u = pdg_.edges_[id].u;
+            int v = pdg_.edges_[id].v;
+            it_[id] = s_.insert(
+                Info(*this, id, pdg_.points_[u], pdg_.points_[v])).first;
+          }
+        }
+        nowx = queries_[i].pt.x;
+        Point a = queries_[i].pt, b = a;
+        b.x += 1;
+        Iter pos = s_.lower_bound(Info(*this, 0, a, b));
+        if (pos == s_.end()) region_[queries_[i].id] = pdg_.outerRegion_;
+        else region_[queries_[i].id] = pdg_.enclose_[pos->id ^ 1];
+      }
+    }
+    friend class PlanarDualGraphTest;
+  };
+
   friend class PlanarDualGraphTest;
 };
