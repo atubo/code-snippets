@@ -146,7 +146,7 @@ class PlanarDualGraph {
       int x, y;
       Info(const Locator& loc, int id0,
           const Point& a, const Point& b)
-          : locator(loc), id(id0), x(a.x), y(b.y) {
+          : locator(loc), id(id0), x(a.x), y(a.y) {
         k = 1.0 * (a.y - b.y) / (a.x - b.x);
       }
 
