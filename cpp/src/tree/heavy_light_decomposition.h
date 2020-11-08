@@ -55,18 +55,19 @@ class HeavyLightDecomposition {
     }
     // add t to range [a, b]
     void update(int t, int a, int b) {
+      if (a > b) return;
       update(1, t, 0, N-1, a, b);
     }
 
     // query range sum in [a, b]
     int64_t query(int a, int b) {
-      return query(1, a, b, 0, N-1);
+      if (a > b) return 0;
+      return query(1, 0, N-1, a, b);
     }
 
    private:
     // add t to range [a, b], current node range is [l, r]
     void update(int k, int t, int l, int r, int a, int b) {
-      if (a > b) return;
       pushDown(k, l, r);
       if (a <= l && r <= b) {
         val[k] += int64_t(t) * (r-l+1);
@@ -91,15 +92,13 @@ class HeavyLightDecomposition {
     }
 
     // query range sum in [a, b], current node is [L, R]
-    int64_t query(int k, int a, int b, int L, int R) {
-      if (!k) return 0;
-      if (b < L || a > R) return 0;
-      pushDown(k, L, R);
-      if (a <= L && R <= b) return val[k];
+    int64_t query(int k, int l, int r, int a, int b) {
+      pushDown(k, l, r);
+      if (a <= l && r <= b) return val[k];
       int64_t sum = 0;
-      int mid = (L + R) / 2;
-      if (a <= mid) sum += query(2*k, a, b, L, mid);
-      if (mid < b)  sum += query(2*k+1, a, b, mid+1, R);
+      int mid = (l + r) / 2;
+      if (a <= mid) sum += query(2*k, l, mid, a, b);
+      if (mid < b)  sum += query(2*k+1, mid+1, r, a, b);
       return sum;
     }
   };
