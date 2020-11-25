@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "data_structures/SegmentTree.h"
+#include "data_structures/segment_tree.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
