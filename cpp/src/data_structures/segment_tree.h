@@ -16,6 +16,7 @@ class SegmentTree {
   }
   // add t to range [a, b]
   void update(int t, int a, int b) {
+    if (a > b) return;
     update(1, t, 1, N, a, b);
   }
 
@@ -27,7 +28,6 @@ class SegmentTree {
  private:
   // add t to range [a, b], current node range is [l, r]
   void update(int k, int t, int l, int r, int a, int b) {
-    if (a > b) return;
     pushDown(k, l, r);
     if (a <= l && r <= b) {
       val[k] += t * (r-l+1);
@@ -53,7 +53,6 @@ class SegmentTree {
 
   // query range sum in [a, b], current node is [l, r]
   int64_t query(int k, int l, int r, int a, int b) {
-    if (!k) return 0;
     if (b < l || a > r) return 0;
     pushDown(k, l, r);
     if (a <= l && r <= b) return val[k];
