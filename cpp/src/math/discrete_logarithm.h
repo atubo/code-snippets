@@ -26,26 +26,45 @@ int64_t mod_solve(int64_t a, int64_t b, int n) {
     }
 }
 
-// returns x that alpha ^ x == beta mod prime
-// alpha must be a primitive root
-int babystepGiantstep(int alpha, int beta, int prime) {
-    const int n = prime - 1;
-    const int m = int(sqrt(n) + 1);
-    unordered_map<int, int> table;
-    int p = 1;
-    for (int j = 0; j < m; j++) {
-        table[p] = j;
-        p = (1LL * p * alpha) % prime;
+// precondition:
+// 1. gcd(a, p) = 1
+// 2. 0 <= a < p and 0 <= b < p
+int babystepGiantstep(int a, int b, int p) {
+  const int n = p - 1;
+  const int m = int(sqrt(n) + 1);
+  unordered_map<int, int> table;
+  int t = 1; // t is a^j for j in [0, m)
+  for (int j = 0; j < m; j++) {
+    if (table.find(t) == table.end()) {
+      table[t] = j;
     }
-    int fac = mod_solve(p, 1, prime);
-    int gamma = beta;
-    for (int i = 0; i < m; i++) {
-        auto it = table.find(gamma);
-        if (it != table.end()) {
-            return (i * m + it->second) % n;
-        }
-        gamma = (1LL * gamma * fac) % prime;
+    t = (1LL * t * a) % p;
+  }
+  t = mod_solve(t, 1, p); // now t is a^(-m)
+  int gamma = b; // gamma = b * a^(-im)
+  for (int i = 0; i < m; i++) {
+    auto it = table.find(gamma);
+    if (it != table.end()) {
+      return (i * m + it->second) % n;
     }
-    return -1;
+    gamma = (1LL * gamma * t) % p;
+  }
+  return -1;
+}
+
+int gcd(int a, int b) {
+  if (b == 0) return a;
+  return gcd(b, a%b);
+}
+
+int extBsgs(int a, int b, int p) {
+  if (a == 0) return b == 0 ? 1 : -1;
+  if (b == 1) return 0;
+  int g = gcd(a, p);
+  if (g == 1) return babystepGiantstep(a, b, p);
+  if (b % g != 0) return -1;
+  int t = mod_solve(a/g, 1, p/g);
+  int x = extBsgs(a, 1LL * b/g * t % (p/g), p/g);
+  return (x == -1 ? -1 : x + 1);
 }
 }
