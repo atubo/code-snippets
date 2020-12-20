@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "SuffixArray.h"
+#include "string/SuffixArray.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
