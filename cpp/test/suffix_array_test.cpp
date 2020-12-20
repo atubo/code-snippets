@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "string/SuffixArray.h"
+#include "string/suffix_array.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 
