@@ -30,7 +30,7 @@ class SuffixArray {
     pos_ = new int[n_]{};
     lcp_ = new int[n_]{};
 
-    kmax_ = 32 - __builtin_clz(n_-1);
+    kmax_ = (n_ == 1 ? 0 : 32 - __builtin_clz(n_-1));
     p_ = new int*[kmax_+1]{};
     height_ = new int*[kmax_+1]{};
     for (int i = 0; i <= kmax_; i++) {
@@ -65,13 +65,12 @@ class SuffixArray {
     REP(i, n_) sa_[i] = i, pos_[i] = s_[i];
     sort(sa_, sa_ + n_, sufCmp);
     REP(i, n_-1) tmp[i+1] = tmp[i] + sufCmp(sa_[i], sa_[i+1]);
-    REP(i, n_) p_[0][sa_[i]] = tmp[i];
+    REP(i, n_) pos_[sa_[i]] = p_[0][sa_[i]] = tmp[i];
     for (int k = 1; k <= kmax_; k++) {
       gap = 1 << (k-1);
       sort(sa_, sa_ + n_, sufCmp);
       REP(i, n_ - 1) tmp[i + 1] = tmp[i] + sufCmp(sa_[i], sa_[i + 1]);
-      REP(i, n_) pos_[sa_[i]] = tmp[i];
-      REP(i, n_) p_[k][sa_[i]] = tmp[i];
+      REP(i, n_) pos_[sa_[i]] = p_[k][sa_[i]] = tmp[i];
     }
   }
 

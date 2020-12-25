@@ -10,6 +10,14 @@ class SuffixArrayTest:public CppUnit::TestFixture {
   void setUp() {}
   void tearDown() {}
 
+  void testSingleCharString() {
+    string s = "c";
+    SuffixArray sa(s.c_str());
+    sa.buildSA();
+    CPPUNIT_ASSERT_EQUAL(sa.sa_[0], 0);
+    CPPUNIT_ASSERT_EQUAL(sa.pos_[0], 0);
+  }
+
   void testOneCharString() {
     string s = "aaa";
 
@@ -74,6 +82,7 @@ class SuffixArrayTest:public CppUnit::TestFixture {
   }
 
   CPPUNIT_TEST_SUITE(SuffixArrayTest);
+  CPPUNIT_TEST(testSingleCharString);
   CPPUNIT_TEST(testOneCharString);
   CPPUNIT_TEST(testShortString);
   CPPUNIT_TEST(testPMatrix);
