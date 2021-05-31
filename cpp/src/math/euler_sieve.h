@@ -1,17 +1,32 @@
 
 class EulerSieve {
  private:
- public:
-  vector<bool> isPrime;
-  vector<int> primes, mu, phi, sigma;
+  int n_;
+  void alloc() {
+    isPrime = new bool[n_+1]{};
+    memset(isPrime, 1, (n_+1)*sizeof(bool));
+    mu = new int[n_+1]{};
+    phi = new int[n_+1]{};
+    sigma = new int[n_+1]{};
+  }
 
-  EulerSieve(int N) {
+  void dealloc() {
+    delete[] isPrime;
+    delete[] mu;
+    delete[] phi;
+    delete[] sigma;
+  }
+ public:
+  bool* isPrime;
+  int* mu;
+  int* phi;
+  int* sigma;
+  vector<int> primes;
+
+  EulerSieve(int N) : n_(N) {
     assert(N > 1);
 
-    isPrime.resize(N+1, true);
-    mu.resize(N+1);
-    phi.resize(N+1);
-    sigma.resize(N+1);
+    alloc();
 
     // local variable to calculate sigma (divisor function)
     // i = pj^k * ..., and pi(i) = (1 + pj + pj^2 + ...)
@@ -47,5 +62,9 @@ class EulerSieve {
         }
       }
     }
+  }
+
+  ~EulerSieve() {
+    dealloc();
   }
 };
