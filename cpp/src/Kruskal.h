@@ -1,5 +1,5 @@
 
-#include "UnionFind.h"
+#include "data_structures/UnionFind.h"
 
 class Kruskal {
     using TIII = tuple<int, int, int>;  // (weight, u, v)
