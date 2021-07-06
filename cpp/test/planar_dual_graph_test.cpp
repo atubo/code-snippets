@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#include "computational_geometry/planar_dual_graph.h"
+#include "geometry/planar_dual_graph.h"
 
 #include <cppunit/extensions/HelperMacros.h>
 

@@ -29,6 +29,25 @@ class Convex {
     alloc();
   }
 
+  Convex(vector<Point> pts): Convex(pts.size()) {
+    sort(pts.begin(), pts.end(), [](const Point& p, const Point& q) {
+        if (p.x != q.x) return p.x < q.x;
+        return p.y < q.y;
+        });
+    pts.erase(unique(pts.begin(), pts.end()), pts.end());
+    sort(pts.begin() + 1, pts.end(),
+        [p0 = pts[0]](const Point& p, const Point& q) {
+        if ((p - p0) * (q - p) == 0) {
+          return (dot_product(p-p0, p-p0) < dot_product(q-p0, q-p0));
+        }
+
+        return atan2(p.y-p0.y, p.x-p0.x) < atan2(q.y-p0.y, q.x-p0.x);
+        });
+    for (int i = 0; i < (int)pts.size(); i++) {
+      push(pts[i]);
+    }
+  }
+
   ~Convex() {
     dealloc();
   }
